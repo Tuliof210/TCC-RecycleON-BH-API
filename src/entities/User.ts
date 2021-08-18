@@ -8,7 +8,5 @@ export class User extends Entity {
   constructor(props: Omit<User, 'id'>, id?: string) {
     super(id);
     Object.assign(this, props);
-
-    console.log('inside user: ', props);
   }
 }

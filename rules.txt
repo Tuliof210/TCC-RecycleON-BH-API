@@ -1,0 +1,2 @@
+- arquivos deverão ser camelCase [exceto index.* e main.*]
+- pastas deverão ser minusculas
