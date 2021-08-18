@@ -4,11 +4,14 @@ import { CreateUserController } from './create/CreateUser.controller';
 import { CreateUserService } from './create/CreateUser.service';
 
 import { ResponseHelper } from 'src/helpers/Response.helper';
-import { USER_REPOSITORY } from 'src/repositories/users';
-import { LocalUsersRepository } from 'src/repositories/users/LocalUsersRepository';
+
+//import { UserMemoryRepositoryModule } from 'src/repositories/users/memory/UsersMemory.module';
+import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB/UsersMongoDB.module';
 
 @Module({
+  imports: [UserMongoDBRepositoryModule],
   controllers: [CreateUserController],
-  providers: [CreateUserService, ResponseHelper, { provide: USER_REPOSITORY, useClass: LocalUsersRepository }],
+  providers: [CreateUserService, ResponseHelper],
+  exports: [CreateUserService],
 })
 export class UserModule {}

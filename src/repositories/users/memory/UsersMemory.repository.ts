@@ -1,7 +1,7 @@
-import { IUserRepository } from '.';
+import { IUserRepository } from '..';
 import { User } from 'src/entities/User';
 
-export class LocalUsersRepository implements IUserRepository {
+export class UserMemoryRepository implements IUserRepository {
   private readonly users: User[] = [];
 
   async save(user: User): Promise<User> {
