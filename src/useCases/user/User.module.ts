@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { CreateUserController } from './create/CreateUser.controller';
 import { CreateUserService } from './create/CreateUser.service';
 
-import { ResponseHelper } from 'src/helpers/response.helper';
+import { ResponseHelper } from 'src/helpers/Response.helper';
 import { USER_REPOSITORY } from 'src/repositories/users';
 import { LocalUsersRepository } from 'src/repositories/users/LocalUsersRepository';
 

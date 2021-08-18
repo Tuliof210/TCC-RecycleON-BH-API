@@ -2,7 +2,7 @@ import { Body, Controller, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 import { CreateUserService } from './CreateUser.service';
-import { ResponseHelper } from 'src/helpers/response.helper';
+import { ResponseHelper } from 'src/helpers/Response.helper';
 
 import { ICreateUserDTO } from './CreateUser.DTO';
 
