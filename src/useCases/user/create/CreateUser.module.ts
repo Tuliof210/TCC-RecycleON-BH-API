@@ -4,8 +4,8 @@ import { CreateUserController } from './CreateUser.controller';
 
 import { CreateUserService } from './CreateUser.service';
 
-import { USER_REPOSITORY } from 'src/repositories/users/IUsersRepository';
-import { LocalUsersRepository } from 'src/repositories/users/implementations/LocalUsersRepository';
+import { USER_REPOSITORY } from 'src/repositories/users';
+import { LocalUsersRepository } from 'src/repositories/users/LocalUsersRepository';
 
 @Module({
   controllers: [CreateUserController],

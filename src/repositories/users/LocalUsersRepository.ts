@@ -1,4 +1,4 @@
-import { IUserRepository } from '../IUsersRepository';
+import { IUserRepository } from '.';
 import { User } from 'src/entities/User';
 
 export class LocalUsersRepository implements IUserRepository {
@@ -9,8 +9,8 @@ export class LocalUsersRepository implements IUserRepository {
     return Promise.resolve(user);
   }
 
-  async findByKey(key: string, value: unknown): Promise<User | void> {
-    const user = this.users.find((userLocal) => userLocal[key] === value);
+  async findById(id: string): Promise<User | void> {
+    const user = this.users.find((userLocal) => userLocal.id === id);
     return Promise.resolve(user);
   }
 
