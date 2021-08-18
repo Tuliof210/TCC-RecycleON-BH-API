@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
 
-import { CreateUserModule } from './create/CreateUser.module';
-import { GetUserModule } from './get/GetUser.module';
+import { CreateUserController } from './create/CreateUser.controller';
+import { GetUserController } from './get/GetUser.controller';
+
+import { CreateUserService } from './create/CreateUser.service';
+import { GetUserService } from './get/GetUser.service';
+
+import { USER_REPOSITORY } from 'src/repositories/users';
+import { LocalUsersRepository } from 'src/repositories/users/LocalUsersRepository';
 
 @Module({
-  imports: [CreateUserModule, GetUserModule],
-  exports: [CreateUserModule],
+  controllers: [CreateUserController, GetUserController],
+  providers: [CreateUserService, GetUserService, { provide: USER_REPOSITORY, useClass: LocalUsersRepository }],
 })
 export class UserModule {}

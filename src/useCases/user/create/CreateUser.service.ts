@@ -9,7 +9,7 @@ import { User } from 'src/entities/User';
 
 @Injectable()
 export class CreateUserService {
-  constructor(@Inject(USER_REPOSITORY) private userRepository: IUserRepository) {}
+  constructor(@Inject(USER_REPOSITORY) private readonly userRepository: IUserRepository) {}
 
   public async execute(userData: ICreateUserDTO): Promise<User> {
     const user = await this.constructUser(userData);
