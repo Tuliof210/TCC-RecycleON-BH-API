@@ -1,22 +1,20 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 
-import { IResponse } from 'src/interfaces/IResponse';
+import { CreateUserService } from './CreateUser.service';
+import { ResponseHelper } from 'src/helpers/response.helper';
 
 import { ICreateUserDTO } from './CreateUser.DTO';
 
-import { CreateUserService } from './CreateUser.service';
-
 @Controller('users')
 export class CreateUserController {
-  constructor(private createUserService: CreateUserService) {}
+  constructor(private readonly responseHelper: ResponseHelper, private readonly createUserService: CreateUserService) {}
 
   @Post()
-  @HttpCode(201)
-  async onCreate(@Body() createUserDTO: ICreateUserDTO): Promise<IResponse> {
-    const user = await this.createUserService.execute(createUserDTO);
-    return {
-      message: 'sucesso ao criar usuário',
-      data: user,
-    };
+  async onCreate(@Body() createUserDTO: ICreateUserDTO, @Res() res: Response): Promise<void> {
+    return this.createUserService
+      .execute(createUserDTO)
+      .then(this.responseHelper.success(res))
+      .catch(this.responseHelper.failure(res));
   }
 }
