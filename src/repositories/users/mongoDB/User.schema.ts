@@ -18,6 +18,9 @@ export class UserSchemaDTO extends User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop({ required: true })
+  active: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);

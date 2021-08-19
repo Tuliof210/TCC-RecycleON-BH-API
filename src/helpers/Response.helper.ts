@@ -19,10 +19,13 @@ export class ResponseHelper {
     };
   }
 
-  public notFound<Type>(res: Response): (entity: Type) => Type | void {
+  public notFound<Type>(res: Response, message = ''): (entity: Type) => Type | void {
     return (entity) => {
       if (entity) return entity;
-      res.status(HttpStatus.NOT_FOUND).end();
+      res.status(HttpStatus.NOT_FOUND).json({
+        error: 'Not Found',
+        message,
+      });
     };
   }
 }

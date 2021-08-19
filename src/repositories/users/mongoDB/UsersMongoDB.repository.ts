@@ -14,27 +14,33 @@ export class UserMongoDBRepository implements IUserRepository {
   //constructor(@InjectModel(UserCollection) private UserModel: Model<typeof UserSchema>) {}
   constructor(@InjectModel(UserCollection) private UserModel: Model<User>) {}
 
-  async save(user: User): Promise<User> {
-    return this.UserModel.create({ ...user, _id: '50ad4615-d75e-4f41-baed-56f6a1682db2' })
-      .then((created) => {
-        console.log(`Created: ${created._id}`);
-        return created;
-      })
+  async save(user: User) {
+    return this.UserModel.create(user).catch((err) => {
+      throw {
+        name: err.name,
+        message: err.message,
+        statusCode: HttpStatus.CONFLICT,
+      };
+    });
+  }
+
+  async findById(_id: string) {
+    return this.UserModel.findOne({ _id, active: true }).catch((err) => {
+      throw {
+        name: err.name,
+        message: err.message,
+      };
+    });
+  }
+
+  async retrieveAll(query: any) {
+    return this.UserModel.countDocuments(query)
+      .then((count) => this.UserModel.find(query).then((data) => ({ count, data })))
       .catch((err) => {
         throw {
           name: err.name,
           message: err.message,
-          statusCode: HttpStatus.CONFLICT,
         };
       });
-  }
-
-  async findById(id: string): Promise<User | void> {
-    return Promise.resolve();
-  }
-
-  async retrieveAll(): Promise<User[]> {
-    const users: User[] = [];
-    return Promise.resolve(users);
   }
 }
