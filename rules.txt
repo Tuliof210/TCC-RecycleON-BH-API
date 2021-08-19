@@ -1,2 +1,13 @@
 - arquivos deverão ser camelCase [exceto index.* e main.*]
 - pastas deverão ser minusculas
+
+- imports
+  * core from index
+  * core outside index
+  * core from @nest
+  * external libs
+
+- exports
+  * exports external files
+  * interface tokens
+  * interfaces
