@@ -1,5 +1,6 @@
-import { User } from 'src/entities';
 import { CreateUserDTO } from './CreateUser.DTO';
+import { User } from 'src/entities';
+
 import { Response } from 'express';
 
 export interface ICreateUserController {

@@ -1,6 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
-
 import { IUserRepository, USER_REPOSITORY } from 'src/repositories/users';
+
+import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class DeleteUserController {

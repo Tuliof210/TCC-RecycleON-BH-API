@@ -1,10 +1,9 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-
-import { UserCollection, UserSchema } from './User.schema';
-
 import { USER_REPOSITORY } from '..';
 import { UserMongoDBRepository } from './UsersMongoDB.repository';
+import { UserCollection, UserSchema } from './UserMongoDB.schema';
+
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: UserCollection, schema: UserSchema }])],

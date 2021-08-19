@@ -1,9 +1,9 @@
-import { Controller, Inject, Get, Param, Res } from '@nestjs/common';
-import { Response } from 'express';
-
-import { RESPONSE_HELPER, IResponseHelper } from 'src/helpers';
-
 import { GetUserService } from './GetUser.service';
+import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
+
+import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
+
+import { Response } from 'express';
 
 @Controller('users')
 export class GetUserController {

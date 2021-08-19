@@ -1,19 +1,19 @@
-import { Module } from '@nestjs/common';
+import { CreateUserController } from './create/CreateUser.controller';
+import { CreateUserService } from './create/CreateUser.service';
+import { CREATE_USER_SERVICE } from './create';
+
+import { GetUserController } from './get/GetUser.controller';
+import { GetUserService } from './get/GetUser.service';
 
 import { RESPONSE_HELPER } from 'src/helpers';
 import { ResponseHelper } from 'src/helpers/Response.helper';
 
 import { UserMongoDBRepositoryModule } from 'src/repositories/users';
 
-import { CREATE_USER_SERVICE } from './create';
-import { CreateUserService } from './create/CreateUser.service';
-import { CreateUserController } from './create/CreateUser.controller';
-
-import { GetUserController } from './get/GetUser.controller';
 import { RetrieveUsersController } from './retrieve/RetrieveUsers.controller';
-
-import { GetUserService } from './get/GetUser.service';
 import { RetrieveUsersService } from './retrieve/RetrieveUsers.service';
+
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [UserMongoDBRepositoryModule],

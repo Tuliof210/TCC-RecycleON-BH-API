@@ -4,7 +4,7 @@
 - imports
   * core from index
   * core outside index
-  * core from @nest
+  * core from @nestjs
   * external libs
 
 - exports

@@ -1,12 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
-
-import { User } from 'src/entities';
 import { CreateUserDTO } from './CreateUser.DTO';
-
-import { IUserRepository, USER_REPOSITORY } from 'src/repositories/users';
-
 import { ICreateUserService } from '.';
+import { IUserRepository, USER_REPOSITORY } from 'src/repositories/users';
+import { User } from 'src/entities';
+
+import { Inject, Injectable } from '@nestjs/common';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class CreateUserService implements ICreateUserService {

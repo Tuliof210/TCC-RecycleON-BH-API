@@ -1,12 +1,12 @@
-import { Model } from 'mongoose';
+import { IUserRepository } from '..';
+import { User } from 'src/entities';
+import { UserCollection } from './UserMongoDB.schema';
+
+import { HttpStatus } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { IUserRepository } from '..';
-import { UserCollection } from './User.schema';
-import { User } from 'src/entities';
-
-import { HttpStatus } from '@nestjs/common';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
