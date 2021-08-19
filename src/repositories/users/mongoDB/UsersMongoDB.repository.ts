@@ -2,9 +2,8 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { UserCollection } from './User.schema';
-
 import { IUserRepository } from '..';
+import { UserCollection } from './User.schema';
 import { User } from 'src/entities/User';
 
 import { HttpStatus } from '@nestjs/common';
