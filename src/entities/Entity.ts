@@ -1,10 +1,10 @@
 import { v4 as uuidV4, validate as validateV4 } from 'uuid';
 
 export class Entity {
-  public readonly id: string;
+  public readonly _id: string;
 
-  constructor(id?: string) {
-    const isValid = validateV4(id);
-    this.id = id && isValid ? id : uuidV4();
+  constructor(_id?: string) {
+    const isValid = validateV4(_id);
+    this._id = _id && isValid ? _id : uuidV4();
   }
 }

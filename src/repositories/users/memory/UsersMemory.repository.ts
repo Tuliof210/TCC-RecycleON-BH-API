@@ -10,7 +10,7 @@ export class UserMemoryRepository implements IUserRepository {
   }
 
   async findById(id: string): Promise<User | void> {
-    const user = this.users.find((userLocal) => userLocal.id === id);
+    const user = this.users.find((userLocal) => userLocal._id === id);
     return Promise.resolve(user);
   }
 

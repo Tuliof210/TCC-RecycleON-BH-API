@@ -7,7 +7,7 @@ import { LoggerInterceptor } from './interceptors/Logger.interceptor';
 import { UserModule } from './useCases/user/User.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/nest'), UserModule],
+  imports: [MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true }), UserModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
