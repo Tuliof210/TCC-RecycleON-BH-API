@@ -1,4 +1,4 @@
-import { IDeleteUserController } from '.';
+import { IDisableUserController } from '.';
 import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
 import { Controller, Delete, Inject, Param, Res } from '@nestjs/common';
@@ -6,11 +6,11 @@ import { Controller, Delete, Inject, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 @Controller('users')
-export class DeleteUserController implements IDeleteUserController {
+export class DisableUserController implements IDisableUserController {
   constructor(@Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper) {}
 
-  @Delete(':id/delete')
+  @Delete(':id')
   async handle(@Param('id') id: string, @Res() res: Response): Promise<void> {
-    return this.responseHelper.failure(res)(new Error(`${id} | use case "delete user" in progress`));
+    return this.responseHelper.failure(res)(new Error(`${id} | use case "disable user" in progress`));
   }
 }
