@@ -6,3 +6,5 @@ export interface IResponseHelper {
   failure(res: Response, statusCode?: number): (error: Error) => void;
   notFound<Type>(res: Response, message?: string): (entity: Type) => Type | void;
 }
+
+export { ResponseHelper } from './Response.helper';

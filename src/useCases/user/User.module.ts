@@ -3,8 +3,7 @@ import { CreateUserController, CreateUserService, CREATE_USER_SERVICE } from './
 import { GetUserController } from './get/GetUser.controller';
 import { GetUserService } from './get/GetUser.service';
 
-import { RESPONSE_HELPER } from 'src/helpers';
-import { ResponseHelper } from 'src/helpers/Response.helper';
+import { ResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
 import { UserMongoDBRepositoryModule } from 'src/repositories/users';
 

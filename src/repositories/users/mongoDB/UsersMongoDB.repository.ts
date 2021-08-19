@@ -1,6 +1,6 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
-import { UserCollection } from './UserMongoDB.schema';
+import { UserCollection } from '.';
 
 import { HttpStatus } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';

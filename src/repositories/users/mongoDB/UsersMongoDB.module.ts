@@ -1,6 +1,5 @@
+import { UserCollection, UserMongoDBRepository, UserSchema } from '.';
 import { USER_REPOSITORY } from '..';
-import { UserMongoDBRepository } from './UsersMongoDB.repository';
-import { UserCollection, UserSchema } from './UserMongoDB.schema';
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
