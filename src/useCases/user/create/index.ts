@@ -1,4 +1,4 @@
-import { User } from 'src/entities/User';
+import { User } from 'src/entities';
 import { CreateUserDTO } from './CreateUser.DTO';
 import { Response } from 'express';
 

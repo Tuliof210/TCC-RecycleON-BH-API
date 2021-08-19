@@ -1,4 +1,4 @@
-import { User } from '../../entities/User';
+import { User } from 'src/entities';
 
 export const USER_REPOSITORY = 'USER REPOSITORY';
 export interface IUserRepository {

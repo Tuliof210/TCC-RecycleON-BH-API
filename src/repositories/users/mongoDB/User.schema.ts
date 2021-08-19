@@ -1,4 +1,4 @@
-import { User } from 'src/entities/User';
+import { User } from 'src/entities';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 

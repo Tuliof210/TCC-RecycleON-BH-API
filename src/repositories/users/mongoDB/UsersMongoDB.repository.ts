@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { IUserRepository } from '..';
 import { UserCollection } from './User.schema';
-import { User } from 'src/entities/User';
+import { User } from 'src/entities';
 
 import { HttpStatus } from '@nestjs/common';
 
