@@ -1,5 +1,5 @@
 import { IUserRepository } from '..';
-import { User } from 'src/entities/User';
+import { User } from 'src/entities';
 
 export class UserMemoryRepository implements IUserRepository {
   private readonly users: User[] = [];

@@ -1,12 +1,16 @@
-import { Controller, Get, Param, Res } from '@nestjs/common';
-import { Response } from 'express';
-
 import { GetUserService } from './GetUser.service';
-import { ResponseHelper } from 'src/helpers/Response.helper';
+import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
+
+import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
+
+import { Response } from 'express';
 
 @Controller('users')
 export class GetUserController {
-  constructor(private readonly responseHelper: ResponseHelper, private readonly getUserService: GetUserService) {}
+  constructor(
+    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
+    private readonly getUserService: GetUserService,
+  ) {}
 
   @Get(':id')
   async handle(@Param('id') id: string, @Res() res: Response): Promise<void> {

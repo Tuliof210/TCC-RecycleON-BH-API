@@ -1,8 +1,11 @@
+import { IResponseHelper } from '.';
+
+import { Injectable, HttpStatus } from '@nestjs/common';
+
 import { Response } from 'express';
-import { HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
-export class ResponseHelper {
+export class ResponseHelper implements IResponseHelper {
   public success<Type>(res: Response, statusCode = HttpStatus.CREATED): (entity: Type) => void {
     return (entity) => {
       if (entity) res.status(statusCode).json(entity);

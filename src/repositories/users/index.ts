@@ -1,6 +1,6 @@
-import { User } from '../../entities/User';
+import { User } from 'src/entities';
 
-export const USER_REPOSITORY = 'USER REPOSITORY';
+export const USER_REPOSITORY = 'USER_REPOSITORY';
 export interface IUserRepository {
   save(user: User): Promise<User>;
   findById(id: string): Promise<User | void>;
