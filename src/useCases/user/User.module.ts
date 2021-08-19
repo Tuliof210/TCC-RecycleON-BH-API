@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 
+import { RESPONSE_HELPER } from 'src/helpers';
 import { ResponseHelper } from 'src/helpers/Response.helper';
 
 //import { UserMemoryRepositoryModule } from 'src/repositories/users/memory/UsersMemory.module';
 import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB/UsersMongoDB.module';
 
-import { CREATE_USER_SERVICE } from './create/index';
+import { CREATE_USER_SERVICE } from './create';
 import { CreateUserService } from './create/CreateUser.service';
 import { CreateUserController } from './create/CreateUser.controller';
 
@@ -20,6 +21,7 @@ import { RetrieveUsersService } from './retrieve/RetrieveUsers.service';
   controllers: [CreateUserController, GetUserController, RetrieveUsersController],
   providers: [
     ResponseHelper,
+    { provide: RESPONSE_HELPER, useClass: ResponseHelper },
     { provide: CREATE_USER_SERVICE, useClass: CreateUserService },
     GetUserService,
     RetrieveUsersService,
