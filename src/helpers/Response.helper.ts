@@ -6,7 +6,7 @@ import { Response } from 'express';
 
 @Injectable()
 export class ResponseHelper implements IResponseHelper {
-  public success<Type>(res: Response, statusCode = HttpStatus.CREATED): (entity: Type) => void {
+  public success<Type>(res: Response, statusCode = HttpStatus.OK): (entity: Type) => void {
     return (entity) => {
       if (entity) res.status(statusCode).json(entity);
     };

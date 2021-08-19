@@ -1,7 +1,7 @@
 import { ICreateUserController, ICreateUserService, CreateUserDTO, CREATE_USER_SERVICE } from '.';
 import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
-import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common';
 
 import { Response } from 'express';
 
@@ -16,7 +16,7 @@ export class CreateUserController implements ICreateUserController {
   async handle(@Body() createUserDTO: CreateUserDTO, @Res() res: Response): Promise<void> {
     return this.createUserService
       .execute(createUserDTO)
-      .then(this.responseHelper.success(res))
+      .then(this.responseHelper.success(res, HttpStatus.CREATED))
       .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
   }
 }
