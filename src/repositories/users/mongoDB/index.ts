@@ -1,3 +1,3 @@
-export { UserSchemaDTO, UserSchema, UserCollection, UserDocument } from './UserMongoDB.schema';
-export { UserMongoDBRepositoryModule } from './UsersMongoDB.module';
+export { UserCollection, UserDocument, UserSchema, UserSchemaDTO } from './UserMongoDB.schema';
 export { UserMongoDBRepository } from './UsersMongoDB.repository';
+export { UserMongoDBRepositoryModule } from './UsersMongoDB.module';

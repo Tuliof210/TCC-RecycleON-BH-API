@@ -5,7 +5,7 @@ import { GetUserService } from './get/GetUser.service';
 
 import { ResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
-import { UserMongoDBRepositoryModule } from 'src/repositories/users';
+import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
 
 import { RetrieveUsersController } from './retrieve/RetrieveUsers.controller';
 import { RetrieveUsersService } from './retrieve/RetrieveUsers.service';

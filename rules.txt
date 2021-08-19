@@ -6,8 +6,16 @@
   * core outside index
   * core from @nestjs
   * external libs
+    + interfaces, default, tokens
 
 - exports
   * interface tokens
   * interfaces
   * exports external files
+
+- index
+  * cada pasta devera ter um index
+    -> isso evita que seja necessario passar o nome de um arquivo no imports
+  * cada index devera apenas exportar:
+    -> arquivos no mesmo nivel
+    -> não referenciar arquivo de outra pasta, para não inutilizar imports

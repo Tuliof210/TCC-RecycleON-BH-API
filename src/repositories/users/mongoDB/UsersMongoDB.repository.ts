@@ -2,8 +2,7 @@ import { IUserRepository } from '..';
 import { User } from 'src/entities';
 import { UserCollection } from '.';
 
-import { HttpStatus } from '@nestjs/common';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';

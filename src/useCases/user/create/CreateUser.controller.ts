@@ -1,8 +1,7 @@
-import { CreateUserDTO } from './CreateUser.DTO';
-import { CREATE_USER_SERVICE, ICreateUserController, ICreateUserService } from '.';
-import { ResponseHelper } from 'src/helpers/Response.helper';
+import { ICreateUserController, ICreateUserService, CreateUserDTO, CREATE_USER_SERVICE } from '.';
+import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
-import { Controller, Inject, Post, Body, Res } from '@nestjs/common';
+import { Body, Controller, Inject, Post, Res } from '@nestjs/common';
 
 import { Response } from 'express';
 
@@ -10,7 +9,7 @@ import { Response } from 'express';
 export class CreateUserController implements ICreateUserController {
   constructor(
     @Inject(CREATE_USER_SERVICE) private readonly createUserService: ICreateUserService,
-    private readonly responseHelper: ResponseHelper,
+    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
   ) {}
 
   @Post()
