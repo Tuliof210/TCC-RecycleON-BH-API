@@ -1,4 +1,4 @@
-import { GetUserService } from './GetUser.service';
+import { IGetUserController, IGetUserService, GET_USER_SERVICE } from '.';
 import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
 import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
@@ -6,10 +6,10 @@ import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 
 @Controller('users')
-export class GetUserController {
+export class GetUserController implements IGetUserController {
   constructor(
+    @Inject(GET_USER_SERVICE) private readonly getUserService: IGetUserService,
     @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
-    private readonly getUserService: GetUserService,
   ) {}
 
   @Get(':id')

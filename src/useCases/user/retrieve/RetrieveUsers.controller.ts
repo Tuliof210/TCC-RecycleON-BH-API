@@ -1,15 +1,15 @@
-import { ResponseHelper } from 'src/helpers/Response.helper';
-import { RetrieveUsersService } from './RetrieveUsers.service';
+import { IRetrieveUsersController, IRetrieveUsersService, RETRIEVE_USERS_SERVICE } from '.';
+import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
-import { Controller, Get, Query, Res } from '@nestjs/common';
+import { Controller, Get, Inject, Query, Res } from '@nestjs/common';
 
 import { Response } from 'express';
 
 @Controller('users')
-export class RetrieveUsersController {
+export class RetrieveUsersController implements IRetrieveUsersController {
   constructor(
-    private readonly responseHelper: ResponseHelper,
-    private readonly retrieveUsersService: RetrieveUsersService,
+    @Inject(RETRIEVE_USERS_SERVICE) private readonly retrieveUsersService: IRetrieveUsersService,
+    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
   ) {}
 
   @Get()
