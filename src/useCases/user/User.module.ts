@@ -3,8 +3,7 @@ import { Module } from '@nestjs/common';
 import { RESPONSE_HELPER } from 'src/helpers';
 import { ResponseHelper } from 'src/helpers/Response.helper';
 
-//import { UserMemoryRepositoryModule } from 'src/repositories/users/memory/UsersMemory.module';
-import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB/UsersMongoDB.module';
+import { UserMongoDBRepositoryModule } from 'src/repositories/users';
 
 import { CREATE_USER_SERVICE } from './create';
 import { CreateUserService } from './create/CreateUser.service';

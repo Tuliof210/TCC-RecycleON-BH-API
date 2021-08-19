@@ -7,5 +7,8 @@ export interface IUserRepository {
   retrieveAll(query?: any): Promise<{ count: number; data: User[] }>;
 }
 
+export { UserMemoryRepositoryModule } from './memory/UsersMemory.module';
+export { UserMongoDBRepositoryModule } from './mongoDB/UsersMongoDB.module';
+
 // javascript não possui interfaces
 // necessario fazer gambiarra

@@ -1,4 +1,4 @@
-import { Entity } from './Entity';
+import { Entity } from '.';
 
 export class User extends Entity {
   public name: string;
