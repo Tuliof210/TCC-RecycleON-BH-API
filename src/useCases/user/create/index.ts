@@ -11,3 +11,6 @@ export const CREATE_USER_SERVICE = 'CREATE USER SERVICE';
 export interface ICreateUserService {
   execute(userData: CreateUserDTO): Promise<User>;
 }
+
+export { CreateUserController } from './CreateUser.controller';
+export { CreateUserService } from './CreateUser.service';

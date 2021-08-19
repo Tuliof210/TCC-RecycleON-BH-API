@@ -8,6 +8,6 @@
   * external libs
 
 - exports
-  * exports external files
   * interface tokens
   * interfaces
+  * exports external files

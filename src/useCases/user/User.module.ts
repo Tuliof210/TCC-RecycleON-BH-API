@@ -1,6 +1,4 @@
-import { CreateUserController } from './create/CreateUser.controller';
-import { CreateUserService } from './create/CreateUser.service';
-import { CREATE_USER_SERVICE } from './create';
+import { CreateUserController, CreateUserService, CREATE_USER_SERVICE } from './create';
 
 import { GetUserController } from './get/GetUser.controller';
 import { GetUserService } from './get/GetUser.service';
