@@ -15,6 +15,6 @@ export class CreateUserController {
     return this.createUserService
       .execute(createUserDTO)
       .then(this.responseHelper.success(res))
-      .catch(this.responseHelper.failure(res));
+      .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
   }
 }

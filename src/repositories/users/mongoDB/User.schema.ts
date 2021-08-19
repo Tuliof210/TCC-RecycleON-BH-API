@@ -7,7 +7,7 @@ export const UserCollection = 'User';
 
 @Schema({ versionKey: false, timestamps: true })
 export class UserSchemaDTO extends User {
-  @Prop({ index: true, required: true })
+  @Prop({ required: true })
   _id: string;
 
   @Prop({ required: true })
