@@ -23,8 +23,8 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
 }
 
 export const UserCollection = 'User';
-export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
 export interface UserDocument extends UserViewDTO, Document {}
+export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
 
 UserSchema.methods.view = function (responseView = false): UserViewDTO {
   return responseView ? this : { _id: this._id, name: this.name, email: this.email };

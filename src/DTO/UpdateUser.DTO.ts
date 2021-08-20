@@ -1,3 +1,3 @@
-export interface UpdateUserDTO {
-  name: string;
-}
+import { User } from 'src/entities';
+
+export type UpdateUserDTO = Pick<User, 'name'>;

@@ -1,5 +1,3 @@
-export interface CreateUserDTO {
-  name: string;
-  email: string;
-  password: string;
-}
+import { User } from 'src/entities';
+
+export type CreateUserDTO = Omit<User, '_id' | 'active'>;
