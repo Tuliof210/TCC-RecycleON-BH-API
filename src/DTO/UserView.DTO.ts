@@ -1,8 +1,6 @@
-export interface UserViewDTO {
-  //_id?: string;
-  name?: string;
-  email?: string;
-  password?: string;
-  active?: boolean;
+import { User } from 'src/entities';
+
+export interface UserViewDTO extends Partial<User> {
+  _id?: any;
   view?: (responseView?: boolean) => UserViewDTO;
 }

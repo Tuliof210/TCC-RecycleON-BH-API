@@ -26,7 +26,7 @@ export class UserMongoDBRepository implements IUserRepository {
 
   async findById(userId: string) {
     return this.UserModel.findOne({ _id: userId, active: true })
-      .then((foundUser) => foundUser.view())
+      .then((foundUser) => foundUser?.view())
       .catch((err) => {
         throw {
           name: err.name,
@@ -40,7 +40,7 @@ export class UserMongoDBRepository implements IUserRepository {
       .then((countUsers) =>
         this.UserModel.find(userQuery).then((retrievedUsers) => ({
           count: countUsers,
-          data: retrievedUsers.map((user) => user.view()),
+          data: retrievedUsers.map((user) => user.view(true)),
         })),
       )
       .catch((err) => {
@@ -53,7 +53,7 @@ export class UserMongoDBRepository implements IUserRepository {
 
   async update(userId: string, userChanges: UpdateUserDTO) {
     return this.UserModel.findOneAndUpdate({ _id: userId }, userChanges, { new: true }).then((updatedUser) =>
-      updatedUser.view(),
+      updatedUser?.view(),
     );
   }
 }
