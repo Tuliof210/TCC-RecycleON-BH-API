@@ -10,10 +10,10 @@ import { InjectModel } from '@nestjs/mongoose';
 export class UserMongoDBRepository implements IUserRepository {
   constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
-  async save(user: User) {
+  async save(user: User, fullView = false) {
     return this.userModel
       .create(user)
-      .then((createdUser) => createdUser.view())
+      .then((createdUser) => createdUser.view(fullView))
       .catch((err) => {
         throw {
           name: err.name,
@@ -23,10 +23,10 @@ export class UserMongoDBRepository implements IUserRepository {
       });
   }
 
-  async findById(userId: string) {
+  async findById(userId: string, fullView = false) {
     return this.userModel
       .findOne({ _id: userId, active: true })
-      .then((foundUser) => foundUser?.view())
+      .then((foundUser) => foundUser?.view(fullView))
       .catch((err) => {
         throw {
           name: err.name,
@@ -35,13 +35,13 @@ export class UserMongoDBRepository implements IUserRepository {
       });
   }
 
-  async retrieveAll(userQuery: any) {
+  async retrieveAll(userQuery: any, fullView = false) {
     return this.userModel
       .countDocuments(userQuery)
       .then((countUsers) =>
         this.userModel.find(userQuery).then((retrievedUsers) => ({
           count: countUsers,
-          data: retrievedUsers.map((user) => user.view()),
+          data: retrievedUsers.map((user) => user.view(fullView)),
         })),
       )
       .catch((err) => {
@@ -52,9 +52,33 @@ export class UserMongoDBRepository implements IUserRepository {
       });
   }
 
-  async update(userId: string, userChanges: UpdateUserDTO) {
+  async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
     return this.userModel
       .findOneAndUpdate({ _id: userId }, userChanges, { new: true })
-      .then((updatedUser) => updatedUser?.view());
+      .then((updatedUser) => updatedUser?.view(fullView))
+      .catch((err) => {
+        throw {
+          name: err.name,
+          message: err.message,
+        };
+      });
+  }
+
+  async deactivate(userId: string, fullView = false) {
+    return this.findById(userId, true)
+      .then((foundUser) => foundUser.disable())
+      .then((disabledUser) => disabledUser.view(fullView));
+  }
+
+  async delete(userId: string, fullView = false) {
+    return this.userModel
+      .findOneAndDelete({ _id: userId })
+      .then((deletedUser) => deletedUser?.view(fullView))
+      .catch((err) => {
+        throw {
+          name: err.name,
+          message: err.message,
+        };
+      });
   }
 }

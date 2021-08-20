@@ -13,7 +13,7 @@ export class RetrieveUsersController implements IRetrieveUsersController {
   ) {}
 
   @Get()
-  async handle(@Query() userQuery: any, @Res() res: Response): Promise<void> {
+  handle(@Query() userQuery: any, @Res() res: Response): Promise<void> {
     return this.retrieveUsersService
       .execute(userQuery)
       .then(this.responseHelper.success(res))

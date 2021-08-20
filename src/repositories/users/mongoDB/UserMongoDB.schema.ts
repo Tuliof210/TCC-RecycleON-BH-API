@@ -27,3 +27,6 @@ export type UserModel = Model<UserViewDTO, Document>;
 UserSchema.methods.view = function (responseView = false): UserViewDTO {
   return responseView ? this : { _id: this._id, name: this.name, email: this.email };
 };
+UserSchema.methods.disable = function () {
+  return this.set({ active: false }).save();
+};

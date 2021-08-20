@@ -14,7 +14,7 @@ export class CreateUserController implements ICreateUserController {
   ) {}
 
   @Post()
-  async handle(@Body() userData: CreateUserDTO, @Res() res: Response): Promise<void> {
+  handle(@Body() userData: CreateUserDTO, @Res() res: Response): Promise<void> {
     return this.createUserService
       .execute(userData)
       .then(this.responseHelper.success(res, HttpStatus.CREATED))
