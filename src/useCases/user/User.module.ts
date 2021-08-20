@@ -21,13 +21,7 @@ import { Module } from '@nestjs/common';
     UpdateUserController,
   ],
   providers: [
-    ResponseHelper,
     { provide: RESPONSE_HELPER, useClass: ResponseHelper },
-    { provide: CREATE_USER_SERVICE, useClass: CreateUserService },
-    { provide: GET_USER_SERVICE, useClass: GetUserService },
-    { provide: RETRIEVE_USERS_SERVICE, useClass: RetrieveUsersService },
-  ],
-  exports: [
     { provide: CREATE_USER_SERVICE, useClass: CreateUserService },
     { provide: GET_USER_SERVICE, useClass: GetUserService },
     { provide: RETRIEVE_USERS_SERVICE, useClass: RetrieveUsersService },

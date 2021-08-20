@@ -1,8 +1,6 @@
 import { UserViewDTO } from 'src/DTO';
-
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
-
-import { Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 @Schema({ versionKey: false, timestamps: true })
 export class UserSchemaDTO extends Document implements UserViewDTO {
@@ -23,8 +21,8 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
 }
 
 export const UserCollection = 'User';
-export interface UserDocument extends UserViewDTO, Document {}
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
+export type UserModel = Model<UserViewDTO, Document>;
 
 UserSchema.methods.view = function (responseView = false): UserViewDTO {
   return responseView ? this : { _id: this._id, name: this.name, email: this.email };

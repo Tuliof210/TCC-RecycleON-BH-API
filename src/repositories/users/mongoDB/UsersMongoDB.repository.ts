@@ -1,19 +1,18 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
-import { UserCollection, UserDocument } from '.';
+import { UserCollection, UserModel } from '.';
 import { UpdateUserDTO } from 'src/DTO';
 
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Model } from 'mongoose';
-
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
-  constructor(@InjectModel(UserCollection) private UserModel: Model<UserDocument>) {}
+  constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
   async save(user: User) {
-    return this.UserModel.create(user)
+    return this.userModel
+      .create(user)
       .then((createdUser) => createdUser.view())
       .catch((err) => {
         throw {
@@ -25,7 +24,8 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async findById(userId: string) {
-    return this.UserModel.findOne({ _id: userId, active: true })
+    return this.userModel
+      .findOne({ _id: userId, active: true })
       .then((foundUser) => foundUser?.view())
       .catch((err) => {
         throw {
@@ -36,9 +36,10 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async retrieveAll(userQuery: any) {
-    return this.UserModel.countDocuments(userQuery)
+    return this.userModel
+      .countDocuments(userQuery)
       .then((countUsers) =>
-        this.UserModel.find(userQuery).then((retrievedUsers) => ({
+        this.userModel.find(userQuery).then((retrievedUsers) => ({
           count: countUsers,
           data: retrievedUsers.map((user) => user.view()),
         })),
@@ -52,8 +53,8 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async update(userId: string, userChanges: UpdateUserDTO) {
-    return this.UserModel.findOneAndUpdate({ _id: userId }, userChanges, { new: true }).then((updatedUser) =>
-      updatedUser?.view(),
-    );
+    return this.userModel
+      .findOneAndUpdate({ _id: userId }, userChanges, { new: true })
+      .then((updatedUser) => updatedUser?.view());
   }
 }
