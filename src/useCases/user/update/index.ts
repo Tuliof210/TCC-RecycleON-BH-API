@@ -1,5 +1,4 @@
-import { UpdateUserDTO } from 'src/DTO';
-import { User } from 'src/entities';
+import { UserViewDTO, UpdateUserDTO } from 'src/DTO';
 
 import { Response } from 'express';
 
@@ -9,7 +8,7 @@ export interface IUpdateUserController {
 
 export const UPDATE_USER_SERVICE = 'UPDATE_USER_SERVICE';
 export interface IUpdateUserService {
-  execute(userId: string, userChanges: UpdateUserDTO): Promise<User>;
+  execute(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 }
 
 export { UpdateUserController } from './UpdateUser.controller';

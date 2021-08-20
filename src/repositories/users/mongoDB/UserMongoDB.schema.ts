@@ -1,14 +1,11 @@
-import { User } from 'src/entities';
+import { UserViewDTO } from 'src/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
 import { Document } from 'mongoose';
 
-export type UserDocument = UserSchemaDTO & Document;
-export const UserCollection = 'User';
-
 @Schema({ versionKey: false, timestamps: true })
-export class UserSchemaDTO extends User {
+export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true })
   _id: string;
 
@@ -25,4 +22,10 @@ export class UserSchemaDTO extends User {
   active: boolean;
 }
 
+export const UserCollection = 'User';
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
+export interface UserDocument extends UserViewDTO, Document {}
+
+UserSchema.methods.view = function (responseView = false): UserViewDTO {
+  return responseView ? this : { name: this.name };
+};

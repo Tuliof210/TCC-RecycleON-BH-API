@@ -1,5 +1,4 @@
-import { CreateUserDTO } from 'src/DTO';
-import { User } from 'src/entities';
+import { CreateUserDTO, UserViewDTO } from 'src/DTO';
 
 import { Response } from 'express';
 
@@ -9,7 +8,7 @@ export interface ICreateUserController {
 
 export const CREATE_USER_SERVICE = 'CREATE_USER_SERVICE';
 export interface ICreateUserService {
-  execute(userData: CreateUserDTO): Promise<User>;
+  execute(userData: CreateUserDTO): Promise<UserViewDTO>;
 }
 
 export { CreateUserController } from './CreateUser.controller';

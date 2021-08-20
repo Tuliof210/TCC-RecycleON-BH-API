@@ -1,6 +1,6 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
-import { UserCollection } from '.';
+import { UserCollection, UserDocument } from '.';
 import { UpdateUserDTO } from 'src/DTO';
 
 import { HttpStatus, Injectable } from '@nestjs/common';
@@ -10,31 +10,39 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
-  //constructor(@InjectModel(UserCollection) private UserModel: Model<typeof UserSchema>) {}
-  constructor(@InjectModel(UserCollection) private UserModel: Model<User>) {}
+  constructor(@InjectModel(UserCollection) private UserModel: Model<UserDocument>) {}
 
   async save(user: User) {
-    return this.UserModel.create(user).catch((err) => {
-      throw {
-        name: err.name,
-        message: err.message,
-        statusCode: HttpStatus.CONFLICT,
-      };
-    });
+    return this.UserModel.create(user)
+      .then((createdUser) => createdUser.view())
+      .catch((err) => {
+        throw {
+          name: err.name,
+          message: err.message,
+          statusCode: HttpStatus.CONFLICT,
+        };
+      });
   }
 
   async findById(userId: string) {
-    return this.UserModel.findOne({ _id: userId, active: true }).catch((err) => {
-      throw {
-        name: err.name,
-        message: err.message,
-      };
-    });
+    return this.UserModel.findOne({ _id: userId, active: true })
+      .then((foundUser) => foundUser.view())
+      .catch((err) => {
+        throw {
+          name: err.name,
+          message: err.message,
+        };
+      });
   }
 
   async retrieveAll(userQuery: any) {
     return this.UserModel.countDocuments(userQuery)
-      .then((count) => this.UserModel.find(userQuery).then((data) => ({ count, data })))
+      .then((countUsers) =>
+        this.UserModel.find(userQuery).then((retrievedUsers) => ({
+          count: countUsers,
+          data: retrievedUsers.map((user) => user.view()),
+        })),
+      )
       .catch((err) => {
         throw {
           name: err.name,
@@ -44,6 +52,8 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async update(userId: string, userChanges: UpdateUserDTO) {
-    return this.UserModel.findOneAndUpdate({ _id: userId }, userChanges, { new: true });
+    return this.UserModel.findOneAndUpdate({ _id: userId }, userChanges, { new: true }).then((updatedUser) =>
+      updatedUser.view(),
+    );
   }
 }
