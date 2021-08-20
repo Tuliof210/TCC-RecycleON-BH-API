@@ -3,7 +3,7 @@ import { User } from 'src/entities';
 import { Response } from 'express';
 
 export interface IRetrieveUsersController {
-  handle(query: any, res: Response): Promise<void>;
+  handle(userQuery: any, res: Response): Promise<void>;
 }
 
 export const RETRIEVE_USERS_SERVICE = 'RETRIEVE_USERS_SERVICE';

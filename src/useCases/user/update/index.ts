@@ -4,7 +4,7 @@ import { User } from 'src/entities';
 import { Response } from 'express';
 
 export interface IUpdateUserController {
-  handle(id: string, userChanges: UpdateUserDTO, res: Response): Promise<void>;
+  handle(userId: string, userChanges: UpdateUserDTO, res: Response): Promise<void>;
 }
 
 export const UPDATE_USER_SERVICE = 'UPDATE_USER_SERVICE';

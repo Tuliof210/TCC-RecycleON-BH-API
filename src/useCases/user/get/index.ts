@@ -3,7 +3,7 @@ import { User } from 'src/entities';
 import { Response } from 'express';
 
 export interface IGetUserController {
-  handle(id: string, res: Response): Promise<void>;
+  handle(userId: string, res: Response): Promise<void>;
 }
 
 export const GET_USER_SERVICE = 'GET_USER_SERVICE';
