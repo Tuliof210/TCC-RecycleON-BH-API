@@ -1,10 +1,16 @@
-import { UpdateUserDTO } from './UpdateUser.DTO';
+import { UpdateUserDTO } from 'src/DTO';
+import { User } from 'src/entities';
 
 import { Response } from 'express';
 
 export interface IUpdateUserController {
-  handle(id: string, updateUserDTO: UpdateUserDTO, res: Response): Promise<void>;
+  handle(id: string, userChanges: UpdateUserDTO, res: Response): Promise<void>;
 }
 
-export { UpdateUserDTO } from './UpdateUser.DTO';
+export const UPDATE_USER_SERVICE = 'UPDATE_USER_SERVICE';
+export interface IUpdateUserService {
+  execute(userId: string, userChanges: UpdateUserDTO): Promise<User>;
+}
+
 export { UpdateUserController } from './UpdateUser.controller';
+export { UpdateUserService } from './UpdateUser.service';

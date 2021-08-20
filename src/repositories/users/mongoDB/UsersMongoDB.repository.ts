@@ -1,6 +1,7 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
 import { UserCollection } from '.';
+import { UpdateUserDTO } from 'src/DTO';
 
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -22,8 +23,8 @@ export class UserMongoDBRepository implements IUserRepository {
     });
   }
 
-  async findById(_id: string) {
-    return this.UserModel.findOne({ _id, active: true }).catch((err) => {
+  async findById(userId: string) {
+    return this.UserModel.findOne({ _id: userId, active: true }).catch((err) => {
       throw {
         name: err.name,
         message: err.message,
@@ -31,14 +32,18 @@ export class UserMongoDBRepository implements IUserRepository {
     });
   }
 
-  async retrieveAll(query: any) {
-    return this.UserModel.countDocuments(query)
-      .then((count) => this.UserModel.find(query).then((data) => ({ count, data })))
+  async retrieveAll(userQuery: any) {
+    return this.UserModel.countDocuments(userQuery)
+      .then((count) => this.UserModel.find(userQuery).then((data) => ({ count, data })))
       .catch((err) => {
         throw {
           name: err.name,
           message: err.message,
         };
       });
+  }
+
+  async update(userId: string, userChanges: UpdateUserDTO) {
+    return this.UserModel.findOneAndUpdate({ _id: userId }, userChanges, { new: true });
   }
 }

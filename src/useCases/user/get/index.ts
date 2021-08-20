@@ -8,7 +8,7 @@ export interface IGetUserController {
 
 export const GET_USER_SERVICE = 'GET_USER_SERVICE';
 export interface IGetUserService {
-  execute(id: string): Promise<void | User>;
+  execute(userId: string): Promise<void | User>;
 }
 
 export { GetUserController } from './GetUser.controller';

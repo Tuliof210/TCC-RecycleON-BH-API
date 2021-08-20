@@ -1,4 +1,5 @@
-import { ICreateUserController, ICreateUserService, CreateUserDTO, CREATE_USER_SERVICE } from '.';
+import { CreateUserDTO } from 'src/DTO';
+import { ICreateUserController, ICreateUserService, CREATE_USER_SERVICE } from '.';
 import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 
 import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common';

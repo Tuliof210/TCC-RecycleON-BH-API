@@ -1,4 +1,5 @@
-import { ICreateUserService, CreateUserDTO } from '.';
+import { CreateUserDTO } from 'src/DTO';
+import { ICreateUserService } from '.';
 import { IUserRepository, USER_REPOSITORY } from 'src/repositories/users';
 import { User } from 'src/entities';
 

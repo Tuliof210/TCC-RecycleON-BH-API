@@ -8,7 +8,7 @@ export interface IRetrieveUsersController {
 
 export const RETRIEVE_USERS_SERVICE = 'RETRIEVE_USERS_SERVICE';
 export interface IRetrieveUsersService {
-  execute(query: any): Promise<{ count: number; data: User[] }>;
+  execute(userQuery: any): Promise<{ count: number; data: User[] }>;
 }
 
 export { RetrieveUsersController } from './RetrieveUsers.controller';
