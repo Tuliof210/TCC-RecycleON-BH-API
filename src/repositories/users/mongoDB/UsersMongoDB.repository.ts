@@ -66,8 +66,8 @@ export class UserMongoDBRepository implements IUserRepository {
 
   async deactivate(userId: string, fullView = false) {
     return this.findById(userId, true)
-      .then((foundUser) => foundUser.disable())
-      .then((disabledUser) => disabledUser.view(fullView));
+      .then((foundUser) => foundUser?.disable())
+      .then((disabledUser) => disabledUser?.view(fullView));
   }
 
   async delete(userId: string, fullView = false) {

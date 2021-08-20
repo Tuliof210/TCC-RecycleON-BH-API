@@ -19,3 +19,7 @@
   * cada index devera apenas exportar:
     -> arquivos no mesmo nivel
     -> não referenciar arquivo de outra pasta, para não inutilizar imports
+
+- debugger
+  * gerar um build antes de tentar
+  * assim o source map ira funcionar
