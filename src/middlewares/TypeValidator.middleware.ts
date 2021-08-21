@@ -1,22 +1,18 @@
 import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
-import { ResponseHelper } from 'src/helpers';
 
-import { HttpStatus, Injectable, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 
 import { Request, Response, NextFunction } from 'express';
 import * as yup from 'yup';
 
 @Injectable()
 export class TypeValidationMiddleware implements NestMiddleware {
-  private responseHelper: ResponseHelper;
   private responseShortcut: Response;
   private readonly coverageMap = {
     '/users': { POST: 'usersPostValidation', PUT: 'userPutValidation' },
   };
 
-  constructor() {
-    this.responseHelper = new ResponseHelper();
-  }
+  // TODO fix all
 
   use(req: Request, res: Response, next: NextFunction) {
     this.responseShortcut = res;
@@ -26,16 +22,15 @@ export class TypeValidationMiddleware implements NestMiddleware {
     next();
   }
 
-  private executeValidation<Type>(body: any, schema: yup.SchemaOf<Type>) {
-    return schema
-      .validate(body)
-      .then(() => schema.cast(body, { stripUnknown: true }))
-      .catch((err) => {
-        console.log(err);
-        console.log(err.errors);
-        //throw { error: 'a', message: e.errors[0] };
-        return this.responseHelper.failure(this.responseShortcut, HttpStatus.BAD_REQUEST)(err);
-      });
+  // TODO fix throw
+  private async executeValidation<Type>(body: any, schema: yup.SchemaOf<Type>) {
+    try {
+      await schema.validate(body);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      return schema.cast(body, { stripUnknown: true });
+    }
   }
 
   private requestBodyHandler(body: any, baseUrl: string, method: string) {
