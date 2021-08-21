@@ -7,17 +7,16 @@ import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common'
 import { Response } from 'express';
 
 @Controller('users')
-export class CreateUserController implements ICreateUserController {
+export class CreateUserController {
   constructor(
     @Inject(CREATE_USER_SERVICE) private readonly createUserService: ICreateUserService,
     @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
   ) {}
 
   @Post()
-  handle(@Body() userData: CreateUserDTO, @Res() res: Response): Promise<void> {
-    return this.createUserService
-      .execute(userData)
-      .then(this.responseHelper.success(res, HttpStatus.CREATED))
-      .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
+  handle(@Body() userData: CreateUserDTO) {
+    this.createUserService.execute(userData);
+    // .then(this.responseHelper.success(res, HttpStatus.CREATED))
+    // .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
   }
 }

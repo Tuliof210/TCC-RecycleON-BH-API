@@ -1,4 +1,4 @@
-import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, HttpStatus, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 
 import { Request, Response } from 'express';
 import { Observable } from 'rxjs';
@@ -22,6 +22,8 @@ export class LoggerInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       tap(() => {
+        console.log('opa');
+        console.log(req, res);
         req ? this.handleHTTP(now, req, res) : this.handleUnknown();
       }),
     );
@@ -34,6 +36,13 @@ export class LoggerInterceptor implements NestInterceptor {
 
     const logKey = this.getLogType(statusCode);
     this.logger[logKey](`${method} ${path} ${statusCode} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
+
+    this.success(
+      res,
+      statusCode,
+    )({
+      it: 'works',
+    });
   }
 
   private getLogType(status: number): string {
@@ -43,5 +52,12 @@ export class LoggerInterceptor implements NestInterceptor {
 
   private handleUnknown(): void {
     this.logger.error(`Unknown protocol`);
+  }
+
+  // NEW RESPONSE HELPER
+  private success(res: Response, statusCode = HttpStatus.OK): (entity: any) => void {
+    return (entity) => {
+      if (entity) res.status(statusCode).json(entity);
+    };
   }
 }
