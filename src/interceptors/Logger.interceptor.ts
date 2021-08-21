@@ -22,17 +22,14 @@ export class LoggerInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((result) => {
-        if (req) {
-          this.logHttpResponse(now, req, res);
-          this.successHttpResponse(res, 201)(result);
-        } else this.handleUnknown();
+        //TODO check if is logging correctly
+        this.logHttpResponse(now, req, res);
+        this.successHttpResponse(res, 201)(result);
       }),
       catchError((err) => {
-        if (req) {
-          this.logHttpResponse(now, req, res);
-          return of(this.errorHttpResponse(res)(err));
-        } else this.handleUnknown();
-        return of();
+        //TODO fix this -> current is logging as a success
+        this.logHttpResponse(now, req, res);
+        return of(this.errorHttpResponse(res)(err));
       }),
     );
   }
@@ -49,10 +46,6 @@ export class LoggerInterceptor implements NestInterceptor {
   private getLogType(status: number): string {
     const key = `${status.toString()[0]}xx`;
     return this.logType[key];
-  }
-
-  private handleUnknown(): void {
-    this.logger.error(`Unknown protocol`);
   }
 
   // NEW RESPONSE HELPER
