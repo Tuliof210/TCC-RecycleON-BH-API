@@ -13,10 +13,10 @@ export class GetUserController implements IGetUserController {
   ) {}
 
   @Get(':id')
-  async handle(@Param('id') id: string, @Res() res: Response): Promise<void> {
+  handle(@Param('id') userId: string, @Res() res: Response): Promise<void> {
     return this.getUserService
-      .execute(id)
-      .then(this.responseHelper.notFound(res, `User ${id} not found`))
+      .execute(userId)
+      .then(this.responseHelper.notFound(res, `User ${userId} not found`))
       .then(this.responseHelper.success(res))
       .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
   }

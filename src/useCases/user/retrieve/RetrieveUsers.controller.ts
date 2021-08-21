@@ -13,9 +13,9 @@ export class RetrieveUsersController implements IRetrieveUsersController {
   ) {}
 
   @Get()
-  async handle(@Query() query: any, @Res() res: Response): Promise<void> {
+  handle(@Query() userQuery: any, @Res() res: Response): Promise<void> {
     return this.retrieveUsersService
-      .execute(query)
+      .execute(userQuery)
       .then(this.responseHelper.success(res))
       .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
   }

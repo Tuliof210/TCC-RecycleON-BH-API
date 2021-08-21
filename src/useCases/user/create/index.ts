@@ -1,17 +1,15 @@
-import { CreateUserDTO } from './CreateUser.DTO';
-import { User } from 'src/entities';
+import { CreateUserDTO, UserViewDTO } from 'src/DTO';
 
 import { Response } from 'express';
 
 export interface ICreateUserController {
-  handle(createUserDTO: CreateUserDTO, res: Response): Promise<void>;
+  handle(userData: CreateUserDTO, res: Response): Promise<void>;
 }
 
 export const CREATE_USER_SERVICE = 'CREATE_USER_SERVICE';
 export interface ICreateUserService {
-  execute(userData: CreateUserDTO): Promise<User>;
+  execute(userData: CreateUserDTO): Promise<UserViewDTO>;
 }
 
-export { CreateUserDTO } from './CreateUser.DTO';
 export { CreateUserController } from './CreateUser.controller';
 export { CreateUserService } from './CreateUser.service';

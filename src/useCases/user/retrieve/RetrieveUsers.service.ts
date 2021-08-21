@@ -7,7 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 export class RetrieveUsersService implements IRetrieveUsersService {
   constructor(@Inject(USER_REPOSITORY) private readonly userRepository: IUserRepository) {}
 
-  public async execute(query: any) {
-    return this.userRepository.retrieveAll(query);
+  execute(userQuery: any) {
+    return this.userRepository.retrieveAll(userQuery);
   }
 }
