@@ -54,7 +54,7 @@ export class UserMongoDBRepository implements IUserRepository {
 
   async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
     return this.userModel
-      .findOneAndUpdate({ _id: userId }, userChanges, { new: true })
+      .findOneAndUpdate({ _id: userId, active: true }, userChanges, { new: true })
       .then((updatedUser) => updatedUser?.view(fullView))
       .catch((err) => {
         throw {
@@ -72,7 +72,7 @@ export class UserMongoDBRepository implements IUserRepository {
 
   async delete(userId: string, fullView = false) {
     return this.userModel
-      .findOneAndDelete({ _id: userId })
+      .findOneAndDelete({ _id: userId, active: true })
       .then((deletedUser) => deletedUser?.view(fullView))
       .catch((err) => {
         throw {

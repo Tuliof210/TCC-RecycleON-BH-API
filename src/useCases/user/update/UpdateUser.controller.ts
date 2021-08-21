@@ -13,6 +13,7 @@ export class UpdateUserController implements IUpdateUserController {
     @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
   ) {}
 
+  //TODO add a middleware validation for userData [type checking for "UpdateUserDTO" not working]
   @Put(':id')
   handle(@Param('id') userId: string, @Body() userChanges: UpdateUserDTO, @Res() res: Response): Promise<void> {
     return this.updateUserService
