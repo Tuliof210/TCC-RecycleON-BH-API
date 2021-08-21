@@ -1,8 +1,8 @@
 import { CallHandler, ExecutionContext, HttpStatus, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 
 import { Request, Response } from 'express';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
@@ -21,10 +21,11 @@ export class LoggerInterceptor implements NestInterceptor {
     const res = context.switchToHttp().getResponse();
 
     return next.handle().pipe(
-      tap(() => {
-        console.log('opa');
-        console.log(req, res);
-        req ? this.handleHTTP(now, req, res) : this.handleUnknown();
+      map((result) => {
+        req ? of(this.success(res, 201)(result)) : of(this.handleUnknown());
+      }),
+      catchError((err) => {
+        return req ? of(this.failure(res)(err)) : of(this.handleUnknown());
       }),
     );
   }
@@ -58,6 +59,16 @@ export class LoggerInterceptor implements NestInterceptor {
   private success(res: Response, statusCode = HttpStatus.OK): (entity: any) => void {
     return (entity) => {
       if (entity) res.status(statusCode).json(entity);
+    };
+  }
+
+  private failure(res: Response, statusCode = HttpStatus.INTERNAL_SERVER_ERROR): (error: Error) => void {
+    return (error) => {
+      if (error)
+        res.status(statusCode).json({
+          error: error.name,
+          message: error.message,
+        });
     };
   }
 }

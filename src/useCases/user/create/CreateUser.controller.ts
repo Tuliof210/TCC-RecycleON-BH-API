@@ -15,7 +15,7 @@ export class CreateUserController {
 
   @Post()
   handle(@Body() userData: CreateUserDTO) {
-    this.createUserService.execute(userData);
+    return this.createUserService.execute(userData); //.catch((e) => e);
     // .then(this.responseHelper.success(res, HttpStatus.CREATED))
     // .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
   }
