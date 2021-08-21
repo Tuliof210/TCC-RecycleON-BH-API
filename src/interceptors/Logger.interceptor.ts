@@ -22,28 +22,28 @@ export class LoggerInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((result) => {
-        req ? of(this.success(res, 201)(result)) : of(this.handleUnknown());
+        if (req) {
+          this.logHttpResponse(now, req, res);
+          this.successHttpResponse(res, 201)(result);
+        } else this.handleUnknown();
       }),
       catchError((err) => {
-        return req ? of(this.failure(res)(err)) : of(this.handleUnknown());
+        if (req) {
+          this.logHttpResponse(now, req, res);
+          return of(this.errorHttpResponse(res)(err));
+        } else this.handleUnknown();
+        return of();
       }),
     );
   }
 
-  private handleHTTP(now: number, req: Request, res: Response): void {
+  private logHttpResponse(now: number, req: Request, res: Response): void {
     const userAgent = req.get('user-agent') || '';
     const { ip, method, path } = req;
     const { statusCode } = res;
 
     const logKey = this.getLogType(statusCode);
     this.logger[logKey](`${method} ${path} ${statusCode} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
-
-    this.success(
-      res,
-      statusCode,
-    )({
-      it: 'works',
-    });
   }
 
   private getLogType(status: number): string {
@@ -56,13 +56,13 @@ export class LoggerInterceptor implements NestInterceptor {
   }
 
   // NEW RESPONSE HELPER
-  private success(res: Response, statusCode = HttpStatus.OK): (entity: any) => void {
+  private successHttpResponse(res: Response, statusCode = HttpStatus.OK): (entity: any) => void {
     return (entity) => {
       if (entity) res.status(statusCode).json(entity);
     };
   }
 
-  private failure(res: Response, statusCode = HttpStatus.INTERNAL_SERVER_ERROR): (error: Error) => void {
+  private errorHttpResponse(res: Response, statusCode = HttpStatus.INTERNAL_SERVER_ERROR): (error: Error) => void {
     return (error) => {
       if (error)
         res.status(statusCode).json({
