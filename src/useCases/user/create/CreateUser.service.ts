@@ -11,18 +11,20 @@ import * as bcrypt from 'bcrypt';
 export class CreateUserService implements ICreateUserService {
   constructor(@Inject(USER_REPOSITORY) private readonly userRepository: IUserRepository) {}
 
-  async execute(userData: CreateUserDTO) {
-    const user = await this.constructUser(userData);
+  execute(userData: CreateUserDTO) {
+    const user = new User(userData);
+    console.log(user);
     return this.userRepository.save(user);
   }
 
-  private async constructUser(userData: CreateUserDTO): Promise<User> {
-    const password = await this.encryptPassword(userData.password);
+  private constructUser(userData: CreateUserDTO): User {
+    const password = this.encryptPassword(userData.password);
+    console.log(password);
     return new User({ ...userData, password });
   }
 
-  private encryptPassword(password: string): Promise<string> {
+  private encryptPassword(password: string): string {
     const saltOrRounds = 10;
-    return bcrypt.hash(password, saltOrRounds);
+    return bcrypt.hashSync(password, saltOrRounds);
   }
 }

@@ -18,9 +18,9 @@ export class TypeValidationMiddleware implements NestMiddleware {
     this.responseShortcut = res;
     const { body, baseUrl, method } = req;
 
-    console.log({ body: req.body });
+    console.log({ bodyBefore: req.body });
     if (req.body) req.body = this.requestBodyHandler(body, baseUrl, method);
-    console.log({ body: req.body });
+    console.log({ bodyAfter: req.body });
 
     next();
   }
