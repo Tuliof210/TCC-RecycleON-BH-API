@@ -1,9 +1,7 @@
-import { StandardSuccess, StandardError } from 'src/classes';
-
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 
 import { Request, Response } from 'express';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
@@ -24,12 +22,12 @@ export class ResponseInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((result) => {
-        console.log(result, res.statusCode);
+        //console.log(result, res.statusCode);
         this.logHttpResponse(now, req, res.statusCode ?? 200);
         return result;
       }),
       catchError((error) => {
-        console.log(error);
+        //console.log(error);
         this.logHttpResponse(now, req, error.status ?? 500);
         return throwError(() => error);
       }),

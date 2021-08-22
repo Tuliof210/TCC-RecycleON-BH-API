@@ -14,6 +14,7 @@ export class CreateUserController implements ICreateUserController {
     try {
       return this.createUserService.execute(userData);
     } catch (e) {
+      console.log(e);
       throw new HttpException({ name: e.name, message: e.message }, HttpStatus.BAD_REQUEST);
     }
   }

@@ -1,8 +1,7 @@
 import { UserViewDTO } from 'src/DTO';
-import { StandardSuccess } from 'src/classes';
 
 export interface IDeleteUserController {
-  handle(userId: string): Promise<StandardSuccess<UserViewDTO>>;
+  handle(userId: string): Promise<UserViewDTO>;
 }
 
 export const DELETE_USER_SERVICE = 'DELETE_USER_SERVICE';

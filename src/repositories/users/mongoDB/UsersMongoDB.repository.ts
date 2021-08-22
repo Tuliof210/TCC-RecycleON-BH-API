@@ -5,7 +5,7 @@ import { UpdateUserDTO } from 'src/DTO';
 
 import { REPOSITORY_HTTP_STATUS_HELPER, IRepositoryHttpStatusHelper } from 'src/helpers';
 
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
@@ -20,11 +20,7 @@ export class UserMongoDBRepository implements IUserRepository {
       const createdUser = await this.userModel.create(user);
       return createdUser.view(fullView);
     } catch (e) {
-      throw {
-        name: e.name,
-        message: e.message,
-        statusCode: this.repositoryHttpStatusHelper.getError(e),
-      };
+      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
@@ -33,13 +29,9 @@ export class UserMongoDBRepository implements IUserRepository {
       const foundUser = await this.userModel.findOne({ _id: userId, active: true });
       if (foundUser) return foundUser.view(fullView);
 
-      throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
+      throw new HttpException({ name: 'Not Found', message: `User ${userId} not found` }, HttpStatus.NOT_FOUND);
     } catch (e) {
-      throw {
-        name: e.name,
-        message: e.message,
-        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
-      };
+      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
@@ -52,11 +44,7 @@ export class UserMongoDBRepository implements IUserRepository {
         list: retrievedUsers.map((user) => user.view(fullView)),
       };
     } catch (e) {
-      throw {
-        name: e.name,
-        message: e.message,
-        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
-      };
+      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
@@ -67,13 +55,9 @@ export class UserMongoDBRepository implements IUserRepository {
       });
       if (updatedUser) return updatedUser.view(fullView);
 
-      throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
+      throw new HttpException({ name: 'Not Found', message: `User ${userId} not found` }, HttpStatus.NOT_FOUND);
     } catch (e) {
-      throw {
-        name: e.name,
-        message: e.message,
-        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
-      };
+      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
@@ -83,11 +67,7 @@ export class UserMongoDBRepository implements IUserRepository {
       const disabledUser = await foundUser.disable();
       return disabledUser.view(fullView);
     } catch (e) {
-      throw {
-        name: e.name,
-        message: e.message,
-        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
-      };
+      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
@@ -96,13 +76,9 @@ export class UserMongoDBRepository implements IUserRepository {
       const deletedUser = await this.userModel.findOneAndDelete({ _id: userId, active: true });
       if (deletedUser) return deletedUser.view(fullView);
 
-      throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
+      throw new HttpException({ name: 'Not Found', message: `User ${userId} not found` }, HttpStatus.NOT_FOUND);
     } catch (e) {
-      throw {
-        name: e.name,
-        message: e.message,
-        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
-      };
+      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 }

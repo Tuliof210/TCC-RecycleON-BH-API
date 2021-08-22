@@ -1,20 +1,18 @@
 import { UserViewDTO } from 'src/DTO';
 import { IDeleteUserController, IDeleteUserService, DELETE_USER_SERVICE } from '.';
-import { StandardSuccess, StandardError } from 'src/classes';
 
-import { Controller, Delete, Inject, Param } from '@nestjs/common';
+import { Controller, Delete, HttpException, HttpStatus, Inject, Param } from '@nestjs/common';
 
 @Controller('users')
 export class DeleteUserController implements IDeleteUserController {
   constructor(@Inject(DELETE_USER_SERVICE) private readonly deleteUserService: IDeleteUserService) {}
 
   @Delete(':id/delete')
-  async handle(@Param('id') userId: string): Promise<StandardSuccess<UserViewDTO>> {
+  async handle(@Param('id') userId: string): Promise<UserViewDTO> {
     try {
-      const deletedUser = await this.deleteUserService.execute(userId);
-      return new StandardSuccess<UserViewDTO>(deletedUser);
+      return this.deleteUserService.execute(userId);
     } catch (e) {
-      throw new StandardError(e, e.statusCode);
+      throw new HttpException({ name: e.name, message: e.message }, e.statusCode ?? HttpStatus.BAD_REQUEST);
     }
   }
 }
