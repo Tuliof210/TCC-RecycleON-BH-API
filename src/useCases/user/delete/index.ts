@@ -1,9 +1,8 @@
 import { UserViewDTO } from 'src/DTO';
-
-import { Response } from 'express';
+import { StandardSuccess, StandardError } from 'src/classes';
 
 export interface IDeleteUserController {
-  handle(userId: string, res: Response): Promise<void>;
+  handle(userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError>;
 }
 
 export const DELETE_USER_SERVICE = 'DELETE_USER_SERVICE';

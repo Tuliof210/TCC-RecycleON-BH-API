@@ -12,7 +12,7 @@ export class CreateUserController implements ICreateUserController {
   handle(@Body() userData: CreateUserDTO): Promise<StandardSuccess<UserViewDTO> | StandardError> {
     return this.createUserService
       .execute(userData)
-      .then((createdUser) => new StandardSuccess<UserViewDTO>(201, createdUser))
-      .catch((err) => new StandardError(400, err));
+      .then((createdUser) => new StandardSuccess<UserViewDTO>(createdUser, 201))
+      .catch((err) => new StandardError(err));
   }
 }

@@ -9,7 +9,7 @@ class StandardResponse {
 export class StandardSuccess<Type> extends StandardResponse {
   public data: Type | Record<string, never>;
 
-  constructor(statusCode: number, data: Type) {
+  constructor(data: Type, statusCode?: number) {
     super(statusCode, 'success');
     this.data = data ? data : {};
   }
@@ -18,7 +18,7 @@ export class StandardSuccess<Type> extends StandardResponse {
 export class StandardError extends StandardResponse {
   public error: { name: string; message: string };
 
-  constructor(statusCode: number, error: Error | { name: string; message: string }) {
+  constructor(error: Error | { name: string; message: string }, statusCode?: number) {
     super(statusCode, 'error');
     this.error = { name: error.name, message: error.message };
   }

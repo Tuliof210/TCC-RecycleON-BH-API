@@ -1,25 +1,22 @@
-import { UpdateUserDTO } from 'src/DTO';
+import { UserViewDTO, UpdateUserDTO } from 'src/DTO';
 import { IUpdateUserController, IUpdateUserService, UPDATE_USER_SERVICE } from '.';
-import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
+import { StandardSuccess, StandardError } from 'src/classes';
 
-import { Body, Controller, Put, Inject, Param, Res } from '@nestjs/common';
-
-import { Response } from 'express';
+import { Body, Controller, Put, Inject, Param } from '@nestjs/common';
 
 @Controller('users')
 export class UpdateUserController implements IUpdateUserController {
-  constructor(
-    @Inject(UPDATE_USER_SERVICE) private readonly updateUserService: IUpdateUserService,
-    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
-  ) {}
+  constructor(@Inject(UPDATE_USER_SERVICE) private readonly updateUserService: IUpdateUserService) {}
 
   //TODO add a middleware validation for userData [type checking for "UpdateUserDTO" not working]
   @Put(':id')
-  handle(@Param('id') userId: string, @Body() userChanges: UpdateUserDTO, @Res() res: Response): Promise<void> {
+  handle(
+    @Param('id') userId: string,
+    @Body() userChanges: UpdateUserDTO,
+  ): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
     return this.updateUserService
       .execute(userId, userChanges)
-      .then(this.responseHelper.notFound(res, `User ${userId} not found`))
-      .then(this.responseHelper.success(res))
-      .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
+      .then((updatedUser) => new StandardSuccess<void | UserViewDTO>(updatedUser, 200))
+      .catch((err) => new StandardError(err));
   }
 }

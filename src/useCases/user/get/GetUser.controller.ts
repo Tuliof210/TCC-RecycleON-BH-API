@@ -1,23 +1,19 @@
+import { UserViewDTO } from 'src/DTO';
+
 import { IGetUserController, IGetUserService, GET_USER_SERVICE } from '.';
-import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
+import { StandardSuccess, StandardError } from 'src/classes';
 
-import { Controller, Get, Inject, Param, Res } from '@nestjs/common';
-
-import { Response } from 'express';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
 
 @Controller('users')
 export class GetUserController implements IGetUserController {
-  constructor(
-    @Inject(GET_USER_SERVICE) private readonly getUserService: IGetUserService,
-    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
-  ) {}
+  constructor(@Inject(GET_USER_SERVICE) private readonly getUserService: IGetUserService) {}
 
   @Get(':id')
-  handle(@Param('id') userId: string, @Res() res: Response): Promise<void> {
+  handle(@Param('id') userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
     return this.getUserService
       .execute(userId)
-      .then(this.responseHelper.notFound(res, `User ${userId} not found`))
-      .then(this.responseHelper.success(res))
-      .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
+      .then((foundUser) => new StandardSuccess<void | UserViewDTO>(foundUser, 200))
+      .catch((err) => new StandardError(err));
   }
 }

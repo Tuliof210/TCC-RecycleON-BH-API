@@ -41,7 +41,7 @@ export class UserMongoDBRepository implements IUserRepository {
       .then((countUsers) =>
         this.userModel.find(userQuery).then((retrievedUsers) => ({
           count: countUsers,
-          data: retrievedUsers.map((user) => user.view(fullView)),
+          list: retrievedUsers.map((user) => user.view(fullView)),
         })),
       )
       .catch((err) => {

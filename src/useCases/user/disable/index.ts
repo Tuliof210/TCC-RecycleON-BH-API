@@ -1,9 +1,8 @@
 import { UserViewDTO } from 'src/DTO';
-
-import { Response } from 'express';
+import { StandardSuccess, StandardError } from 'src/classes';
 
 export interface IDisableUserController {
-  handle(userId: string, res: Response): Promise<void>;
+  handle(userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError>;
 }
 
 export const DISABLE_USER_SERVICE = 'DISABLE_USER_SERVICE';
