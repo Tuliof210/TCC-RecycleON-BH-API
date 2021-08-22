@@ -9,8 +9,7 @@ export class CreateUserController implements ICreateUserController {
 
   @Post()
   @HttpCode(201)
-  @UsePipes(new CreateUserValidationPipe())
-  handle(@Body() userData: CreateUserDTO): Promise<UserViewDTO> {
+  handle(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO): Promise<UserViewDTO> {
     return this.createUserService.execute(userData);
   }
 }

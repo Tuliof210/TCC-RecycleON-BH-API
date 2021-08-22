@@ -9,5 +9,6 @@ export interface IUpdateUserService {
   execute(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 }
 
+export { UpdateUserValidationPipe } from './UpdateUser.pipe';
 export { UpdateUserController } from './UpdateUser.controller';
 export { UpdateUserService } from './UpdateUser.service';
