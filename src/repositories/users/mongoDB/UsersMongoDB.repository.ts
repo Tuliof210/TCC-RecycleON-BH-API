@@ -15,105 +15,95 @@ export class UserMongoDBRepository implements IUserRepository {
     @Inject(HTTP_ERROR_STATUS_HELPER) private readonly httpErrorStatusHelper: IHttpErrorStatusHelper,
   ) {}
 
-  save(user: User, fullView = false) {
-    return this.userModel
-      .create(user)
-      .then((createdUser) => createdUser.view(fullView))
-      .catch((e) => {
-        throw {
-          name: e.name,
-          message: e.message,
-          statusCode: this.httpErrorStatusHelper.get(e),
-        };
-      });
+  async save(user: User, fullView = false) {
+    try {
+      const createdUser = await this.userModel.create(user);
+      return createdUser.view(fullView);
+    } catch (e) {
+      throw {
+        name: e.name,
+        message: e.message,
+        statusCode: this.httpErrorStatusHelper.get(e),
+      };
+    }
   }
 
-  findById(userId: string, fullView = false) {
-    return this.userModel
-      .findOne({ _id: userId, active: true })
-      .then((foundUser) => {
-        if (foundUser) return foundUser.view(fullView);
-        throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
-      })
-      .catch((e) => {
-        throw {
-          name: e.name,
-          message: e.message,
-          statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
-        };
-      });
+  async findById(userId: string, fullView = false) {
+    try {
+      const foundUser = await this.userModel.findOne({ _id: userId, active: true });
+      if (foundUser) return foundUser.view(fullView);
+
+      throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
+    } catch (e) {
+      throw {
+        name: e.name,
+        message: e.message,
+        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+      };
+    }
   }
 
-  retrieveAll(userQuery: any, fullView = false) {
-    return this.userModel
-      .countDocuments(userQuery)
-      .then((countUsers) =>
-        this.userModel.find(userQuery).then((retrievedUsers) => ({
-          count: countUsers,
-          list: retrievedUsers.map((user) => user.view(fullView)),
-        })),
-      )
-      .catch((e) => {
-        throw {
-          name: e.name,
-          message: e.message,
-          statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
-        };
-      });
+  async retrieveAll(userQuery: any, fullView = false) {
+    try {
+      const countUsers = await this.userModel.countDocuments(userQuery);
+      const retrievedUsers = await this.userModel.find(userQuery);
+      return {
+        count: countUsers,
+        list: retrievedUsers.map((user) => user.view(fullView)),
+      };
+    } catch (e) {
+      throw {
+        name: e.name,
+        message: e.message,
+        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+      };
+    }
   }
 
-  update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
-    return this.userModel
-      .findOneAndUpdate({ _id: userId, active: true }, userChanges, { new: true })
-      .then((updatedUser) => {
-        console.log(updatedUser);
-
-        if (updatedUser) return updatedUser.view(fullView);
-        throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
-      })
-      .catch((e) => {
-        console.log(e);
-
-        throw {
-          name: e.name,
-          message: e.message,
-          statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
-        };
+  async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
+    try {
+      const updatedUser = await this.userModel.findOneAndUpdate({ _id: userId, active: true }, userChanges, {
+        new: true,
       });
+      if (updatedUser) return updatedUser.view(fullView);
+
+      throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
+    } catch (e) {
+      throw {
+        name: e.name,
+        message: e.message,
+        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+      };
+    }
   }
 
-  deactivate(userId: string, fullView = false) {
-    return this.findById(userId, true)
-      .then((foundUser) => foundUser.disable())
-      .then((disabledUser) => disabledUser.view(fullView))
-      .catch((e) => {
-        console.log(e);
+  async deactivate(userId: string, fullView = false) {
+    try {
+      const foundUser = await this.findById(userId, true);
+      const disabledUser = await foundUser.disable();
 
-        throw {
-          name: e.name,
-          message: e.message,
-          statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
-        };
-      });
+      return disabledUser.view(fullView);
+    } catch (e) {
+      throw {
+        name: e.name,
+        message: e.message,
+        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+      };
+    }
   }
 
-  delete(userId: string, fullView = false) {
-    return this.userModel
-      .findOneAndDelete({ _id: userId, active: true })
-      .then((deletedUser) => {
-        console.log(deletedUser);
+  async delete(userId: string, fullView = false) {
+    try {
+      const deletedUser = await this.userModel.findOneAndDelete({ _id: userId, active: true });
+      if (deletedUser) return deletedUser.view(fullView);
 
-        if (deletedUser) return deletedUser.view(fullView);
-        throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
-      })
-      .catch((e) => {
-        console.log(e);
-
-        throw {
-          name: e.name,
-          message: e.message,
-          statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
-        };
-      });
+      throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
+    } catch (e) {
+      throw {
+        name: e.name,
+        message: e.message,
+        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+      };
+    }
   }
 }
