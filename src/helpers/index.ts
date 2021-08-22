@@ -1,6 +1,6 @@
-export const HTTP_ERROR_STATUS_HELPER = 'HTTP_ERROR_STATUS_HELPER';
-export interface IHttpErrorStatusHelper {
-  get(error: Error): number;
+export const REPOSITORY_HTTP_STATUS_HELPER = 'REPOSITORY_HTTP_STATUS_HELPER';
+export interface IRepositoryHttpStatusHelper {
+  getError(error: Error): number;
 }
 
-export { HttpErrorStatusHelper } from './HttpErrorStatus.helper';
+export { RepositoryHttpStatusHelper } from './RepositoryHttpStatus.helper';

@@ -1,8 +1,8 @@
 import { UserViewDTO } from 'src/DTO';
-import { StandardSuccess, StandardError } from 'src/classes';
+import { StandardSuccess } from 'src/classes';
 
 export interface IRetrieveUsersController {
-  handle(userQuery: any): Promise<StandardSuccess<{ count: number; list: UserViewDTO[] }> | StandardError>;
+  handle(userQuery: any): Promise<StandardSuccess<{ count: number; list: UserViewDTO[] }>>;
 }
 
 export const RETRIEVE_USERS_SERVICE = 'RETRIEVE_USERS_SERVICE';

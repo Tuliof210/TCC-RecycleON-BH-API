@@ -3,7 +3,7 @@ import { User } from 'src/entities';
 import { UserCollection, UserModel } from '.';
 import { UpdateUserDTO } from 'src/DTO';
 
-import { HTTP_ERROR_STATUS_HELPER, IHttpErrorStatusHelper } from 'src/helpers';
+import { REPOSITORY_HTTP_STATUS_HELPER, IRepositoryHttpStatusHelper } from 'src/helpers';
 
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -12,7 +12,7 @@ import { InjectModel } from '@nestjs/mongoose';
 export class UserMongoDBRepository implements IUserRepository {
   constructor(
     @InjectModel(UserCollection) private userModel: UserModel,
-    @Inject(HTTP_ERROR_STATUS_HELPER) private readonly httpErrorStatusHelper: IHttpErrorStatusHelper,
+    @Inject(REPOSITORY_HTTP_STATUS_HELPER) private readonly repositoryHttpStatusHelper: IRepositoryHttpStatusHelper,
   ) {}
 
   async save(user: User, fullView = false) {
@@ -23,7 +23,7 @@ export class UserMongoDBRepository implements IUserRepository {
       throw {
         name: e.name,
         message: e.message,
-        statusCode: this.httpErrorStatusHelper.get(e),
+        statusCode: this.repositoryHttpStatusHelper.getError(e),
       };
     }
   }
@@ -38,7 +38,7 @@ export class UserMongoDBRepository implements IUserRepository {
       throw {
         name: e.name,
         message: e.message,
-        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
       };
     }
   }
@@ -55,7 +55,7 @@ export class UserMongoDBRepository implements IUserRepository {
       throw {
         name: e.name,
         message: e.message,
-        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
       };
     }
   }
@@ -72,7 +72,7 @@ export class UserMongoDBRepository implements IUserRepository {
       throw {
         name: e.name,
         message: e.message,
-        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
       };
     }
   }
@@ -86,7 +86,7 @@ export class UserMongoDBRepository implements IUserRepository {
       throw {
         name: e.name,
         message: e.message,
-        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
       };
     }
   }
@@ -101,7 +101,7 @@ export class UserMongoDBRepository implements IUserRepository {
       throw {
         name: e.name,
         message: e.message,
-        statusCode: e.statusCode ?? this.httpErrorStatusHelper.get(e),
+        statusCode: e.statusCode ?? this.repositoryHttpStatusHelper.getError(e),
       };
     }
   }

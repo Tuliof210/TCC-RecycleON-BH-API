@@ -10,10 +10,12 @@ export class GetUserController implements IGetUserController {
   constructor(@Inject(GET_USER_SERVICE) private readonly getUserService: IGetUserService) {}
 
   @Get(':id')
-  handle(@Param('id') userId: string): Promise<StandardSuccess<UserViewDTO> | StandardError> {
-    return this.getUserService
-      .execute(userId)
-      .then((foundUser) => new StandardSuccess<UserViewDTO>(foundUser))
-      .catch((e) => new StandardError(e, e.statusCode));
+  async handle(@Param('id') userId: string): Promise<StandardSuccess<UserViewDTO>> {
+    try {
+      const foundUser = await this.getUserService.execute(userId);
+      return new StandardSuccess<UserViewDTO>(foundUser);
+    } catch (e) {
+      throw new StandardError(e, e.statusCode);
+    }
   }
 }

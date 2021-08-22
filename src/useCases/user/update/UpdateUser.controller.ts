@@ -8,15 +8,13 @@ import { Body, Controller, Put, Inject, Param } from '@nestjs/common';
 export class UpdateUserController implements IUpdateUserController {
   constructor(@Inject(UPDATE_USER_SERVICE) private readonly updateUserService: IUpdateUserService) {}
 
-  //TODO add a middleware validation for userData [type checking for "UpdateUserDTO" not working]
   @Put(':id')
-  handle(
-    @Param('id') userId: string,
-    @Body() userChanges: UpdateUserDTO,
-  ): Promise<StandardSuccess<UserViewDTO> | StandardError> {
-    return this.updateUserService
-      .execute(userId, userChanges)
-      .then((updatedUser) => new StandardSuccess<UserViewDTO>(updatedUser))
-      .catch((e) => new StandardError(e, e.statusCode));
+  async handle(@Param('id') userId: string, @Body() userChanges: UpdateUserDTO): Promise<StandardSuccess<UserViewDTO>> {
+    try {
+      const updatedUser = await this.updateUserService.execute(userId, userChanges);
+      return new StandardSuccess<UserViewDTO>(updatedUser);
+    } catch (e) {
+      throw new StandardError(e, e.statusCode);
+    }
   }
 }

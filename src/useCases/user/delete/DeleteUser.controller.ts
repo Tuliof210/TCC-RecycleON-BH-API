@@ -9,10 +9,12 @@ export class DeleteUserController implements IDeleteUserController {
   constructor(@Inject(DELETE_USER_SERVICE) private readonly deleteUserService: IDeleteUserService) {}
 
   @Delete(':id/delete')
-  handle(@Param('id') userId: string): Promise<StandardSuccess<UserViewDTO> | StandardError> {
-    return this.deleteUserService
-      .execute(userId)
-      .then((deletedUser) => new StandardSuccess<UserViewDTO>(deletedUser))
-      .catch((e) => new StandardError(e, e.statusCode));
+  async handle(@Param('id') userId: string): Promise<StandardSuccess<UserViewDTO>> {
+    try {
+      const deletedUser = await this.deleteUserService.execute(userId);
+      return new StandardSuccess<UserViewDTO>(deletedUser);
+    } catch (e) {
+      throw new StandardError(e, e.statusCode);
+    }
   }
 }

@@ -1,8 +1,8 @@
 import { UserViewDTO } from 'src/DTO';
-import { StandardSuccess, StandardError } from 'src/classes';
+import { StandardSuccess } from 'src/classes';
 
 export interface IGetUserController {
-  handle(userId: string): Promise<StandardSuccess<UserViewDTO> | StandardError>;
+  handle(userId: string): Promise<StandardSuccess<UserViewDTO>>;
 }
 
 export const GET_USER_SERVICE = 'GET_USER_SERVICE';

@@ -9,10 +9,12 @@ export class RetrieveUsersController implements IRetrieveUsersController {
   constructor(@Inject(RETRIEVE_USERS_SERVICE) private readonly retrieveUsersService: IRetrieveUsersService) {}
 
   @Get()
-  handle(@Query() userQuery: any): Promise<StandardSuccess<{ count: number; list: UserViewDTO[] }> | StandardError> {
-    return this.retrieveUsersService
-      .execute(userQuery)
-      .then((retrievedUsers) => new StandardSuccess<{ count: number; list: UserViewDTO[] }>(retrievedUsers))
-      .catch((e) => new StandardError(e, e.statusCode));
+  async handle(@Query() userQuery: any): Promise<StandardSuccess<{ count: number; list: UserViewDTO[] }>> {
+    try {
+      const retrievedUsers = await this.retrieveUsersService.execute(userQuery);
+      return new StandardSuccess<{ count: number; list: UserViewDTO[] }>(retrievedUsers);
+    } catch (e) {
+      throw new StandardError(e, e.statusCode);
+    }
   }
 }
