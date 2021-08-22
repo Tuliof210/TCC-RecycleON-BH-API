@@ -17,7 +17,7 @@ export class UserMongoDBRepository implements IUserRepository {
       .catch((e) => {
         console.log(e);
 
-        throw { statusCode: HttpStatus.CONFLICT, error: { name: e.name, message: e.message } };
+        throw { name: e.name, message: e.message, statusCode: HttpStatus.CONFLICT };
       });
   }
 
@@ -28,12 +28,12 @@ export class UserMongoDBRepository implements IUserRepository {
         console.log(foundUser);
 
         if (foundUser) return foundUser.view(fullView);
-        throw { statusCode: HttpStatus.NOT_FOUND, error: { name: 'Not Found', message: `User ${userId} not found` } };
+        throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
       })
       .catch((e) => {
         console.log(e);
 
-        throw { error: { name: e.name, message: e.message } };
+        throw { name: e.name, message: e.message };
       });
   }
 
@@ -49,7 +49,7 @@ export class UserMongoDBRepository implements IUserRepository {
       .catch((e) => {
         console.log(e);
 
-        throw { error: { name: e.name, message: e.message } };
+        throw { name: e.name, message: e.message };
       });
   }
 
@@ -60,12 +60,12 @@ export class UserMongoDBRepository implements IUserRepository {
         console.log(updatedUser);
 
         if (updatedUser) return updatedUser.view(fullView);
-        throw { statusCode: HttpStatus.NOT_FOUND, error: { name: 'Not Found', message: `User ${userId} not found` } };
+        throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
       })
       .catch((e) => {
         console.log(e);
 
-        throw { error: { name: e.name, message: e.message } };
+        throw { name: e.name, message: e.message };
       });
   }
 
@@ -76,7 +76,7 @@ export class UserMongoDBRepository implements IUserRepository {
       .catch((e) => {
         console.log(e);
 
-        throw { error: { name: e.name, message: e.message } };
+        throw { name: e.name, message: e.message };
       });
   }
 
@@ -87,12 +87,12 @@ export class UserMongoDBRepository implements IUserRepository {
         console.log(deletedUser);
 
         if (deletedUser) return deletedUser.view(fullView);
-        throw { statusCode: HttpStatus.NOT_FOUND, error: { name: 'Not Found', message: `User ${userId} not found` } };
+        throw { name: 'Not Found', message: `User ${userId} not found`, statusCode: HttpStatus.NOT_FOUND };
       })
       .catch((e) => {
         console.log(e);
 
-        throw { error: { name: e.name, message: e.message } };
+        throw { name: e.name, message: e.message };
       });
   }
 }

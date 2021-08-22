@@ -13,10 +13,10 @@ export class UpdateUserController implements IUpdateUserController {
   handle(
     @Param('id') userId: string,
     @Body() userChanges: UpdateUserDTO,
-  ): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
+  ): Promise<StandardSuccess<UserViewDTO> | StandardError> {
     return this.updateUserService
       .execute(userId, userChanges)
-      .then((updatedUser) => new StandardSuccess<void | UserViewDTO>(updatedUser))
-      .catch((err) => new StandardError(err));
+      .then((updatedUser) => new StandardSuccess<UserViewDTO>(updatedUser))
+      .catch((e) => new StandardError(e, e.statusCode));
   }
 }

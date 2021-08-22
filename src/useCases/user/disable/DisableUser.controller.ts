@@ -9,10 +9,10 @@ export class DisableUserController implements IDisableUserController {
   constructor(@Inject(DISABLE_USER_SERVICE) private readonly disableUserService: IDisableUserService) {}
 
   @Delete(':id')
-  handle(@Param('id') userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
+  handle(@Param('id') userId: string): Promise<StandardSuccess<UserViewDTO> | StandardError> {
     return this.disableUserService
       .execute(userId)
-      .then((disabledUser) => new StandardSuccess<void | UserViewDTO>(disabledUser))
-      .catch((err) => new StandardError(err));
+      .then((disabledUser) => new StandardSuccess<UserViewDTO>(disabledUser))
+      .catch((e) => new StandardError(e, e.statusCode));
   }
 }

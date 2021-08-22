@@ -13,6 +13,6 @@ export class CreateUserController implements ICreateUserController {
     return this.createUserService
       .execute(userData)
       .then((createdUser) => new StandardSuccess<UserViewDTO>(createdUser, 201))
-      .catch((err) => new StandardError(err));
+      .catch((e) => new StandardError(e, e.statusCode));
   }
 }
