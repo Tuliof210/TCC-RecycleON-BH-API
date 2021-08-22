@@ -25,11 +25,12 @@ export class ResponseInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((result) => {
         console.log(result, res.statusCode);
-        this.logHttpResponse(now, req, res.statusCode | 200);
-        res.send(result);
+        this.logHttpResponse(now, req, res.statusCode ?? 200);
+        return result;
       }),
       catchError((error) => {
-        this.logHttpResponse(now, req, error.status | 500);
+        console.log(error);
+        this.logHttpResponse(now, req, error.status ?? 500);
         return throwError(() => error);
       }),
     );
