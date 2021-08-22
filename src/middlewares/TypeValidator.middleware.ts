@@ -17,20 +17,24 @@ export class TypeValidationMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     this.responseShortcut = res;
     const { body, baseUrl, method } = req;
+
+    console.log({ body: req.body });
     if (req.body) req.body = this.requestBodyHandler(body, baseUrl, method);
+    console.log({ body: req.body });
 
     next();
   }
 
   // TODO fix throw
-  private async executeValidation<Type>(body: any, schema: yup.SchemaOf<Type>) {
-    try {
-      await schema.validate(body);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      return schema.cast(body, { stripUnknown: true });
-    }
+  private executeValidation<Type>(body: any, schema: yup.SchemaOf<Type>) {
+    return schema.cast(body, { stripUnknown: true });
+    // try {
+    //   await schema.validate(body);
+    // } catch (err) {
+    //   console.log(err);
+    // } finally {
+    //   return schema.cast(body, { stripUnknown: true });
+    // }
   }
 
   private requestBodyHandler(body: any, baseUrl: string, method: string) {

@@ -14,12 +14,10 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
 })
-export class AppModule {}
-
-// export class AppModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer
-//       .apply(TypeValidationMiddleware)
-//       .forRoutes({ path: 'users', method: RequestMethod.POST }, { path: 'users', method: RequestMethod.PUT });
-//   }
-// }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(TypeValidationMiddleware)
+      .forRoutes({ path: 'users', method: RequestMethod.POST }, { path: 'users', method: RequestMethod.PUT });
+  }
+}

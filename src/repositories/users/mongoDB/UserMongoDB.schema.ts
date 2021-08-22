@@ -13,7 +13,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, minlength: 10 })
   password: string;
 
   @Prop({ required: true })
