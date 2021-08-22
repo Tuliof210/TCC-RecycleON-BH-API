@@ -1,4 +1,4 @@
-import { LoggerInterceptor } from './interceptors';
+import { ResponseInterceptor } from './interceptors';
 import { TypeValidationMiddleware } from './middlewares';
 
 import { UserModule } from './useCases/user';
@@ -12,7 +12,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true, useFindAndModify: false }),
   ],
-  providers: [{ provide: APP_INTERCEPTOR, useClass: LoggerInterceptor }],
+  providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

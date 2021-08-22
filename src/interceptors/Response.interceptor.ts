@@ -1,11 +1,13 @@
+import { StandardSuccess, StandardError } from 'src/classes';
+
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 
 import { Request, Response } from 'express';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable()
-export class LoggerInterceptor implements NestInterceptor {
+export class ResponseInterceptor implements NestInterceptor {
   private logger = new Logger('HTTP');
   private readonly logType = {
     '1xx': 'verbose',
@@ -17,31 +19,27 @@ export class LoggerInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const now = Date.now();
-    const req = context.switchToHttp().getRequest();
-    const res = context.switchToHttp().getResponse();
+    const req = context.switchToHttp().getRequest() as Request;
+    const res = context.switchToHttp().getResponse() as Response;
 
     return next.handle().pipe(
-      tap(() => {
-        req ? this.handleHTTP(now, req, res) : this.handleUnknown();
+      map((result: StandardSuccess<any> | StandardError) => {
+        this.logHttpResponse(now, req, result.statusCode);
+        res.status(result.statusCode).json(result);
       }),
     );
   }
 
-  private handleHTTP(now: number, req: Request, res: Response): void {
+  private logHttpResponse(now: number, req: Request, statusCode: number): void {
     const userAgent = req.get('user-agent') || '';
     const { ip, method, path } = req;
-    const { statusCode } = res;
-
     const logKey = this.getLogType(statusCode);
-    this.logger[logKey](`${method} ${path} ${statusCode} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
+
+    this.logger[logKey](`${method} ${statusCode} ${path} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
   }
 
   private getLogType(status: number): string {
     const key = `${status.toString()[0]}xx`;
     return this.logType[key];
-  }
-
-  private handleUnknown(): void {
-    this.logger.error(`Unknown protocol`);
   }
 }

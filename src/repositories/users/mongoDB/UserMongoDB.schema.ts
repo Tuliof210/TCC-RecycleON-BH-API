@@ -1,6 +1,9 @@
 import { UserViewDTO } from 'src/DTO';
+
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
+
 import { Document, Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 
 @Schema({ versionKey: false, timestamps: true })
 export class UserSchemaDTO extends Document implements UserViewDTO {
@@ -13,7 +16,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, minlength: 10 })
   password: string;
 
   @Prop({ required: true })
@@ -30,3 +33,16 @@ UserSchema.methods.view = function (responseView = false): UserViewDTO {
 UserSchema.methods.disable = function () {
   return this.set({ active: false }).save();
 };
+
+UserSchema.pre('save', function (next) {
+  if (this.isModified('password')) {
+    const saltOrRounds = 10;
+    bcrypt
+      .hash(this.password, saltOrRounds)
+      .then((hash: string) => {
+        this.password = hash;
+        next();
+      })
+      .catch(next);
+  } else next();
+});

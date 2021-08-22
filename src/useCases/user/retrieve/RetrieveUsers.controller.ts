@@ -1,22 +1,18 @@
+import { UserViewDTO } from 'src/DTO';
 import { IRetrieveUsersController, IRetrieveUsersService, RETRIEVE_USERS_SERVICE } from '.';
-import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
+import { StandardSuccess, StandardError } from 'src/classes';
 
-import { Controller, Get, Inject, Query, Res } from '@nestjs/common';
-
-import { Response } from 'express';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 
 @Controller('users')
 export class RetrieveUsersController implements IRetrieveUsersController {
-  constructor(
-    @Inject(RETRIEVE_USERS_SERVICE) private readonly retrieveUsersService: IRetrieveUsersService,
-    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
-  ) {}
+  constructor(@Inject(RETRIEVE_USERS_SERVICE) private readonly retrieveUsersService: IRetrieveUsersService) {}
 
   @Get()
-  handle(@Query() userQuery: any, @Res() res: Response): Promise<void> {
+  handle(@Query() userQuery: any): Promise<StandardSuccess<{ count: number; list: UserViewDTO[] }> | StandardError> {
     return this.retrieveUsersService
       .execute(userQuery)
-      .then(this.responseHelper.success(res))
-      .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
+      .then((retrievedUsers) => new StandardSuccess<{ count: number; list: UserViewDTO[] }>(retrievedUsers))
+      .catch((e) => new StandardError(e, e.statusCode));
   }
 }

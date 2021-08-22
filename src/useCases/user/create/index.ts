@@ -1,9 +1,8 @@
 import { CreateUserDTO, UserViewDTO } from 'src/DTO';
-
-import { Response } from 'express';
+import { StandardSuccess, StandardError } from 'src/classes';
 
 export interface ICreateUserController {
-  handle(userData: CreateUserDTO, res: Response): Promise<void>;
+  handle(userData: CreateUserDTO): Promise<StandardSuccess<UserViewDTO> | StandardError>;
 }
 
 export const CREATE_USER_SERVICE = 'CREATE_USER_SERVICE';

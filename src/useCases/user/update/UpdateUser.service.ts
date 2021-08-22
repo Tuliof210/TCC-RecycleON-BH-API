@@ -7,7 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 export class UpdateUserService {
   constructor(@Inject(USER_REPOSITORY) private readonly userRepository: IUserRepository) {}
 
-  public async execute(userId: string, userChanges: UpdateUserDTO) {
+  execute(userId: string, userChanges: UpdateUserDTO) {
     return this.userRepository.update(userId, userChanges);
   }
 }

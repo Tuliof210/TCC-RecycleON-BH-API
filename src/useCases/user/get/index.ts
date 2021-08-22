@@ -1,14 +1,13 @@
 import { UserViewDTO } from 'src/DTO';
-
-import { Response } from 'express';
+import { StandardSuccess, StandardError } from 'src/classes';
 
 export interface IGetUserController {
-  handle(userId: string, res: Response): Promise<void>;
+  handle(userId: string): Promise<StandardSuccess<UserViewDTO> | StandardError>;
 }
 
 export const GET_USER_SERVICE = 'GET_USER_SERVICE';
 export interface IGetUserService {
-  execute(userId: string): Promise<void | UserViewDTO>;
+  execute(userId: string): Promise<UserViewDTO>;
 }
 
 export { GetUserController } from './GetUser.controller';

@@ -1,23 +1,18 @@
-import { CreateUserDTO } from 'src/DTO';
+import { CreateUserDTO, UserViewDTO } from 'src/DTO';
 import { ICreateUserController, ICreateUserService, CREATE_USER_SERVICE } from '.';
-import { IResponseHelper, RESPONSE_HELPER } from 'src/helpers';
+import { StandardSuccess, StandardError } from 'src/classes';
 
-import { Body, Controller, HttpStatus, Inject, Post, Res } from '@nestjs/common';
-
-import { Response } from 'express';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 
 @Controller('users')
 export class CreateUserController implements ICreateUserController {
-  constructor(
-    @Inject(CREATE_USER_SERVICE) private readonly createUserService: ICreateUserService,
-    @Inject(RESPONSE_HELPER) private readonly responseHelper: IResponseHelper,
-  ) {}
+  constructor(@Inject(CREATE_USER_SERVICE) private readonly createUserService: ICreateUserService) {}
 
   @Post()
-  handle(@Body() userData: CreateUserDTO, @Res() res: Response): Promise<void> {
+  handle(@Body() userData: CreateUserDTO): Promise<StandardSuccess<UserViewDTO> | StandardError> {
     return this.createUserService
       .execute(userData)
-      .then(this.responseHelper.success(res, HttpStatus.CREATED))
-      .catch((err) => this.responseHelper.failure(res, err.statusCode)(err));
+      .then((createdUser) => new StandardSuccess<UserViewDTO>(createdUser, 201))
+      .catch((e) => new StandardError(e, e.statusCode));
   }
 }

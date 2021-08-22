@@ -7,50 +7,38 @@ import * as yup from 'yup';
 
 @Injectable()
 export class TypeValidationMiddleware implements NestMiddleware {
-  private responseShortcut: Response;
-  private readonly coverageMap = {
-    '/users': { POST: 'usersPostValidation', PUT: 'userPutValidation' },
-  };
-
-  // TODO fix all
-
-  use(req: Request, res: Response, next: NextFunction) {
-    this.responseShortcut = res;
+  use(req: Request, _res: Response, next: NextFunction) {
     const { body, baseUrl, method } = req;
-    if (req.body) req.body = this.requestBodyHandler(body, baseUrl, method);
 
+    if (req.body) req.body = this.handleRequestBody(body, baseUrl, method);
     next();
   }
 
-  // TODO fix throw
-  private async executeValidation<Type>(body: any, schema: yup.SchemaOf<Type>) {
-    try {
-      await schema.validate(body);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      return schema.cast(body, { stripUnknown: true });
-    }
+  private handleRequestBody(body: any, baseUrl: string, method: string) {
+    const handler = this.coverageMap[baseUrl][method];
+    return handler ? handler(body) : body;
   }
 
-  private requestBodyHandler(body: any, baseUrl: string, method: string) {
-    const handler = this.coverageMap[baseUrl][method] as string;
-    return handler && this[handler] ? this[handler](body) : body;
-  }
+  private readonly coverageMap = {
+    '/users': {
+      POST: (body: Record<string, unknown>) => {
+        const schema: yup.SchemaOf<CreateUserDTO> = yup.object({
+          name: yup.mixed(),
+          email: yup.mixed(),
+          password: yup.mixed(),
+        });
+        return this.castBodyRequest<CreateUserDTO>(body, schema);
+      },
+      PUT: (body: Record<string, unknown>) => {
+        const schema: yup.SchemaOf<UpdateUserDTO> = yup.object({
+          name: yup.mixed(),
+        });
+        return this.castBodyRequest<UpdateUserDTO>(body, schema);
+      },
+    },
+  };
 
-  private usersPostValidation(body: any) {
-    const schema: yup.SchemaOf<CreateUserDTO> = yup.object({
-      name: yup.string().required(),
-      email: yup.string().email().required(),
-      password: yup.string().min(8).required(),
-    });
-    return this.executeValidation<CreateUserDTO>(body, schema);
-  }
-
-  private userPutValidation(body: any) {
-    const schema: yup.SchemaOf<UpdateUserDTO> = yup.object({
-      name: yup.string().required(),
-    });
-    return this.executeValidation<UpdateUserDTO>(body, schema);
+  private castBodyRequest<Type>(body: any, schema: yup.SchemaOf<Type>) {
+    return schema.cast(body, { stripUnknown: true });
   }
 }
