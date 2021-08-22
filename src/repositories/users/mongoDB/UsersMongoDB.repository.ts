@@ -5,7 +5,7 @@ import { UpdateUserDTO } from 'src/DTO';
 
 import { REPOSITORY_HTTP_STATUS_HELPER, IRepositoryHttpStatusHelper } from 'src/helpers';
 
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
