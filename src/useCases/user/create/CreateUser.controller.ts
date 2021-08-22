@@ -1,7 +1,7 @@
 import { CreateUserDTO, UserViewDTO } from 'src/DTO';
 import { ICreateUserController, ICreateUserService, CREATE_USER_SERVICE, CreateUserValidationPipe } from '.';
 
-import { Body, Controller, HttpCode, Inject, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
 
 @Controller('users')
 export class CreateUserController implements ICreateUserController {
