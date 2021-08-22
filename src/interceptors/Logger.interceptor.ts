@@ -28,6 +28,7 @@ export class LoggerInterceptor implements NestInterceptor {
       }),
       catchError((err) => {
         //TODO fix this -> current is logging as a success
+        console.log(err);
         this.logHttpResponse(now, req, res);
         return of(this.errorHttpResponse(res)(err));
       }),
@@ -38,6 +39,8 @@ export class LoggerInterceptor implements NestInterceptor {
     const userAgent = req.get('user-agent') || '';
     const { ip, method, path } = req;
     const { statusCode } = res;
+
+    console.log(method, statusCode);
 
     const logKey = this.getLogType(statusCode);
     this.logger[logKey](`${method} ${path} ${statusCode} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
