@@ -1,10 +1,6 @@
-import { Response } from 'express';
-
-export const RESPONSE_HELPER = 'RESPONSE_HELPER';
-export interface IResponseHelper {
-  success<Type>(res: Response, statusCode?: number): (entity: Type) => void;
-  failure(res: Response, statusCode?: number): (error: Error) => void;
-  notFound<Type>(res: Response, message?: string): (entity: Type) => Type | void;
+export const HTTP_ERROR_STATUS_HELPER = 'HTTP_ERROR_STATUS_HELPER';
+export interface IHttpErrorStatusHelper {
+  get(error: Error): number;
 }
 
-export { ResponseHelper } from './Response.helper';
+export { HttpErrorStatusHelper } from './HttpErrorStatus.helper';

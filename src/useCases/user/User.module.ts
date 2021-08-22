@@ -5,7 +5,6 @@ import { GetUserController, GetUserService, GET_USER_SERVICE } from './get';
 import { RetrieveUsersController, RetrieveUsersService, RETRIEVE_USERS_SERVICE } from './retrieve';
 import { UpdateUserController, UpdateUserService, UPDATE_USER_SERVICE } from './update';
 
-import { ResponseHelper, RESPONSE_HELPER } from 'src/helpers';
 import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
 
 import { Module } from '@nestjs/common';
@@ -21,7 +20,6 @@ import { Module } from '@nestjs/common';
     UpdateUserController,
   ],
   providers: [
-    { provide: RESPONSE_HELPER, useClass: ResponseHelper },
     { provide: CREATE_USER_SERVICE, useClass: CreateUserService },
     { provide: DELETE_USER_SERVICE, useClass: DeleteUserService },
     { provide: DISABLE_USER_SERVICE, useClass: DisableUserService },
