@@ -1,5 +1,5 @@
 import { ResponseInterceptor } from './interceptors';
-import { TypeValidationMiddleware } from './middlewares';
+import { BodyValidationMiddleware } from './middlewares';
 
 import { UserModule } from './useCases/user';
 
@@ -17,7 +17,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(TypeValidationMiddleware)
+      .apply(BodyValidationMiddleware)
       .forRoutes({ path: 'users', method: RequestMethod.POST }, { path: 'users', method: RequestMethod.PUT });
   }
 }

@@ -1,1 +1,1 @@
-export { TypeValidationMiddleware } from './TypeValidator.middleware';
+export { BodyValidationMiddleware } from './BodyValidator.middleware';

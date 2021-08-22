@@ -6,15 +6,17 @@ import { Request, Response, NextFunction } from 'express';
 import * as yup from 'yup';
 
 @Injectable()
-export class TypeValidationMiddleware implements NestMiddleware {
+export class BodyValidationMiddleware implements NestMiddleware {
   use(req: Request, _res: Response, next: NextFunction) {
     const { body, baseUrl, method } = req;
 
-    if (req.body) req.body = this.handleRequestBody(body, baseUrl, method);
+    if (req.body) {
+      req.body = this.handleRequestBody(body, baseUrl, method);
+    }
     next();
   }
 
-  private handleRequestBody(body: any, baseUrl: string, method: string) {
+  private handleRequestBody(body: Record<string, unknown>, baseUrl: string, method: string) {
     const handler = this.coverageMap[baseUrl][method];
     return handler ? handler(body) : body;
   }
