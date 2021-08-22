@@ -1,8 +1,7 @@
 import { UserViewDTO, UpdateUserDTO } from 'src/DTO';
-import { StandardSuccess } from 'src/classes';
 
 export interface IUpdateUserController {
-  handle(userId: string, userChanges: UpdateUserDTO): Promise<StandardSuccess<UserViewDTO>>;
+  handle(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 }
 
 export const UPDATE_USER_SERVICE = 'UPDATE_USER_SERVICE';

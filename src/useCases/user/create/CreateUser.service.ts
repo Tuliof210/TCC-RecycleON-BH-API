@@ -3,7 +3,7 @@ import { ICreateUserService } from '.';
 import { IUserRepository, USER_REPOSITORY } from 'src/repositories/users';
 import { User } from 'src/entities';
 
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CreateUserService implements ICreateUserService {

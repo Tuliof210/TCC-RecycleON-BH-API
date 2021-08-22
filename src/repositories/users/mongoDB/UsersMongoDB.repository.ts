@@ -29,9 +29,9 @@ export class UserMongoDBRepository implements IUserRepository {
       const foundUser = await this.userModel.findOne({ _id: userId, active: true });
       if (foundUser) return foundUser.view(fullView);
 
-      throw new HttpException({ name: 'Not Found', message: `User ${userId} not found` }, HttpStatus.NOT_FOUND);
+      throw { name: 'Not Found', message: `User ${userId} not found` };
     } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
+      throw new HttpException(e, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
@@ -55,20 +55,16 @@ export class UserMongoDBRepository implements IUserRepository {
       });
       if (updatedUser) return updatedUser.view(fullView);
 
-      throw new HttpException({ name: 'Not Found', message: `User ${userId} not found` }, HttpStatus.NOT_FOUND);
+      throw { name: 'Not Found', message: `User ${userId} not found` };
     } catch (e) {
       throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
   }
 
   async deactivate(userId: string, fullView = false) {
-    try {
-      const foundUser = await this.findById(userId, true);
-      const disabledUser = await foundUser.disable();
-      return disabledUser.view(fullView);
-    } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
-    }
+    const foundUser = await this.findById(userId, true);
+    const disabledUser = await foundUser.disable();
+    return disabledUser.view(fullView);
   }
 
   async delete(userId: string, fullView = false) {
@@ -76,7 +72,7 @@ export class UserMongoDBRepository implements IUserRepository {
       const deletedUser = await this.userModel.findOneAndDelete({ _id: userId, active: true });
       if (deletedUser) return deletedUser.view(fullView);
 
-      throw new HttpException({ name: 'Not Found', message: `User ${userId} not found` }, HttpStatus.NOT_FOUND);
+      throw { name: 'Not Found', message: `User ${userId} not found` };
     } catch (e) {
       throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
     }
