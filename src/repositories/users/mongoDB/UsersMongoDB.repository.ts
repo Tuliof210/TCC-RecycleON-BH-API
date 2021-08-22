@@ -10,32 +10,34 @@ import { InjectModel } from '@nestjs/mongoose';
 export class UserMongoDBRepository implements IUserRepository {
   constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
-  async save(user: User, fullView = false) {
+  save(user: User, fullView = false) {
     return this.userModel
       .create(user)
       .then((createdUser) => createdUser.view(fullView))
-      .catch((err) => {
-        throw {
-          name: err.name,
-          message: err.message,
-          statusCode: HttpStatus.CONFLICT,
-        };
+      .catch((e) => {
+        console.log(e);
+
+        throw { statusCode: HttpStatus.CONFLICT, error: { name: e.name, message: e.message } };
       });
   }
 
-  async findById(userId: string, fullView = false) {
+  findById(userId: string, fullView = false) {
     return this.userModel
       .findOne({ _id: userId, active: true })
-      .then((foundUser) => foundUser?.view(fullView))
-      .catch((err) => {
-        throw {
-          name: err.name,
-          message: err.message,
-        };
+      .then((foundUser) => {
+        console.log(foundUser);
+
+        if (foundUser) return foundUser.view(fullView);
+        throw { statusCode: HttpStatus.NOT_FOUND, error: { name: 'Not Found', message: `User ${userId} not found` } };
+      })
+      .catch((e) => {
+        console.log(e);
+
+        throw { error: { name: e.name, message: e.message } };
       });
   }
 
-  async retrieveAll(userQuery: any, fullView = false) {
+  retrieveAll(userQuery: any, fullView = false) {
     return this.userModel
       .countDocuments(userQuery)
       .then((countUsers) =>
@@ -44,41 +46,53 @@ export class UserMongoDBRepository implements IUserRepository {
           list: retrievedUsers.map((user) => user.view(fullView)),
         })),
       )
-      .catch((err) => {
-        throw {
-          name: err.name,
-          message: err.message,
-        };
+      .catch((e) => {
+        console.log(e);
+
+        throw { error: { name: e.name, message: e.message } };
       });
   }
 
-  async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
+  update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
     return this.userModel
       .findOneAndUpdate({ _id: userId, active: true }, userChanges, { new: true })
-      .then((updatedUser) => updatedUser?.view(fullView))
-      .catch((err) => {
-        throw {
-          name: err.name,
-          message: err.message,
-        };
+      .then((updatedUser) => {
+        console.log(updatedUser);
+
+        if (updatedUser) return updatedUser.view(fullView);
+        throw { statusCode: HttpStatus.NOT_FOUND, error: { name: 'Not Found', message: `User ${userId} not found` } };
+      })
+      .catch((e) => {
+        console.log(e);
+
+        throw { error: { name: e.name, message: e.message } };
       });
   }
 
-  async deactivate(userId: string, fullView = false) {
+  deactivate(userId: string, fullView = false) {
     return this.findById(userId, true)
-      .then((foundUser) => foundUser?.disable())
-      .then((disabledUser) => disabledUser?.view(fullView));
+      .then((foundUser) => foundUser.disable())
+      .then((disabledUser) => disabledUser.view(fullView))
+      .catch((e) => {
+        console.log(e);
+
+        throw { error: { name: e.name, message: e.message } };
+      });
   }
 
-  async delete(userId: string, fullView = false) {
+  delete(userId: string, fullView = false) {
     return this.userModel
       .findOneAndDelete({ _id: userId, active: true })
-      .then((deletedUser) => deletedUser?.view(fullView))
-      .catch((err) => {
-        throw {
-          name: err.name,
-          message: err.message,
-        };
+      .then((deletedUser) => {
+        console.log(deletedUser);
+
+        if (deletedUser) return deletedUser.view(fullView);
+        throw { statusCode: HttpStatus.NOT_FOUND, error: { name: 'Not Found', message: `User ${userId} not found` } };
+      })
+      .catch((e) => {
+        console.log(e);
+
+        throw { error: { name: e.name, message: e.message } };
       });
   }
 }

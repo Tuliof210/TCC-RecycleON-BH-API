@@ -16,7 +16,7 @@ export class UpdateUserController implements IUpdateUserController {
   ): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
     return this.updateUserService
       .execute(userId, userChanges)
-      .then((updatedUser) => new StandardSuccess<void | UserViewDTO>(updatedUser, 200))
+      .then((updatedUser) => new StandardSuccess<void | UserViewDTO>(updatedUser))
       .catch((err) => new StandardError(err));
   }
 }

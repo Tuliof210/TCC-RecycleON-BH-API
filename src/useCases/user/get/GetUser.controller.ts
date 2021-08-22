@@ -13,7 +13,7 @@ export class GetUserController implements IGetUserController {
   handle(@Param('id') userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
     return this.getUserService
       .execute(userId)
-      .then((foundUser) => new StandardSuccess<void | UserViewDTO>(foundUser, 200))
+      .then((foundUser) => new StandardSuccess<void | UserViewDTO>(foundUser))
       .catch((err) => new StandardError(err));
   }
 }

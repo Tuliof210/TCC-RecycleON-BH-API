@@ -14,7 +14,7 @@ export class RetrieveUsersController implements IRetrieveUsersController {
   ): Promise<StandardSuccess<void | { count: number; list: UserViewDTO[] }> | StandardError> {
     return this.retrieveUsersService
       .execute(userQuery)
-      .then((retrievedUsers) => new StandardSuccess<void | { count: number; list: UserViewDTO[] }>(retrievedUsers, 200))
+      .then((retrievedUsers) => new StandardSuccess<void | { count: number; list: UserViewDTO[] }>(retrievedUsers))
       .catch((err) => new StandardError(err));
   }
 }

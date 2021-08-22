@@ -12,7 +12,7 @@ export class DisableUserController implements IDisableUserController {
   handle(@Param('id') userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
     return this.disableUserService
       .execute(userId)
-      .then((disabledUser) => new StandardSuccess<void | UserViewDTO>(disabledUser, 200))
+      .then((disabledUser) => new StandardSuccess<void | UserViewDTO>(disabledUser))
       .catch((err) => new StandardError(err));
   }
 }

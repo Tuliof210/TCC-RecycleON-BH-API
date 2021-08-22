@@ -12,7 +12,7 @@ export class DeleteUserController implements IDeleteUserController {
   handle(@Param('id') userId: string): Promise<StandardSuccess<void | UserViewDTO> | StandardError> {
     return this.deleteUserService
       .execute(userId)
-      .then((deletedUser) => new StandardSuccess<void | UserViewDTO>(deletedUser, 200))
+      .then((deletedUser) => new StandardSuccess<void | UserViewDTO>(deletedUser))
       .catch((err) => new StandardError(err));
   }
 }
