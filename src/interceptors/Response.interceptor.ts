@@ -1,10 +1,8 @@
-import { StandardSuccess, StandardError } from 'src/classes';
-
 import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
 
 import { Request, Response } from 'express';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
@@ -23,9 +21,13 @@ export class ResponseInterceptor implements NestInterceptor {
     const res = context.switchToHttp().getResponse() as Response;
 
     return next.handle().pipe(
-      map((result: StandardSuccess<any> | StandardError) => {
-        this.logHttpResponse(now, req, result.statusCode);
-        res.status(result.statusCode).json(result);
+      map((result) => {
+        this.logHttpResponse(now, req, res.statusCode ?? 200);
+        return result;
+      }),
+      catchError((error) => {
+        this.logHttpResponse(now, req, error.status ?? 500);
+        return throwError(() => error);
       }),
     );
   }
