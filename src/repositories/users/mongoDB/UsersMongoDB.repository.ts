@@ -81,7 +81,6 @@ export class UserMongoDBRepository implements IUserRepository {
     try {
       const foundUser = await this.findById(userId, true);
       const disabledUser = await foundUser.disable();
-
       return disabledUser.view(fullView);
     } catch (e) {
       throw {
