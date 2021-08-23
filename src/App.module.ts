@@ -1,7 +1,7 @@
 import { ResponseInterceptor } from './interceptors';
 
-import { AuthModule } from './useCases/auth';
-import { UserModule } from './useCases/user';
+import { AuthModule } from './routes/auth';
+import { UserModule } from './routes/user';
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
