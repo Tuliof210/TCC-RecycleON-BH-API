@@ -3,62 +3,41 @@ import { User } from 'src/entities';
 import { UserCollection, UserModel } from '.';
 import { UpdateUserDTO } from 'src/DTO';
 
-import { REPOSITORY_HTTP_STATUS_HELPER, IRepositoryHttpStatusHelper } from 'src/helpers';
-
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
-  constructor(
-    @InjectModel(UserCollection) private userModel: UserModel,
-    @Inject(REPOSITORY_HTTP_STATUS_HELPER) private readonly repositoryHttpStatusHelper: IRepositoryHttpStatusHelper,
-  ) {}
+  constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
   async save(user: User, fullView = false) {
-    try {
-      const createdUser = await this.userModel.create(user);
-      return createdUser.view(fullView);
-    } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
-    }
+    const createdUser = await this.userModel.create(user);
+    return createdUser.view(fullView);
   }
 
   async findById(userId: string, fullView = false) {
-    try {
-      const foundUser = await this.userModel.findOne({ _id: userId, active: true });
-      if (foundUser) return foundUser.view(fullView);
+    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
+    if (foundUser) return foundUser.view(fullView);
 
-      throw { name: 'Not Found', message: `User ${userId} not found` };
-    } catch (e) {
-      throw new HttpException(e, this.repositoryHttpStatusHelper.getError(e));
-    }
+    throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
   async retrieveAll(userQuery: any, fullView = false) {
-    try {
-      const countUsers = await this.userModel.countDocuments(userQuery);
-      const retrievedUsers = await this.userModel.find(userQuery);
-      return {
-        count: countUsers,
-        list: retrievedUsers.map((user) => user.view(fullView)),
-      };
-    } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
-    }
+    const countUsers = await this.userModel.countDocuments(userQuery);
+    const retrievedUsers = await this.userModel.find(userQuery);
+    return {
+      count: countUsers,
+      list: retrievedUsers.map((user) => user.view(fullView)),
+    };
   }
 
   async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
-    try {
-      const updatedUser = await this.userModel.findOneAndUpdate({ _id: userId, active: true }, userChanges, {
-        new: true,
-      });
-      if (updatedUser) return updatedUser.view(fullView);
+    const updatedUser = await this.userModel.findOneAndUpdate({ _id: userId, active: true }, userChanges, {
+      new: true,
+    });
+    if (updatedUser) return updatedUser.view(fullView);
 
-      throw { name: 'Not Found', message: `User ${userId} not found` };
-    } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
-    }
+    throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
   async deactivate(userId: string, fullView = false) {
@@ -68,13 +47,9 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async delete(userId: string, fullView = false) {
-    try {
-      const deletedUser = await this.userModel.findOneAndDelete({ _id: userId, active: true });
-      if (deletedUser) return deletedUser.view(fullView);
+    const deletedUser = await this.userModel.findOneAndDelete({ _id: userId, active: true });
+    if (deletedUser) return deletedUser.view(fullView);
 
-      throw { name: 'Not Found', message: `User ${userId} not found` };
-    } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, this.repositoryHttpStatusHelper.getError(e));
-    }
+    throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 }
