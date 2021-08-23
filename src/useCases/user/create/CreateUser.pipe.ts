@@ -15,5 +15,6 @@ export class CreateUserValidationPipe implements PipeTransform {
   async transform(body: any) {
     const validBody = await this.schema.validate(body);
     return this.schema.cast(validBody, { stripUnknown: true });
+    //throw new UnauthorizedException();
   }
 }

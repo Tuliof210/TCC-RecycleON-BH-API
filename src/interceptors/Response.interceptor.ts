@@ -17,10 +17,11 @@ export class ResponseInterceptor implements NestInterceptor {
   };
 
   private readonly errorMap = {
+    CastError: 400,
+    UnauthorizedException: 401,
+    ValidationError: 403,
     'Not Found': 404,
     MongooseServerSelectionError: 503,
-    ValidationError: 403,
-    CastError: 400,
   };
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
