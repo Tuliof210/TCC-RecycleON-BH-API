@@ -1,13 +1,13 @@
 import { User } from 'src/entities';
 import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
 import { IUserService } from '.';
-import { IUserRepository, USER_REPOSITORY } from 'src/repositories/users';
+import { IUserRepository } from 'src/repositories/users';
 
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService implements IUserService {
-  constructor(@Inject(USER_REPOSITORY) private readonly userRepository: IUserRepository) {}
+  constructor(@Inject('UserRespository') private readonly userRepository: IUserRepository) {}
 
   create(userData: CreateUserDTO) {
     const user = new User(userData);

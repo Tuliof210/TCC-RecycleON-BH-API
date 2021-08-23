@@ -1,13 +1,13 @@
 import { CreateUserDTO } from 'src/DTO';
 import { CreateUserValidationPipe } from 'src/pipes';
 import { IAuthController } from '.';
-import { IAuthService, AUTH_SERVICE } from 'src/services';
+import { IAuthService } from 'src/services';
 
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController implements IAuthController {
-  constructor(@Inject(AUTH_SERVICE) private readonly authService: IAuthService) {}
+  constructor(@Inject('AuthService') private readonly authService: IAuthService) {}
 
   @Post()
   login(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
