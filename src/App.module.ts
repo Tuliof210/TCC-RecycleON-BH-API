@@ -1,5 +1,6 @@
 import { ResponseInterceptor } from './interceptors';
 
+import { AuthModule } from './useCases/auth';
 import { UserModule } from './useCases/user';
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -8,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    AuthModule,
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true, useFindAndModify: false }),
   ],
