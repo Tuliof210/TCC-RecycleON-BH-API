@@ -3,14 +3,13 @@ import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/pipes';
 import { IUserController } from '.';
 import { IUserService } from 'src/services';
 
-import { Body, Controller, Delete, Get, HttpCode, Inject, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query } from '@nestjs/common';
 
 @Controller('users')
 export class UserController implements IUserController {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
   @Post()
-  @HttpCode(201)
   create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     return this.userService.create(userData);
   }
