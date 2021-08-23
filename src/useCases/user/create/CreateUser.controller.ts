@@ -1,4 +1,4 @@
-import { CreateUserDTO, UserViewDTO } from 'src/DTO';
+import { CreateUserDTO } from 'src/DTO';
 import { ICreateUserController, ICreateUserService, CREATE_USER_SERVICE, CreateUserValidationPipe } from '.';
 
 import { Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
@@ -9,7 +9,7 @@ export class CreateUserController implements ICreateUserController {
 
   @Post()
   @HttpCode(201)
-  handle(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO): Promise<UserViewDTO> {
+  handle(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     return this.createUserService.execute(userData);
   }
 }
