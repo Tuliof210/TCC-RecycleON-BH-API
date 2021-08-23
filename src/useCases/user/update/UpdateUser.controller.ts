@@ -1,5 +1,6 @@
 import { UpdateUserDTO } from 'src/DTO';
-import { IUpdateUserController, IUpdateUserService, UPDATE_USER_SERVICE, UpdateUserValidationPipe } from '.';
+import { UpdateUserValidationPipe } from 'src/pipes';
+import { IUpdateUserController, IUpdateUserService, UPDATE_USER_SERVICE } from '.';
 
 import { Body, Controller, Put, Inject, Param } from '@nestjs/common';
 

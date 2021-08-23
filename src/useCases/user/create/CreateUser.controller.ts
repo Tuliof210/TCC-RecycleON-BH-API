@@ -1,5 +1,6 @@
 import { CreateUserDTO } from 'src/DTO';
-import { ICreateUserController, ICreateUserService, CREATE_USER_SERVICE, CreateUserValidationPipe } from '.';
+import { CreateUserValidationPipe } from 'src/pipes';
+import { ICreateUserController, ICreateUserService, CREATE_USER_SERVICE } from '.';
 
 import { Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
 

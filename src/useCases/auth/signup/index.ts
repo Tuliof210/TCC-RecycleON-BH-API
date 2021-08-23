@@ -10,5 +10,5 @@ export interface ISignupService {
 }
 
 export {} from './Signup.pipe';
-export {} from './Signup.controller';
+export { SignupController } from './Signup.controller';
 export {} from './Signup.service';

@@ -9,6 +9,6 @@ export class SignupController implements ISignupController {
 
   @Post('signup')
   handle(@Body() userData: CreateUserDTO) {
-    return Promise.resolve(true);
+    return this.signupService.execute(userData);
   }
 }
