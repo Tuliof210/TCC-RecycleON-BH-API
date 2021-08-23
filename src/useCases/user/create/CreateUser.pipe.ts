@@ -1,6 +1,6 @@
 import { CreateUserDTO } from 'src/DTO';
 
-import { PipeTransform, Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { PipeTransform, Injectable } from '@nestjs/common';
 
 import * as yup from 'yup';
 
@@ -13,11 +13,7 @@ export class CreateUserValidationPipe implements PipeTransform {
   });
 
   async transform(body: any) {
-    try {
-      const validBody = await this.schema.validate(body);
-      return this.schema.cast(validBody, { stripUnknown: true });
-    } catch (e) {
-      throw new HttpException({ name: e.name, message: e.message }, HttpStatus.FORBIDDEN);
-    }
+    const validBody = await this.schema.validate(body);
+    return this.schema.cast(validBody, { stripUnknown: true });
   }
 }
