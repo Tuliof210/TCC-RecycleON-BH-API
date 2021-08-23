@@ -15,6 +15,15 @@ export class UserMongoDBRepository implements IUserRepository {
     return createdUser.view(fullView);
   }
 
+  async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
+    const updatedUser = await this.userModel.findOneAndUpdate({ _id: userId, active: true }, userChanges, {
+      new: true,
+    });
+    if (updatedUser) return updatedUser.view(fullView);
+
+    throw { name: 'Not Found', message: `User ${userId} not found` };
+  }
+
   async findById(userId: string, fullView = false) {
     const foundUser = await this.userModel.findOne({ _id: userId, active: true });
     if (foundUser) return foundUser.view(fullView);
@@ -29,15 +38,6 @@ export class UserMongoDBRepository implements IUserRepository {
       count: countUsers,
       list: retrievedUsers.map((user) => user.view(fullView)),
     };
-  }
-
-  async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
-    const updatedUser = await this.userModel.findOneAndUpdate({ _id: userId, active: true }, userChanges, {
-      new: true,
-    });
-    if (updatedUser) return updatedUser.view(fullView);
-
-    throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
   async deactivate(userId: string, fullView = false) {
