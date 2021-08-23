@@ -1,5 +1,5 @@
-import { CreateUserDTO } from 'src/DTO';
-import { CreateUserValidationPipe } from 'src/pipes';
+import { CreateUserDTO, LoginDTO } from 'src/DTO';
+import { CreateUserValidationPipe, LoginValidationPipe } from 'src/pipes';
 import { IAuthController } from '.';
 import { IAuthService } from 'src/services';
 
@@ -10,11 +10,11 @@ export class AuthController implements IAuthController {
   constructor(@Inject('AuthService') private readonly authService: IAuthService) {}
 
   @Post()
-  login(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
-    return this.authService.login(userData);
+  login(@Body(new LoginValidationPipe()) loginData: LoginDTO) {
+    return this.authService.login(loginData);
   }
 
-  @Post()
+  @Post('signup')
   signup(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     return this.authService.signup(userData);
   }

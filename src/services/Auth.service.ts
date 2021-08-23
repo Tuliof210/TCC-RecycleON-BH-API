@@ -1,5 +1,5 @@
 import { IAuthService, IUserService } from '.';
-import { CreateUserDTO } from 'src/DTO';
+import { CreateUserDTO, LoginDTO } from 'src/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -7,7 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 export class AuthService implements IAuthService {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
-  login(userData: CreateUserDTO) {
+  login(loginData: LoginDTO) {
     return Promise.resolve({ token: '123', user: { name: 'name', email: 'email', password: 'password' } });
   }
 

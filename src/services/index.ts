@@ -1,7 +1,7 @@
-import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/DTO';
+import { CreateUserDTO, LoginDTO, UpdateUserDTO, UserViewDTO } from 'src/DTO';
 
 export interface IAuthService {
-  login(userData: CreateUserDTO): Promise<{ token: string; user: UserViewDTO }>;
+  login(loginData: LoginDTO): Promise<{ token: string; user: UserViewDTO }>;
   signup(userData: CreateUserDTO): Promise<{ token: string; user: UserViewDTO }>;
 }
 export { AuthService } from './Auth.service';

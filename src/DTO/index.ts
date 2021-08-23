@@ -1,7 +1,7 @@
 import { User } from 'src/entities';
 
 export type CreateUserDTO = Omit<User, '_id' | 'active'>;
-
+export type LoginDTO = Pick<User, 'email' | 'password'>;
 export type UpdateUserDTO = Pick<User, 'name'>;
 export interface UserViewDTO extends Partial<User> {
   _id?: any;

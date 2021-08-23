@@ -9,6 +9,6 @@ import { Module } from '@nestjs/common';
   imports: [UserMongoDBRepositoryModule],
   controllers: [UserController],
   providers: [{ provide: 'UserService', useClass: UserService }],
-  exports: [UserMongoDBRepositoryModule, { provide: 'UserService', useClass: UserService }],
+  exports: [{ provide: 'UserService', useClass: UserService }],
 })
 export class UserModule {}
