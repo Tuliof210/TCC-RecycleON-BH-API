@@ -6,15 +6,15 @@ export interface IAuthService {
 }
 
 export interface IUserService {
-  create(userData: CreateUserDTO): Promise<UserViewDTO>;
-  update(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
+  create(userData: CreateUserDTO, fullView?: boolean): Promise<UserViewDTO>;
+  update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserViewDTO>;
 
-  findById(userId: string): Promise<UserViewDTO>;
-  findOne(user: UserViewDTO): Promise<void | UserViewDTO>;
-  retrieve(userQuery: Record<string, unknown>): Promise<{ count: number; list: UserViewDTO[] }>;
+  findById(userId: string, fullView?: boolean): Promise<UserViewDTO>;
+  findByEmail(email: string, fullView?: boolean): Promise<UserViewDTO>;
+  retrieve(userQuery: Record<string, unknown>, fullView?: boolean): Promise<{ count: number; list: UserViewDTO[] }>;
 
-  disable(userId: string): Promise<UserViewDTO>;
-  delete(userId: string): Promise<UserViewDTO>;
+  disable(userId: string, fullView?: boolean): Promise<UserViewDTO>;
+  delete(userId: string, fullView?: boolean): Promise<UserViewDTO>;
 }
 
 export { AuthService } from './Auth.service';

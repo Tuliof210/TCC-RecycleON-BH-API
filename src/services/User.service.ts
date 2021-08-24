@@ -1,5 +1,5 @@
 import { User } from 'src/entities';
-import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/DTO';
+import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
 import { IUserService } from '.';
 import { IUserRepository } from 'src/repositories/users';
 
@@ -9,32 +9,32 @@ import { Inject, Injectable } from '@nestjs/common';
 export class UserService implements IUserService {
   constructor(@Inject('UserRespository') private readonly userRepository: IUserRepository) {}
 
-  create(userData: CreateUserDTO) {
+  create(userData: CreateUserDTO, fullView = false) {
     const user = new User(userData);
-    return this.userRepository.save(user);
+    return this.userRepository.save(user, fullView);
   }
 
-  update(userId: string, userChanges: UpdateUserDTO) {
-    return this.userRepository.update(userId, userChanges);
+  update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
+    return this.userRepository.update(userId, userChanges, fullView);
   }
 
-  findById(userId: string) {
-    return this.userRepository.findById(userId);
+  findById(userId: string, fullView = false) {
+    return this.userRepository.findById(userId, fullView);
   }
 
-  findOne(user: UserViewDTO) {
-    return this.userRepository.findOne(user);
+  findByEmail(email: string, fullView = false) {
+    return this.userRepository.findByEmail(email, fullView);
   }
 
-  retrieve(userQuery: any) {
-    return this.userRepository.retrieveAll(userQuery);
+  retrieve(userQuery: Record<string, unknown>, fullView = false) {
+    return this.userRepository.retrieveAll(userQuery, fullView);
   }
 
-  disable(userId: string) {
-    return this.userRepository.deactivate(userId);
+  disable(userId: string, fullView = false) {
+    return this.userRepository.deactivate(userId, fullView);
   }
 
-  delete(userId: string) {
-    return this.userRepository.delete(userId);
+  delete(userId: string, fullView = false) {
+    return this.userRepository.delete(userId, fullView);
   }
 }

@@ -24,19 +24,26 @@ export class UserMongoDBRepository implements IUserRepository {
     throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
-  async findById(userId: string, fullView = false) {
-    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
-    if (foundUser) return foundUser.view(fullView);
-
-    throw { name: 'Not Found', message: `User ${userId} not found` };
-  }
-
-  async findOne(user: UserViewDTO) {
-    const foundUser = await this.userModel.findOne({ email: user.email });
+  async findOne(userQuery: Record<string, unknown>) {
+    const foundUser = await this.userModel.findOne(userQuery);
     return foundUser?.view(true);
   }
 
-  async retrieveAll(userQuery: any, fullView = false) {
+  async findById(_id: string, fullView = false) {
+    const foundUser = await this.userModel.findOne({ _id, active: true });
+    if (foundUser) return foundUser.view(fullView);
+
+    throw { name: 'Not Found', message: `User ${_id} not found` };
+  }
+
+  async findByEmail(email: string, fullView = false) {
+    const foundUser = await this.userModel.findOne({ email });
+    if (foundUser) return foundUser.view(fullView);
+
+    throw { name: 'Not Found', message: `User ${email} not found` };
+  }
+
+  async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {
     const countUsers = await this.userModel.countDocuments(userQuery);
     const retrievedUsers = await this.userModel.find(userQuery);
     return {

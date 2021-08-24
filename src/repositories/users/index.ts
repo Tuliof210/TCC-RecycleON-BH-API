@@ -5,8 +5,9 @@ export interface IUserRepository {
   save(user: User, fullView?: boolean): Promise<UserViewDTO>;
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserViewDTO>;
 
-  findById(userId: string, fullView?: boolean): Promise<UserViewDTO>;
-  findOne(user: UserViewDTO): Promise<void | UserViewDTO>;
+  findOne(user: UserViewDTO, fullView?: boolean): Promise<void | UserViewDTO>;
+  findById(_id: string, fullView?: boolean): Promise<UserViewDTO>;
+  findByEmail(email: string, fullView?: boolean): Promise<UserViewDTO>;
   retrieveAll(userQuery: Record<string, unknown>, fullView?: boolean): Promise<{ count: number; list: UserViewDTO[] }>;
 
   deactivate(userId: string, fullView?: boolean): Promise<UserViewDTO>;

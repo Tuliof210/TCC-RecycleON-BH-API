@@ -8,7 +8,7 @@ export class AuthService implements IAuthService {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
   async login(loginData: LoginDTO) {
-    const user = await this.userService.findOne(loginData);
+    const user = await this.userService.findByEmail(loginData.email);
     if (user) return Promise.resolve({ token: '123', user });
     throw {};
   }
