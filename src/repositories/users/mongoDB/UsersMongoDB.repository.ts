@@ -1,6 +1,6 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
-import { UserCollection, UserModel } from '.';
+import { UserModel } from '.';
 import { UpdateUserDTO } from 'src/DTO';
 
 import { Injectable } from '@nestjs/common';
@@ -8,7 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
-  constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
+  constructor(@InjectModel('User') private userModel: UserModel) {}
 
   async save(user: User, fullView = false) {
     const createdUser = await this.userModel.create(user);
