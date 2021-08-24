@@ -1,5 +1,5 @@
 import { IAuthService } from '.';
-import { IUserService } from 'src/routes/user';
+import { IUserService } from 'src/API/user';
 import { CreateUserDTO, LoginDTO } from 'src/DTO';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -9,7 +9,7 @@ export class AuthService implements IAuthService {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
   async login({ email, password: pass }: LoginDTO) {
-    const user = await this.userService.findByEmail(email, true);
+    const user = await this.userService.getByEmail(email, true);
 
     console.log(user, { email, pass });
 
