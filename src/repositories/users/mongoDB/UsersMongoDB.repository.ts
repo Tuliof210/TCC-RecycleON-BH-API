@@ -1,7 +1,7 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
 import { UserCollection, UserModel } from '.';
-import { UpdateUserDTO } from 'src/DTO';
+import { UpdateUserDTO, UserViewDTO } from 'src/DTO';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -24,6 +24,18 @@ export class UserMongoDBRepository implements IUserRepository {
     throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
+  async findById(userId: string, fullView = false) {
+    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
+    if (foundUser) return foundUser.view(fullView);
+
+    throw { name: 'Not Found', message: `User ${userId} not found` };
+  }
+
+  async findOne(user: UserViewDTO) {
+    const foundUser = await this.userModel.findOne({ email: user.email });
+    return foundUser?.view(true);
+  }
+
   async retrieveAll(userQuery: any, fullView = false) {
     const countUsers = await this.userModel.countDocuments(userQuery);
     const retrievedUsers = await this.userModel.find(userQuery);
@@ -31,13 +43,6 @@ export class UserMongoDBRepository implements IUserRepository {
       count: countUsers,
       list: retrievedUsers.map((user) => user.view(fullView)),
     };
-  }
-
-  async findById(userId: string, fullView = false) {
-    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
-    if (foundUser) return foundUser.view(fullView);
-
-    throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
   async deactivate(userId: string, fullView = false) {

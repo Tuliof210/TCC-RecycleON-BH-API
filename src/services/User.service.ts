@@ -1,5 +1,5 @@
 import { User } from 'src/entities';
-import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
+import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/DTO';
 import { IUserService } from '.';
 import { IUserRepository } from 'src/repositories/users';
 
@@ -18,12 +18,16 @@ export class UserService implements IUserService {
     return this.userRepository.update(userId, userChanges);
   }
 
-  retrieve(userQuery: any) {
-    return this.userRepository.retrieveAll(userQuery);
-  }
-
   findById(userId: string) {
     return this.userRepository.findById(userId);
+  }
+
+  findOne(user: UserViewDTO) {
+    return this.userRepository.findOne(user);
+  }
+
+  retrieve(userQuery: any) {
+    return this.userRepository.retrieveAll(userQuery);
   }
 
   disable(userId: string) {
