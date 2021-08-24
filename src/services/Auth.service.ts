@@ -7,8 +7,10 @@ import { Inject, Injectable } from '@nestjs/common';
 export class AuthService implements IAuthService {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
-  login(loginData: LoginDTO) {
-    return Promise.resolve({ token: '123', user: { name: 'name', email: 'email', password: 'password' } });
+  async login(loginData: LoginDTO) {
+    const user = await this.userService.findOne(loginData);
+    if (user) return Promise.resolve({ token: '123', user });
+    throw {};
   }
 
   signup(userData: CreateUserDTO) {
