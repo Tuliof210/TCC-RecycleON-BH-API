@@ -1,16 +1,19 @@
 import { IAuthService, IUserService } from '.';
 import { CreateUserDTO, LoginDTO } from 'src/DTO';
 
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
-  async login(loginData: LoginDTO) {
-    const user = await this.userService.findByEmail(loginData.email);
-    if (user) return Promise.resolve({ token: '123', user });
-    throw {};
+  async login({ email, password: pass }: LoginDTO) {
+    const user = await this.userService.findByEmail(email, true);
+
+    console.log(user, { email, pass });
+
+    if (user && user.password === pass) return Promise.resolve({ token: '123', user });
+    throw new UnauthorizedException();
   }
 
   signup(userData: CreateUserDTO) {

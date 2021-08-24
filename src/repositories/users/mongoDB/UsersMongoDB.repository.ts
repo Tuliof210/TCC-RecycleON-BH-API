@@ -1,7 +1,7 @@
 import { IUserRepository } from '..';
 import { User } from 'src/entities';
 import { UserCollection, UserModel } from '.';
-import { UpdateUserDTO, UserViewDTO } from 'src/DTO';
+import { UpdateUserDTO } from 'src/DTO';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -30,14 +30,14 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async findById(_id: string, fullView = false) {
-    const foundUser = await this.userModel.findOne({ _id, active: true });
+    const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser.view(fullView);
 
     throw { name: 'Not Found', message: `User ${_id} not found` };
   }
 
   async findByEmail(email: string, fullView = false) {
-    const foundUser = await this.userModel.findOne({ email });
+    const foundUser = await this.findOne({ email });
     if (foundUser) return foundUser.view(fullView);
 
     throw { name: 'Not Found', message: `User ${email} not found` };

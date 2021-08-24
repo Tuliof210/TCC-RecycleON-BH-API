@@ -1,7 +1,7 @@
 import { CreateUserDTO, LoginDTO } from 'src/DTO';
 import { CreateUserValidationPipe, LoginValidationPipe } from 'src/pipes';
 import { IAuthController } from '.';
-import { IAuthService } from 'src/services';
+import { IAuthService } from 'src/services/common';
 
 import { Body, Controller, HttpCode, Inject, Post } from '@nestjs/common';
 

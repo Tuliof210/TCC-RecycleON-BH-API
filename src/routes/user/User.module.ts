@@ -1,5 +1,5 @@
 import { UserController } from './User.controller';
-import { UserService } from 'src/services';
+import { UserService } from 'src/services/common';
 
 import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
 
