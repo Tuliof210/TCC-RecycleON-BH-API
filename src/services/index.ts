@@ -10,7 +10,7 @@ export interface IUserService {
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 
   retrieve(userQuery: Record<string, unknown>): Promise<{ count: number; list: UserViewDTO[] }>;
-  getOne(userId: string): Promise<UserViewDTO>;
+  findById(userId: string): Promise<UserViewDTO>;
 
   disable(userId: string): Promise<UserViewDTO>;
   delete(userId: string): Promise<UserViewDTO>;

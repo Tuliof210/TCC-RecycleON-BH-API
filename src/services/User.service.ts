@@ -22,7 +22,7 @@ export class UserService implements IUserService {
     return this.userRepository.retrieveAll(userQuery);
   }
 
-  getOne(userId: string) {
+  findById(userId: string) {
     return this.userRepository.findById(userId);
   }
 

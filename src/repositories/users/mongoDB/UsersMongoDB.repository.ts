@@ -24,13 +24,6 @@ export class UserMongoDBRepository implements IUserRepository {
     throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
-  async findById(userId: string, fullView = false) {
-    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
-    if (foundUser) return foundUser.view(fullView);
-
-    throw { name: 'Not Found', message: `User ${userId} not found` };
-  }
-
   async retrieveAll(userQuery: any, fullView = false) {
     const countUsers = await this.userModel.countDocuments(userQuery);
     const retrievedUsers = await this.userModel.find(userQuery);
@@ -38,6 +31,13 @@ export class UserMongoDBRepository implements IUserRepository {
       count: countUsers,
       list: retrievedUsers.map((user) => user.view(fullView)),
     };
+  }
+
+  async findById(userId: string, fullView = false) {
+    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
+    if (foundUser) return foundUser.view(fullView);
+
+    throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
   async deactivate(userId: string, fullView = false) {
