@@ -16,7 +16,15 @@ export class ResponseInterceptor implements NestInterceptor {
     '5xx': 'debug',
   };
 
-  private readonly errorMap = {
+  private readonly errorMap = new Map([
+    ['CastError', 400],
+    ['UnauthorizedException', 401],
+    ['ValidationError', 403],
+    ['Not Found', 404],
+    ['MongooseServerSelectionError', 503],
+  ]);
+
+  private readonly errorMap2 = {
     CastError: 400,
     UnauthorizedException: 401,
     ValidationError: 403,
@@ -44,7 +52,7 @@ export class ResponseInterceptor implements NestInterceptor {
   }
 
   private getErrorStatusCode(error: Error) {
-    if (this.errorMap[error.name]) return this.errorMap[error.name];
+    if (this.errorMap.get(error.name)) return this.errorMap.get(error.name);
     if (error.name == 'MongoError' && error.message.includes('E11000 duplicate key error')) return 409;
     if (
       error.name == 'MongoError' &&
