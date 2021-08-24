@@ -1,4 +1,5 @@
-import { IAuthService, IUserService } from '.';
+import { IAuthService } from '.';
+import { IUserService } from 'src/routes/user';
 import { CreateUserDTO, LoginDTO } from 'src/DTO';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';

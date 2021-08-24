@@ -5,4 +5,9 @@ export interface IAuthController {
   signup(userData: CreateUserDTO): Promise<{ token: string; user: UserViewDTO }>;
 }
 
+export interface IAuthService {
+  login(loginData: LoginDTO): Promise<{ token: string; user: UserViewDTO }>;
+  signup(userData: CreateUserDTO): Promise<{ token: string; user: UserViewDTO }>;
+}
+
 export { AuthModule } from './Auth.module';
