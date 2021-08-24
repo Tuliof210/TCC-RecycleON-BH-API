@@ -24,8 +24,8 @@ export class UserController implements IUserController {
   }
 
   @Get(':id')
-  findById(@Param('id') userId: string) {
-    return this.userService.findById(userId);
+  getById(@Param('id') userId: string) {
+    return this.userService.getById(userId);
   }
 
   @Delete(':id')

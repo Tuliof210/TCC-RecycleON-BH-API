@@ -29,14 +29,14 @@ export class UserMongoDBRepository implements IUserRepository {
     return foundUser?.view(true);
   }
 
-  async findById(_id: string, fullView = false) {
+  async getById(_id: string, fullView = false) {
     const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser.view(fullView);
 
     throw { name: 'Not Found', message: `User ${_id} not found` };
   }
 
-  async findByEmail(email: string, fullView = false) {
+  async getByEmail(email: string, fullView = false) {
     const foundUser = await this.findOne({ email });
     if (foundUser) return foundUser.view(fullView);
 
@@ -53,7 +53,7 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async deactivate(userId: string, fullView = false) {
-    const foundUser = await this.findById(userId, true);
+    const foundUser = await this.getById(userId, true);
     const disabledUser = await foundUser.disable();
     return disabledUser.view(fullView);
   }

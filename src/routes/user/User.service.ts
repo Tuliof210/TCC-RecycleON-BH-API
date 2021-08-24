@@ -19,12 +19,12 @@ export class UserService implements IUserService {
     return this.userRepository.update(userId, userChanges, fullView);
   }
 
-  findById(userId: string, fullView = false) {
-    return this.userRepository.findById(userId, fullView);
+  getById(userId: string, fullView = false) {
+    return this.userRepository.getById(userId, fullView);
   }
 
-  findByEmail(email: string, fullView = false) {
-    return this.userRepository.findByEmail(email, fullView);
+  getByEmail(email: string, fullView = false) {
+    return this.userRepository.getByEmail(email, fullView);
   }
 
   retrieve(userQuery: Record<string, unknown>, fullView = false) {
