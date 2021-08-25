@@ -1,14 +1,14 @@
 import { IUserRepository } from '..';
-import { User } from 'src/entities';
-import { UserCollection, UserModel } from '.';
-import { UpdateUserDTO } from 'src/DTO';
+import { User } from 'src/shared/entities';
+import { UserModel } from '.';
+import { UpdateUserDTO } from 'src/shared/DTO';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
-  constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
+  constructor(@InjectModel('User') private userModel: UserModel) {}
 
   async save(user: User, fullView = false) {
     const createdUser = await this.userModel.create(user);
@@ -24,14 +24,24 @@ export class UserMongoDBRepository implements IUserRepository {
     throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
-  async findById(userId: string, fullView = false) {
-    const foundUser = await this.userModel.findOne({ _id: userId, active: true });
-    if (foundUser) return foundUser.view(fullView);
-
-    throw { name: 'Not Found', message: `User ${userId} not found` };
+  async findOne(userQuery: Record<string, unknown>) {
+    const foundUser = await this.userModel.findOne(userQuery);
+    return foundUser?.view(true);
   }
 
-  async retrieveAll(userQuery: any, fullView = false) {
+  async getById(_id: string, fullView = false) {
+    const foundUser = await this.findOne({ _id, active: true });
+    if (foundUser) return foundUser.view(fullView);
+
+    throw { name: 'Not Found', message: `User ${_id} not found` };
+  }
+
+  async getByEmail(email: string, fullView = false) {
+    const foundUser = await this.findOne({ email });
+    return foundUser?.view(fullView);
+  }
+
+  async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {
     const countUsers = await this.userModel.countDocuments(userQuery);
     const retrievedUsers = await this.userModel.find(userQuery);
     return {
@@ -41,7 +51,7 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async deactivate(userId: string, fullView = false) {
-    const foundUser = await this.findById(userId, true);
+    const foundUser = await this.getById(userId, true);
     const disabledUser = await foundUser.disable();
     return disabledUser.view(fullView);
   }
