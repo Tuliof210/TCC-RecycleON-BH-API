@@ -8,3 +8,5 @@ export interface UserViewDTO extends Partial<User> {
   disable?: () => Promise<UserViewDTO>;
   view?: (responseView?: boolean) => UserViewDTO;
 }
+
+export type LocalAuthDTO = Pick<User, '_id' | 'email'>;

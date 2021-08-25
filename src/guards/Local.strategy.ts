@@ -1,4 +1,4 @@
-import { UserViewDTO } from 'src/shared/DTO';
+import { LocalAuthDTO } from 'src/shared/DTO';
 import { IAuthService } from 'src/API/auth';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -12,10 +12,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super({ usernameField: 'email', passwordField: 'password' });
   }
 
-  async validate(email: string, password: string): Promise<UserViewDTO> {
+  async validate(email: string, password: string): Promise<LocalAuthDTO> {
     const user = await this.authService.validateUser(email, password);
     if (!user) throw new UnauthorizedException();
 
-    return user;
+    return { _id: user._id, email: user.email };
   }
 }

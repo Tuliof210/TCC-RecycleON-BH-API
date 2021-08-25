@@ -1,10 +1,11 @@
-import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { CreateUserDTO, LocalAuthDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 
 export interface IUserController {
   create(userData: CreateUserDTO): Promise<UserViewDTO>;
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 
   retrieve(userQuery: Record<string, unknown>): Promise<{ count: number; list: UserViewDTO[] }>;
+  getMe({ user }: { user: LocalAuthDTO }): Promise<UserViewDTO>;
   getById(userId: string): Promise<UserViewDTO>;
 
   disable(userId: string): Promise<UserViewDTO>;
