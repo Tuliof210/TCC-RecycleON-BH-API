@@ -1,11 +1,10 @@
+import { roles } from 'src/shared/entities';
 import { UserViewDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
 import { Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-
-const roles = ['admin', 'user'];
 
 @Schema({ versionKey: false, timestamps: true })
 export class UserSchemaDTO extends Document implements UserViewDTO {
@@ -21,7 +20,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true, minlength: 10 })
   password: string;
 
-  @Prop({ required: true, default: 'user', enum: roles })
+  @Prop({ required: true, default: roles.User, enum: roles })
   role: string;
 
   @Prop({ required: true })
