@@ -1,4 +1,4 @@
-import { CreateUserDTO } from 'src/DTO';
+import { CreateUserDTO } from 'src/shared/DTO';
 
 import { PipeTransform, Injectable } from '@nestjs/common';
 

@@ -1,4 +1,4 @@
-import { UserViewDTO } from 'src/DTO';
+import { UserViewDTO } from 'src/shared/DTO';
 import { IAuthService } from 'src/API/auth';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';

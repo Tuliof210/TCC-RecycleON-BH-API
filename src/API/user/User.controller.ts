@@ -1,6 +1,6 @@
-import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
+import { CreateUserDTO, UpdateUserDTO } from 'src/shared/DTO';
 import { JwtAuthGuard } from 'src/guards';
-import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/pipes';
+import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService } from '.';
 
 import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';

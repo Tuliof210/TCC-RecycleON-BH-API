@@ -1,4 +1,4 @@
-import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/DTO';
+import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 
 export interface IUserController {
   create(userData: CreateUserDTO): Promise<UserViewDTO>;

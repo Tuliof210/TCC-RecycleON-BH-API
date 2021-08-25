@@ -1,4 +1,4 @@
-import { UserViewDTO } from 'src/DTO';
+import { UserViewDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 

@@ -1,4 +1,4 @@
-import { UpdateUserDTO } from 'src/DTO';
+import { UpdateUserDTO } from 'src/shared/DTO';
 
 import { PipeTransform, Injectable } from '@nestjs/common';
 

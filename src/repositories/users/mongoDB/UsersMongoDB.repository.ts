@@ -1,7 +1,7 @@
 import { IUserRepository } from '..';
-import { User } from 'src/entities';
+import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { UpdateUserDTO } from 'src/DTO';
+import { UpdateUserDTO } from 'src/shared/DTO';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

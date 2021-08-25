@@ -1,4 +1,4 @@
-import { UserViewDTO } from 'src/DTO';
+import { UserViewDTO } from 'src/shared/DTO';
 
 export interface IAuthController {
   login({ user }: { user: UserViewDTO }): Promise<{ token: string }>;

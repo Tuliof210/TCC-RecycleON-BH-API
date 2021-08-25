@@ -1,4 +1,4 @@
-import { User } from 'src/entities';
+import { User } from 'src/shared/entities';
 
 export type CreateUserDTO = Omit<User, '_id' | 'active' | 'role'>;
 export type UpdateUserDTO = Pick<User, 'name'>;

@@ -1,8 +1,8 @@
-import { User } from 'src/entities';
+import { User } from 'src/shared/entities';
 
 import { IUserService } from '.';
 import { IUserRepository } from 'src/repositories/users';
-import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
+import { CreateUserDTO, UpdateUserDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
 

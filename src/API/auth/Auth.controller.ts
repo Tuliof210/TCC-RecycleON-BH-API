@@ -1,4 +1,4 @@
-import { UserViewDTO } from 'src/DTO';
+import { UserViewDTO } from 'src/shared/DTO';
 import { LocalAuthGuard } from 'src/guards';
 import { IAuthController, IAuthService } from '.';
 

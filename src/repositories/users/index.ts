@@ -1,5 +1,5 @@
-import { User } from 'src/entities';
-import { UserViewDTO, UpdateUserDTO } from 'src/DTO';
+import { User } from 'src/shared/entities';
+import { UserViewDTO, UpdateUserDTO } from 'src/shared/DTO';
 
 export interface IUserRepository {
   save(user: User, fullView?: boolean): Promise<UserViewDTO>;
