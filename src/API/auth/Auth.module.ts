@@ -1,5 +1,5 @@
 import { jwtContants } from 'src/constants';
-import { LocalStrategy, JwtStrategy } from 'src/guards';
+import { BasicStrategy, JwtStrategy } from 'src/guards';
 
 import { AuthController } from './Auth.controller';
 import { AuthService } from './Auth.service';
@@ -21,7 +21,7 @@ import { PassportModule } from '@nestjs/passport';
     }),
   ],
   controllers: [AuthController],
-  providers: [{ provide: 'AuthService', useClass: AuthService }, LocalStrategy, JwtStrategy],
+  providers: [{ provide: 'AuthService', useClass: AuthService }, BasicStrategy, JwtStrategy],
 })
 export class AuthModule {}
 

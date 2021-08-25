@@ -1,5 +1,5 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
-import { LocalAuthGuard } from 'src/guards';
+import { BasicAuthGuard } from 'src/guards';
 import { IAuthController, IAuthService } from '.';
 
 import { Controller, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/common';
@@ -8,7 +8,7 @@ import { Controller, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/
 export class AuthController implements IAuthController {
   constructor(@Inject('AuthService') private readonly authService: IAuthService) {}
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(BasicAuthGuard)
   @Post()
   @HttpCode(200)
   login(@Request() { user }: { user: AuthPayloadDTO }) {

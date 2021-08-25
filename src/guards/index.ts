@@ -1,5 +1,5 @@
-export { LocalStrategy } from './Local.strategy';
+export { BasicStrategy } from './Basic.strategy';
 export { JwtStrategy } from './Jwt.strategy';
 
-export { LocalAuthGuard } from './Local-auth.guard';
+export { BasicAuthGuard } from './Basic-auth.guard';
 export { JwtAuthGuard } from './Jwt-auth.guard';
