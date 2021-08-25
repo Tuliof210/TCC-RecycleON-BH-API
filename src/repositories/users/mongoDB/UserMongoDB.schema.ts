@@ -31,6 +31,16 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
 export type UserModel = Model<UserViewDTO, Document>;
 
+//---------------------------------------------------
+
+UserSchema.methods.authenticate = function (password: string): Promise<void | UserViewDTO> {
+  return bcrypt.compare(password, this.password).then((valid) => (valid ? this : undefined));
+};
+
+UserSchema.methods.disable = function () {
+  return this.set({ active: false }).save();
+};
+
 UserSchema.methods.view = function (responseView = false): UserViewDTO {
   const publicView = {};
   const publicKeys = ['_id', 'name', 'email', 'role'];
@@ -38,9 +48,8 @@ UserSchema.methods.view = function (responseView = false): UserViewDTO {
   publicKeys.forEach((key) => (publicView[key] = this[key]));
   return responseView ? this : publicView;
 };
-UserSchema.methods.disable = function () {
-  return this.set({ active: false }).save();
-};
+
+//---------------------------------------------------
 
 UserSchema.pre('save', function (next) {
   if (this.isModified('password')) {

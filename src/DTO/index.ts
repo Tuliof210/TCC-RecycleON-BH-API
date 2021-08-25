@@ -4,6 +4,7 @@ export type CreateUserDTO = Omit<User, '_id' | 'active' | 'role'>;
 export type UpdateUserDTO = Pick<User, 'name'>;
 export interface UserViewDTO extends Partial<User> {
   _id?: any;
-  view?: (responseView?: boolean) => UserViewDTO;
+  authenticate?: (password: string) => Promise<void | UserViewDTO>;
   disable?: () => Promise<UserViewDTO>;
+  view?: (responseView?: boolean) => UserViewDTO;
 }

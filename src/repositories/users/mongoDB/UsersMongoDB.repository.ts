@@ -38,9 +38,7 @@ export class UserMongoDBRepository implements IUserRepository {
 
   async getByEmail(email: string, fullView = false) {
     const foundUser = await this.findOne({ email });
-    if (foundUser) return foundUser.view(fullView);
-
-    throw { name: 'Not Found', message: `User ${email} not found` };
+    return foundUser?.view(fullView);
   }
 
   async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {

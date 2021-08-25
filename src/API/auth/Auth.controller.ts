@@ -12,12 +12,6 @@ export class AuthController implements IAuthController {
   @Post()
   @HttpCode(200)
   login(@Request() { user }: { user: UserViewDTO }) {
-    console.log({ user });
     return this.authService.login(user);
   }
-
-  // @Post('signup')
-  // signup(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
-  //   return this.authService.signup(userData);
-  // }
 }

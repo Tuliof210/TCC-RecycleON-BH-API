@@ -16,7 +16,7 @@ export interface IUserService {
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserViewDTO>;
 
   getById(userId: string, fullView?: boolean): Promise<UserViewDTO>;
-  getByEmail(email: string, fullView?: boolean): Promise<UserViewDTO>;
+  getByEmail(email: string, fullView?: boolean): Promise<void | UserViewDTO>;
   retrieve(userQuery: Record<string, unknown>, fullView?: boolean): Promise<{ count: number; list: UserViewDTO[] }>;
 
   disable(userId: string, fullView?: boolean): Promise<UserViewDTO>;
