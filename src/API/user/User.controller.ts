@@ -20,6 +20,7 @@ export class UserController implements IUserController {
 
   @Get()
   retrieve(@Query() userQuery: any) {
+    //TODO remove this 'any' type
     return this.userService.retrieve(userQuery);
   }
 

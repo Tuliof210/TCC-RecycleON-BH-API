@@ -12,7 +12,7 @@ export class CreateUserValidationPipe implements PipeTransform {
     password: yup.string().strict().min(10).required(),
   });
 
-  async transform(body: any) {
+  async transform(body: Record<string, unknown>) {
     const validBody = await this.schema.validate(body);
     return this.schema.cast(validBody, { stripUnknown: true });
     //throw new UnauthorizedException();

@@ -10,7 +10,7 @@ export class UpdateUserValidationPipe implements PipeTransform {
     name: yup.string().strict().required(),
   });
 
-  async transform(body: any) {
+  async transform(body: Record<string, unknown>) {
     const validBody = await this.schema.validate(body);
     return this.schema.cast(validBody, { stripUnknown: true });
   }
