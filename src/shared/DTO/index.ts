@@ -9,4 +9,4 @@ export interface UserViewDTO extends Partial<User> {
   view?: (responseView?: boolean) => UserViewDTO;
 }
 
-export type LocalAuthDTO = Pick<User, '_id' | 'email'>;
+export type AuthPayloadDTO = Pick<User, '_id' | 'email' | 'role'>;

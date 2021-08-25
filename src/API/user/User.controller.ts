@@ -1,4 +1,4 @@
-import { CreateUserDTO, LocalAuthDTO, UpdateUserDTO } from 'src/shared/DTO';
+import { CreateUserDTO, AuthPayloadDTO, UpdateUserDTO } from 'src/shared/DTO';
 import { JwtAuthGuard } from 'src/guards';
 import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService } from '.';
@@ -28,8 +28,8 @@ export class UserController implements IUserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getMe(@Request() { user }: { user: LocalAuthDTO }) {
-    console.log({ me: user });
+  getMe(@Request() { user }: { user: AuthPayloadDTO }) {
+    console.log({ AuthPayload: user });
     return this.userService.getById(user._id);
   }
 

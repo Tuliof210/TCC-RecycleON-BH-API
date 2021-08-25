@@ -1,4 +1,4 @@
-import { LocalAuthDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO } from 'src/shared/DTO';
 import { LocalAuthGuard } from 'src/guards';
 import { IAuthController, IAuthService } from '.';
 
@@ -11,8 +11,8 @@ export class AuthController implements IAuthController {
   @UseGuards(LocalAuthGuard)
   @Post()
   @HttpCode(200)
-  login(@Request() { user }: { user: LocalAuthDTO }) {
-    console.log({ user });
+  login(@Request() { user }: { user: AuthPayloadDTO }) {
+    console.log({ AuthPayload: user });
     return this.authService.login(user);
   }
 }

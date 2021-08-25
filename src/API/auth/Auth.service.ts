@@ -1,4 +1,4 @@
-import { LocalAuthDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO } from 'src/shared/DTO';
 import { IAuthService } from '.';
 import { IUserService } from 'src/API/user';
 
@@ -19,8 +19,7 @@ export class AuthService implements IAuthService {
     return authUser ? authUser.view() : undefined;
   }
 
-  async login(user: LocalAuthDTO) {
-    const payload = { sub: user._id, email: user.email };
+  async login(payload: AuthPayloadDTO) {
     return { token: this.jwtService.sign(payload) };
   }
 }

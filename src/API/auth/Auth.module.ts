@@ -12,7 +12,9 @@ import { PassportModule } from '@nestjs/passport';
 @Module({
   imports: [
     UserModule,
-    PassportModule,
+    PassportModule.register({
+      session: false,
+    }),
     JwtModule.register({
       secret: jwtContants.secret,
       signOptions: { expiresIn: '300s' },
@@ -27,4 +29,8 @@ export class AuthModule {}
  * token irá durar 24h => 86400s
  * para tester irá durar 5m => 300s
  * configurar isso via .env
+ * ------------------------------------------
+ * session = true
+ * useful for the common scenario of users
+ * accessing a web application via a browser.
  */

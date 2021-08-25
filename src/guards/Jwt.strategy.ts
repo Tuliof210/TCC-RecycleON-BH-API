@@ -1,6 +1,6 @@
 import { jwtContants } from 'src/constants';
 
-import { LocalAuthDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO } from 'src/shared/DTO';
 
 import { Injectable } from '@nestjs/common';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -16,8 +16,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any): Promise<LocalAuthDTO> {
+  async validate(payload: AuthPayloadDTO): Promise<AuthPayloadDTO> {
     console.log({ payload });
-    return { _id: payload?.sub, email: payload?.email };
+    return payload;
   }
 }
