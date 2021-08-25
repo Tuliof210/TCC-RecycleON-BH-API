@@ -7,4 +7,4 @@ export class Entity {
   }
 }
 
-export { roles, User } from './User';
+export { Role, User } from './User';

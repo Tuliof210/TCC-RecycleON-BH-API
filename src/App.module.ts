@@ -1,9 +1,11 @@
 import { ResponseInterceptor } from './interceptors';
 
+import { RolesGuard } from './guards/Roles.guard';
+
 import { AuthModule } from './API/auth';
 import { UserModule } from './API/user';
 
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -13,6 +15,12 @@ import { MongooseModule } from '@nestjs/mongoose';
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true, useFindAndModify: false }),
   ],
-  providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
+  providers: [
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: RolesGuard,
+    // },
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
+  ],
 })
 export class AppModule {}

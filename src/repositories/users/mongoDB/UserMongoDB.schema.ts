@@ -1,4 +1,4 @@
-import { roles } from 'src/shared/entities';
+import { Role } from 'src/shared/entities';
 import { UserViewDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
@@ -20,7 +20,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true, minlength: 10 })
   password: string;
 
-  @Prop({ required: true, default: roles.User, enum: roles })
+  @Prop({ required: true, default: Role.User, enum: Role })
   role: string;
 
   @Prop({ required: true })
