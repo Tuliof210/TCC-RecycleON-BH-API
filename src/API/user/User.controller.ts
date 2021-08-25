@@ -1,8 +1,9 @@
 import { CreateUserDTO, UpdateUserDTO } from 'src/DTO';
+import { JwtAuthGuard } from 'src/guards';
 import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/pipes';
 import { IUserController, IUserService } from '.';
 
-import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 
 @Controller('users')
 export class UserController implements IUserController {
@@ -18,6 +19,7 @@ export class UserController implements IUserController {
     return this.userService.update(userId, userChanges);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   retrieve(@Query() userQuery: any) {
     //TODO remove this 'any' type

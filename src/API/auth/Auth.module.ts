@@ -15,10 +15,16 @@ import { PassportModule } from '@nestjs/passport';
     PassportModule,
     JwtModule.register({
       secret: jwtContants.secret,
-      signOptions: { expiresIn: '1w' },
+      signOptions: { expiresIn: '300s' },
     }),
   ],
   controllers: [AuthController],
   providers: [{ provide: 'AuthService', useClass: AuthService }, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}
+
+/**
+ * token irá durar 24h => 86400s
+ * para tester irá durar 5m => 300s
+ * configurar isso via .env
+ */
