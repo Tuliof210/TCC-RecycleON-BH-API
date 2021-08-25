@@ -12,7 +12,6 @@ export class AuthController implements IAuthController {
   @Post()
   @HttpCode(200)
   login(@Request() { user }: { user: AuthPayloadDTO }) {
-    console.log({ AuthPayload: user });
     return this.authService.login(user);
   }
 }

@@ -29,7 +29,6 @@ export class UserController implements IUserController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getMe(@Request() { user }: { user: AuthPayloadDTO }) {
-    console.log({ AuthPayload: user });
     return this.userService.getById(user._id);
   }
 
