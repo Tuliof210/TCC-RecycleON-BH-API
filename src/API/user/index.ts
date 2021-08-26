@@ -23,5 +23,6 @@ export interface IUserService {
   disable(userId: string, fullView?: boolean): Promise<UserViewDTO>;
   delete(userId: string, fullView?: boolean): Promise<UserViewDTO>;
 }
+export const UserServiceToken = 'UserServiceToken';
 
 export { UserModule } from './User.module';

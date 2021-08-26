@@ -13,6 +13,7 @@ export interface IUserRepository {
   deactivate(userId: string, fullView?: boolean): Promise<UserViewDTO>;
   delete(userId: string, fullView?: boolean): Promise<UserViewDTO>;
 }
+export const UserRepositoryToken = 'UserRepositoryToken';
 
 // javascript não possui interfaces
 // necessario fazer gambiarra

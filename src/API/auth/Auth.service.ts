@@ -1,6 +1,6 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
 import { IAuthService } from '.';
-import { IUserService } from 'src/API/user';
+import { IUserService, UserServiceToken } from 'src/API/user';
 
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -9,7 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
-    @Inject('UserService') private readonly userService: IUserService,
+    @Inject(UserServiceToken) private readonly userService: IUserService,
     private readonly jwtService: JwtService,
   ) {}
 

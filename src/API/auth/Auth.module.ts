@@ -1,11 +1,15 @@
+import { AuthServiceToken } from '.';
+import { AuthService } from './Auth.service';
+import { AuthController } from './Auth.controller';
+
+import { UserModule } from '../user';
 import { jwtContants } from 'src/constants';
 import { BasicStrategy, JwtStrategy } from 'src/guards';
-
-import { AuthController } from './Auth.controller';
-import { AuthService } from './Auth.service';
-import { UserModule } from '../user';
+import { UserSchema } from 'src/repositories/users/mongoDB';
+import { UserCollection } from 'src/repositories/users/mongoDB/UserMongoDB.schema';
 
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -19,9 +23,11 @@ import { PassportModule } from '@nestjs/passport';
       secret: jwtContants.secret,
       signOptions: { expiresIn: '86400s' },
     }),
+    MongooseModule.forFeature([{ name: UserCollection, schema: UserSchema }]),
   ],
   controllers: [AuthController],
-  providers: [{ provide: 'AuthService', useClass: AuthService }, BasicStrategy, JwtStrategy],
+  providers: [{ provide: AuthServiceToken, useClass: AuthService }, BasicStrategy, JwtStrategy],
+  exports: [PassportModule, BasicStrategy, JwtStrategy],
 })
 export class AuthModule {}
 

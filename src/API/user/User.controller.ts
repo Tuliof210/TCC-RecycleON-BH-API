@@ -1,7 +1,7 @@
 import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
-import { IUserController, IUserService } from '.';
+import { IUserController, IUserService, UserServiceToken } from '.';
 
 import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
@@ -10,7 +10,7 @@ import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, Request
 
 @Controller('users')
 export class UserController implements IUserController {
-  constructor(@Inject('UserService') private readonly userService: IUserService) {}
+  constructor(@Inject(UserServiceToken) private readonly userService: IUserService) {}
 
   //TODO test auth and role
 
