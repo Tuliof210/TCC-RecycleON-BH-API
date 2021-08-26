@@ -1,7 +1,7 @@
 import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 
 export interface IUserController {
-  create(userData: CreateUserDTO): Promise<UserViewDTO>;
+  create(masterKey: string, userData: CreateUserDTO): Promise<UserViewDTO>;
   updateMe({ user }: { user: UserViewDTO }, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 

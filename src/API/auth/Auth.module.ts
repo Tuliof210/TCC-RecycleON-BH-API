@@ -3,7 +3,7 @@ import { AuthService } from './Auth.service';
 import { AuthController } from './Auth.controller';
 
 import { UserModule } from '../user';
-import { jwtContants } from 'src/constants';
+import { jwtConstants } from 'src/constants';
 import { BasicStrategy, JwtStrategy } from 'src/guards';
 import { UserCollection, UserSchema } from 'src/repositories/users/mongoDB';
 
@@ -19,7 +19,7 @@ import { PassportModule } from '@nestjs/passport';
       session: false,
     }),
     JwtModule.register({
-      secret: jwtContants.secret,
+      secret: jwtConstants.secret,
       signOptions: { expiresIn: '86400s' },
     }),
     MongooseModule.forFeature([{ name: UserCollection, schema: UserSchema }]),

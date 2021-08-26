@@ -1,4 +1,5 @@
 import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { masterConstants } from 'src/constants';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, UserServiceToken } from '.';
@@ -6,14 +7,30 @@ import { IUserController, IUserService, UserServiceToken } from '.';
 import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
 
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Headers,
+  Inject,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 
 @Controller('users')
 export class UserController implements IUserController {
   constructor(@Inject(UserServiceToken) private readonly userService: IUserService) {}
 
   @Post()
-  create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
+  create(@Headers('masterKey') masterKey: string, @Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
+    //TODO if you have some time, create a 'masterStrategy'
+    if (masterKey !== masterConstants.masterKey) throw new UnauthorizedException();
     return this.userService.create(userData);
   }
 

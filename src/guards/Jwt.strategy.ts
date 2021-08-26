@@ -1,4 +1,4 @@
-import { jwtContants } from 'src/constants';
+import { jwtConstants } from 'src/constants';
 
 import { AuthPayloadDTO, UserViewDTO } from 'src/shared/DTO';
 import { UserModel } from 'src/repositories/users/mongoDB';
@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtContants.secret,
+      secretOrKey: jwtConstants.secret,
     });
   }
 
