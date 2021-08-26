@@ -13,7 +13,7 @@ export class BasicStrategy extends PassportStrategy(Strategy, 'http') {
   }
 
   async validate(email: string, password: string): Promise<AuthPayloadDTO> {
-    console.log({ email, password });
+    console.log({ login: { email, password } });
     const user = await this.authService.validateUser(email, password);
     if (!user) throw new UnauthorizedException();
 

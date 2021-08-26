@@ -1,11 +1,9 @@
 import { ResponseInterceptor } from './interceptors';
 
-import { RoleGuard } from './guards/Role.guard';
-
 import { AuthModule } from './API/auth';
 import { UserModule } from './API/user';
 
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 

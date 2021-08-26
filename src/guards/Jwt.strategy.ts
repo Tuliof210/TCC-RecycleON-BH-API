@@ -18,6 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: AuthPayloadDTO): Promise<AuthPayloadDTO> {
     console.log({ payload });
+    //TODO solve this: what if the user in payload no longer exists?
     return payload;
   }
 }

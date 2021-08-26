@@ -12,42 +12,52 @@ import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, Request
 export class UserController implements IUserController {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
+  //TODO test auth and role
+
   @Post()
-  @Role(UserRole.User)
-  @UseGuards(JwtAuthGuard, RoleGuard)
   create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     return this.userService.create(userData);
   }
 
   @Put(':id')
+  @Role(UserRole.User)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   update(@Param('id') userId: string, @Body(new UpdateUserValidationPipe()) userChanges: UpdateUserDTO) {
     return this.userService.update(userId, userChanges);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
+  @Role(UserRole.Admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   retrieve(@Query() userQuery: any) {
     //TODO remove this 'any' type
     return this.userService.retrieve(userQuery);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('me')
+  @Role(UserRole.User)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   getMe(@Request() { user }: { user: UserViewDTO }) {
     return this.userService.getById(user._id);
   }
 
   @Get(':id')
+  @Role(UserRole.Admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   getById(@Param('id') userId: string) {
     return this.userService.getById(userId);
   }
 
   @Delete(':id')
+  @Role(UserRole.User)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   disable(@Param('id') userId: string) {
     return this.userService.disable(userId);
   }
 
   @Delete(':id/delete')
+  @Role(UserRole.Admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   delete(@Param('id') userId: string) {
     return this.userService.delete(userId);
   }

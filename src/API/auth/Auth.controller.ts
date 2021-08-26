@@ -8,9 +8,9 @@ import { Controller, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/
 export class AuthController implements IAuthController {
   constructor(@Inject('AuthService') private readonly authService: IAuthService) {}
 
-  @UseGuards(BasicAuthGuard)
   @Post()
   @HttpCode(200)
+  @UseGuards(BasicAuthGuard)
   login(@Request() { user }: { user: AuthPayloadDTO }) {
     return this.authService.login(user);
   }
