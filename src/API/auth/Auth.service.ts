@@ -3,7 +3,6 @@ import { IAuthService } from '.';
 import { IUserService, UserServiceToken } from 'src/API/user';
 
 import { Inject, Injectable } from '@nestjs/common';
-
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

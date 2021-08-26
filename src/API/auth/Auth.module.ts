@@ -5,8 +5,7 @@ import { AuthController } from './Auth.controller';
 import { UserModule } from '../user';
 import { jwtContants } from 'src/constants';
 import { BasicStrategy, JwtStrategy } from 'src/guards';
-import { UserSchema } from 'src/repositories/users/mongoDB';
-import { UserCollection } from 'src/repositories/users/mongoDB/UserMongoDB.schema';
+import { UserCollection, UserSchema } from 'src/repositories/users/mongoDB';
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -27,7 +26,6 @@ import { PassportModule } from '@nestjs/passport';
   ],
   controllers: [AuthController],
   providers: [{ provide: AuthServiceToken, useClass: AuthService }, BasicStrategy, JwtStrategy],
-  exports: [PassportModule, BasicStrategy, JwtStrategy],
 })
 export class AuthModule {}
 

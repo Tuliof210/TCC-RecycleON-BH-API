@@ -27,7 +27,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   active: boolean;
 }
 
-export const UserCollection = 'UserCollection';
+export const UserCollection = 'User';
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
 export type UserModel = Model<UserViewDTO, Document>;
 

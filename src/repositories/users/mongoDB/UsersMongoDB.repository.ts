@@ -58,7 +58,7 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async delete(userId: string, fullView = false) {
-    const deletedUser = await this.userModel.findOneAndDelete({ _id: userId, active: true });
+    const deletedUser = await this.userModel.findOneAndDelete({ _id: userId });
     if (deletedUser) return deletedUser.view(fullView);
 
     throw { name: 'Not Found', message: `User ${userId} not found` };
