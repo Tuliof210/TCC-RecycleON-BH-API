@@ -15,12 +15,14 @@ export class LoggerHelper implements ILoggerHelper {
     ['5xx', 'warn'],
   ]);
 
-  log(req: Request, statusCode: number, now = 0): void {
-    const userAgent = req.get('user-agent') || '';
-    const { ip, method, path } = req;
+  log(req: Request, statusCode: number, now?: number) {
+    const responseTime = now ? Date.now() - now : 0;
     const logKey = this.getLogType(statusCode);
 
-    this.logger[logKey](`${method} ${statusCode} ${path} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
+    const { ip, method, path } = req;
+    const userAgent = req.get('user-agent') || 'unknown';
+
+    this.logger[logKey](`${method} ${statusCode} ${path} - ${userAgent} ${ip} | Response time: ${responseTime}ms`);
   }
 
   private getLogType(status: number): string {

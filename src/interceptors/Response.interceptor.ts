@@ -18,14 +18,6 @@ import { catchError, map } from 'rxjs/operators';
 export class ResponseInterceptor implements NestInterceptor {
   constructor(@Inject(ILoggerHelperToken) private readonly loggerHelper: ILoggerHelper) {}
 
-  private readonly logTypeMap = new Map([
-    ['1xx', 'verbose'],
-    ['2xx', 'log'],
-    ['3xx', 'warn'],
-    ['4xx', 'error'],
-    ['5xx', 'debug'],
-  ]);
-
   private readonly errorMap = new Map([
     ['CastError', 400],
     ['UnauthorizedException', 401],
