@@ -1,14 +1,6 @@
 import { ILoggerHelper, ILoggerHelperToken } from 'src/shared/helpers';
 
-import {
-  CallHandler,
-  ExecutionContext,
-  HttpException,
-  Inject,
-  Injectable,
-  Logger,
-  NestInterceptor,
-} from '@nestjs/common';
+import { CallHandler, ExecutionContext, HttpException, Inject, Injectable, NestInterceptor } from '@nestjs/common';
 
 import { Request, Response } from 'express';
 import { Observable, throwError } from 'rxjs';
