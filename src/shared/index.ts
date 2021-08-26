@@ -1,1 +1,1 @@
-export { GlobalModule } from './Global.module';
+export { SharedModule } from './Shared.module';

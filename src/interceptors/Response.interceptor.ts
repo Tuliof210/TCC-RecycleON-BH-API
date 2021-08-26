@@ -18,8 +18,6 @@ import { catchError, map } from 'rxjs/operators';
 export class ResponseInterceptor implements NestInterceptor {
   constructor(@Inject(ILoggerHelperToken) private readonly loggerHelper: ILoggerHelper) {}
 
-  private logger = new Logger('HTTP');
-
   private readonly logTypeMap = new Map([
     ['1xx', 'verbose'],
     ['2xx', 'log'],
@@ -43,13 +41,13 @@ export class ResponseInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((result) => {
-        this.logHttpResponse(now, req, res.statusCode ?? 200);
+        this.loggerHelper.log(req, res.statusCode ?? 200, now);
         return result;
       }),
       catchError((e) => {
         const error = new HttpException({ name: e.name, message: e.message }, this.getErrorStatusCode(e));
 
-        this.logHttpResponse(now, req, error.getStatus() ?? 500);
+        this.loggerHelper.log(req, error.getStatus() ?? 500, now);
         return throwError(() => error);
       }),
     );
@@ -65,18 +63,5 @@ export class ResponseInterceptor implements NestInterceptor {
     )
       return 400;
     return 500;
-  }
-
-  private logHttpResponse(now: number, req: Request, statusCode: number): void {
-    const userAgent = req.get('user-agent') || '';
-    const { ip, method, path } = req;
-    const logKey = this.getLogType(statusCode);
-
-    this.logger[logKey](`${method} ${statusCode} ${path} - ${userAgent} ${ip} | Response time: ${Date.now() - now}ms`);
-  }
-
-  private getLogType(status: number): string {
-    const key = `${status.toString()[0]}xx`;
-    return this.logTypeMap.get(key);
   }
 }

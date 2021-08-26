@@ -8,4 +8,4 @@ import { LoggerHelper } from './helpers/Logger.helper';
   providers: [{ provide: ILoggerHelperToken, useClass: LoggerHelper }],
   exports: [{ provide: ILoggerHelperToken, useClass: LoggerHelper }],
 })
-export class GlobalModule {}
+export class SharedModule {}
