@@ -1,4 +1,4 @@
-import { CreateUserDTO, AuthPayloadDTO, UpdateUserDTO } from 'src/shared/DTO';
+import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService } from '.';
@@ -13,7 +13,7 @@ export class UserController implements IUserController {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
   @Post()
-  @Role(UserRole.Admin)
+  @Role(UserRole.User)
   @UseGuards(JwtAuthGuard, RoleGuard)
   create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     return this.userService.create(userData);
@@ -33,7 +33,7 @@ export class UserController implements IUserController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  getMe(@Request() { user }: { user: AuthPayloadDTO }) {
+  getMe(@Request() { user }: { user: UserViewDTO }) {
     return this.userService.getById(user._id);
   }
 
