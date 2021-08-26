@@ -19,16 +19,16 @@ export class UserService implements IUserService {
     return this.userRepository.update(userId, userChanges, fullView);
   }
 
+  retrieve(userQuery: Record<string, unknown>, fullView = false) {
+    return this.userRepository.retrieveAll(userQuery, fullView);
+  }
+
   getById(userId: string, fullView = false) {
     return this.userRepository.getById(userId, fullView);
   }
 
   getByEmail(email: string, fullView = false) {
     return this.userRepository.getByEmail(email, fullView);
-  }
-
-  retrieve(userQuery: Record<string, unknown>, fullView = false) {
-    return this.userRepository.retrieveAll(userQuery, fullView);
   }
 
   disable(userId: string, fullView = false) {

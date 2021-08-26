@@ -34,6 +34,14 @@ export class UserController implements IUserController {
     return this.userService.update(userId, userChanges);
   }
 
+  @Get()
+  @Role(UserRole.Admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  retrieve(@Query() userQuery: any) {
+    //TODO remove this 'any' type
+    return this.userService.retrieve(userQuery);
+  }
+
   @Get('me')
   @Role(UserRole.User)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -44,16 +52,8 @@ export class UserController implements IUserController {
   @Get(':id')
   @Role(UserRole.Admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  getById(@Param('id') userId: string) {
+  get(@Param('id') userId: string) {
     return this.userService.getById(userId);
-  }
-
-  @Get()
-  @Role(UserRole.Admin)
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  retrieve(@Query() userQuery: any) {
-    //TODO remove this 'any' type
-    return this.userService.retrieve(userQuery);
   }
 
   @Delete('me')
