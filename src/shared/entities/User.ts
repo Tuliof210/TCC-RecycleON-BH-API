@@ -1,6 +1,6 @@
 import { Entity } from '.';
 
-export enum Role {
+export enum UserRole {
   Admin = 'admin',
   User = 'user',
 }
@@ -15,7 +15,7 @@ export class User extends Entity {
   constructor(props: Omit<User, '_id' | 'active' | 'role'>, isAdmin = false) {
     super();
     this.active = true;
-    this.role = isAdmin ? Role.Admin : Role.User;
+    this.role = isAdmin ? UserRole.Admin : UserRole.User;
 
     Object.assign(this, props);
   }

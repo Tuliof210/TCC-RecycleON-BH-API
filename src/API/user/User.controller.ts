@@ -1,10 +1,10 @@
 import { CreateUserDTO, AuthPayloadDTO, UpdateUserDTO } from 'src/shared/DTO';
-import { JwtAuthGuard } from 'src/guards';
+import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService } from '.';
 
-import { Role } from 'src/shared/entities';
-import { Roles } from 'src/shared/decorators';
+import { UserRole } from 'src/shared/entities';
+import { Role } from 'src/shared/decorators';
 
 import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, Request, UseGuards } from '@nestjs/common';
 
@@ -12,9 +12,9 @@ import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, Request
 export class UserController implements IUserController {
   constructor(@Inject('UserService') private readonly userService: IUserService) {}
 
-  //@UseGuards(JwtAuthGuard)
   @Post()
-  //@Roles(Role.Admin)
+  @Role(UserRole.Admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
   create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     return this.userService.create(userData);
   }
