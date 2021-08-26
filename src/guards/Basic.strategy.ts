@@ -1,5 +1,5 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
-import { AuthServiceToken, IAuthService } from 'src/API/auth';
+import { IAuthServiceToken, IAuthService } from 'src/API/auth';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -8,7 +8,7 @@ import { BasicStrategy as Strategy } from 'passport-http';
 
 @Injectable()
 export class BasicStrategy extends PassportStrategy(Strategy, 'http') {
-  constructor(@Inject(AuthServiceToken) private readonly authService: IAuthService) {
+  constructor(@Inject(IAuthServiceToken) private readonly authService: IAuthService) {
     super();
   }
 

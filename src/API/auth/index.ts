@@ -8,6 +8,6 @@ export interface IAuthService {
   validateUser(email: string, password: string): Promise<void | UserViewDTO>;
   login(payload: AuthPayloadDTO): Promise<{ token: string }>;
 }
-export const AuthServiceToken = 'AuthServiceToken';
+export const IAuthServiceToken = 'IAuthServiceToken';
 
 export { AuthModule } from './Auth.module';

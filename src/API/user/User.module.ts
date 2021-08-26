@@ -1,4 +1,4 @@
-import { UserServiceToken } from '.';
+import { IUserServiceToken } from '.';
 import { UserService } from './User.service';
 import { UserController } from './User.controller';
 
@@ -9,7 +9,7 @@ import { Module } from '@nestjs/common';
 @Module({
   imports: [UserMongoDBRepositoryModule],
   controllers: [UserController],
-  providers: [{ provide: UserServiceToken, useClass: UserService }],
-  exports: [{ provide: UserServiceToken, useClass: UserService }],
+  providers: [{ provide: IUserServiceToken, useClass: UserService }],
+  exports: [{ provide: IUserServiceToken, useClass: UserService }],
 })
 export class UserModule {}

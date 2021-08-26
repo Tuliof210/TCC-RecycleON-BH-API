@@ -1,4 +1,4 @@
-import { AuthServiceToken } from '.';
+import { IAuthServiceToken } from '.';
 import { AuthService } from './Auth.service';
 import { AuthController } from './Auth.controller';
 
@@ -25,7 +25,7 @@ import { PassportModule } from '@nestjs/passport';
     MongooseModule.forFeature([{ name: UserCollection, schema: UserSchema }]),
   ],
   controllers: [AuthController],
-  providers: [{ provide: AuthServiceToken, useClass: AuthService }, BasicStrategy, JwtStrategy],
+  providers: [{ provide: IAuthServiceToken, useClass: AuthService }, BasicStrategy, JwtStrategy],
 })
 export class AuthModule {}
 
