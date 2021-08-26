@@ -1,4 +1,14 @@
-import { CallHandler, ExecutionContext, HttpException, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import { ILoggerHelper, ILoggerHelperToken } from 'src/shared/helpers';
+
+import {
+  CallHandler,
+  ExecutionContext,
+  HttpException,
+  Inject,
+  Injectable,
+  Logger,
+  NestInterceptor,
+} from '@nestjs/common';
 
 import { Request, Response } from 'express';
 import { Observable, throwError } from 'rxjs';
@@ -6,6 +16,8 @@ import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
+  constructor(@Inject(ILoggerHelperToken) private readonly loggerHelper: ILoggerHelper) {}
+
   private logger = new Logger('HTTP');
 
   private readonly logTypeMap = new Map([
