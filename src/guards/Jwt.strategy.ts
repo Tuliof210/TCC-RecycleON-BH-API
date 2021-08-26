@@ -1,6 +1,6 @@
 import { jwtContants } from 'src/constants';
 
-import { AuthPayloadDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO, UserViewDTO } from 'src/shared/DTO';
 import { UserModel } from 'src/repositories/users/mongoDB';
 import { UserCollection } from 'src/repositories/users/mongoDB/UserMongoDB.schema';
 
@@ -20,9 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: AuthPayloadDTO): Promise<AuthPayloadDTO> {
-    console.log({ payload });
-    //TODO solve this: what if the user in payload no longer exists?
-    return payload;
+  async validate(payload: AuthPayloadDTO): Promise<UserViewDTO> {
+    const user = await this.userModel.findOne({ _id: payload._id });
+    console.log({ payload, user });
+
+    return user?.view(true);
   }
 }
