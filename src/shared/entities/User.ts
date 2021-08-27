@@ -1,8 +1,8 @@
 import { Entity } from '.';
 
 export enum UserRole {
-  Admin = 'admin',
-  User = 'user',
+  admin = 'admin',
+  user = 'user',
 }
 
 export const EmailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
@@ -18,7 +18,7 @@ export class User extends Entity {
   constructor(props: Omit<User, '_id' | 'active' | 'role'>, isAdmin = false) {
     super();
     this.active = true;
-    this.role = isAdmin ? UserRole.Admin : UserRole.User;
+    this.role = isAdmin ? UserRole.admin : UserRole.user;
 
     Object.assign(this, props);
   }

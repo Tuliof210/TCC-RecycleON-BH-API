@@ -20,7 +20,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true, match: PasswordRegex })
   password: string;
 
-  @Prop({ required: true, default: UserRole.User, enum: UserRole })
+  @Prop({ required: true, default: UserRole.user, enum: UserRole })
   role: string;
 
   @Prop({ required: true })

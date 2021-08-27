@@ -2,10 +2,10 @@ import { ILoggerHelper, ILoggerHelperToken } from 'src/shared/helpers';
 
 import { CallHandler, ExecutionContext, HttpException, Inject, Injectable, NestInterceptor } from '@nestjs/common';
 
-import { Request, Response } from 'express';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+//TODO fix complexity
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   constructor(@Inject(ILoggerHelperToken) private readonly loggerHelper: ILoggerHelper) {}
@@ -20,8 +20,8 @@ export class ResponseInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const now = Date.now();
-    const req = context.switchToHttp().getRequest() as Request;
-    const res = context.switchToHttp().getResponse() as Response;
+    const req = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse();
 
     return next.handle().pipe(
       map((result) => {

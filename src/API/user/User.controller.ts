@@ -35,7 +35,7 @@ export class UserController implements IUserController {
   }
 
   @Patch('me')
-  @Role(UserRole.User)
+  @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   updateMe(
     @Request() { user }: { user: UserViewDTO },
@@ -45,14 +45,14 @@ export class UserController implements IUserController {
   }
 
   @Patch(':id')
-  @Role(UserRole.Admin)
+  @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   update(@Param('id') userId: string, @Body(new UpdateUserValidationPipe()) userChanges: UpdateUserDTO) {
     return this.userService.update(userId, userChanges);
   }
 
   @Get()
-  @Role(UserRole.Admin)
+  @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   retrieve(@Query() userQuery: any) {
     //TODO remove this 'any' type
@@ -60,35 +60,35 @@ export class UserController implements IUserController {
   }
 
   @Get('me')
-  @Role(UserRole.User)
+  @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   getMe(@Request() { user }: { user: UserViewDTO }) {
     return this.userService.getById(user._id);
   }
 
   @Get(':id')
-  @Role(UserRole.Admin)
+  @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   get(@Param('id') userId: string) {
     return this.userService.getById(userId);
   }
 
   @Delete('me')
-  @Role(UserRole.User)
+  @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   disableMe(@Request() { user }: { user: UserViewDTO }) {
     return user.disable();
   }
 
   @Delete(':id')
-  @Role(UserRole.Admin)
+  @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   disable(@Param('id') userId: string) {
     return this.userService.disable(userId);
   }
 
   @Delete(':id/delete')
-  @Role(UserRole.Admin)
+  @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   delete(@Param('id') userId: string) {
     return this.userService.delete(userId);

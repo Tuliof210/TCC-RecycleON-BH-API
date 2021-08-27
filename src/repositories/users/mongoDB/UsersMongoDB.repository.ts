@@ -17,16 +17,19 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
-    const updatedUser = await this.userModel.findOneAndUpdate({ _id: userId, active: true }, userChanges, {
-      new: true,
-    });
+    const updatedUser = await this.userModel
+      .findOneAndUpdate({ _id: userId, active: true }, userChanges, {
+        new: true,
+      })
+      .exec();
     if (updatedUser) return updatedUser.view(fullView);
 
+    //TODO fix sonar
     throw { name: 'Not Found', message: `User ${userId} not found` };
   }
 
   async findOne(userQuery: Record<string, unknown>) {
-    const foundUser = await this.userModel.findOne(userQuery);
+    const foundUser = await this.userModel.findOne(userQuery).exec();
     return foundUser?.view(true);
   }
 
@@ -43,8 +46,8 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {
-    const countUsers = await this.userModel.countDocuments(userQuery);
-    const retrievedUsers = await this.userModel.find(userQuery);
+    const countUsers = await this.userModel.countDocuments(userQuery).exec();
+    const retrievedUsers = await this.userModel.find(userQuery).exec();
     return {
       count: countUsers,
       list: retrievedUsers.map((user) => user.view(fullView)),
@@ -58,7 +61,7 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async delete(userId: string, fullView = false) {
-    const deletedUser = await this.userModel.findOneAndDelete({ _id: userId });
+    const deletedUser = await this.userModel.findOneAndDelete({ _id: userId }).exec();
     if (deletedUser) return deletedUser.view(fullView);
 
     throw { name: 'Not Found', message: `User ${userId} not found` };
