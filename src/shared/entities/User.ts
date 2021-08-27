@@ -1,4 +1,5 @@
 import { Entity } from '.';
+import { CreateUserDTO } from 'src/shared/DTO';
 
 export enum UserRole {
   admin = 'admin',
@@ -15,11 +16,14 @@ export class User extends Entity {
   public role: string;
   public active: boolean;
 
-  constructor(props: Omit<User, '_id' | 'active' | 'role'>, isAdmin = false) {
+  constructor(props: CreateUserDTO) {
     super();
     this.active = true;
-    this.role = isAdmin ? UserRole.admin : UserRole.user;
+    this.role = props.role === UserRole.admin ? UserRole.admin : UserRole.user;
+
+    delete props.role;
 
     Object.assign(this, props);
+    console.log({ props, this: this });
   }
 }
