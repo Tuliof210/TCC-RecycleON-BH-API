@@ -15,7 +15,7 @@ export class CreateUserValidationPipe implements PipeTransform {
       .strict()
       .matches(PasswordRegex, 'Invalid password. Minimum 6 characters, at least one letter and one number')
       .required(),
-    role: yup.string().strict().matches(this.createUserRoleRegex()),
+    role: yup.string().strict().matches(this.createUserRoleRegex(), "Invalid role. Role must match 'user' or 'admin'"),
   });
 
   private createUserRoleRegex() {
