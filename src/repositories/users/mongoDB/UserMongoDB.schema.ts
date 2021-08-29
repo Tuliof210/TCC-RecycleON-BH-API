@@ -1,4 +1,4 @@
-import { UserRole, EmailRegex, PasswordRegex } from 'src/shared/entities';
+import { UserRole, EmailRegex } from 'src/shared/entities';
 import { UserDocumentDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
@@ -17,7 +17,7 @@ export class UserSchemaDTO extends Document implements UserDocumentDTO {
   @Prop({ required: true, unique: true, match: EmailRegex })
   email: string;
 
-  @Prop({ required: true, match: PasswordRegex })
+  @Prop({ required: true })
   password: string;
 
   @Prop({ required: true, default: UserRole.user, enum: UserRole })

@@ -23,6 +23,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
+import { Document } from 'mongoose';
+
 @Controller('users')
 export class UserController implements IUserController {
   constructor(@Inject(IUserServiceToken) private readonly userService: IUserService) {}
@@ -37,11 +39,12 @@ export class UserController implements IUserController {
   @Patch('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  updateMe(
-    @Request() { user }: { user: UserDocumentDTO },
+  async updateMe(
+    @Request() { user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> },
     @Body(new UpdateUserValidationPipe()) userChanges: UpdateUserDTO,
   ) {
-    return this.userService.update(user._id, userChanges);
+    const updatedMe = await user.set(userChanges).save();
+    return updatedMe.view(true);
   }
 
   @Patch(':id')

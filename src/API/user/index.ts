@@ -1,15 +1,20 @@
 import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
+import { Document } from 'mongoose';
+
 export interface IUserController {
   create(masterKey: string, userData: CreateUserDTO): Promise<UserDocumentDTO>;
-  updateMe({ user }: { user: UserDocumentDTO }, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
+  updateMe(
+    { user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> },
+    userChanges: UpdateUserDTO,
+  ): Promise<UserDocumentDTO>;
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
 
   retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: UserDocumentDTO[] }>;
-  getMe({ user }: { user: UserDocumentDTO }): UserDocumentDTO;
+  getMe({ user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> }): UserDocumentDTO;
   get(userId: string): Promise<UserDocumentDTO>;
 
-  disableMe({ user }: { user: UserDocumentDTO }): Promise<UserDocumentDTO>;
+  disableMe({ user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> }): Promise<UserDocumentDTO>;
   disable(userId: string): Promise<UserDocumentDTO>;
   delete(userId: string): Promise<UserDocumentDTO>;
 }
