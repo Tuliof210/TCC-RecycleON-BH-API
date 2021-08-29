@@ -19,8 +19,6 @@ export class UpdateUserValidationPipe implements PipeTransform {
 
     delete castObject.role;
 
-    console.log(castObject);
-
     return castObject;
   }
 }

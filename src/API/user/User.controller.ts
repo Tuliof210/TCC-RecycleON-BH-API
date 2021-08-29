@@ -65,8 +65,6 @@ export class UserController implements IUserController {
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   retrieve(@Query(new QueryParamsPipe()) userQuery: QueryParamsDTO) {
-    console.log('inside controller', userQuery);
-
     return this.userService.retrieve(userQuery, true);
   }
 

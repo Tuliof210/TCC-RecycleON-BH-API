@@ -13,7 +13,7 @@ export class QueryParamsPipe implements PipeTransform {
     const cursor = this.mountCursor(body);
     const query = this.mountQuery(body);
 
-    console.log('after pipe', body, { query, select, cursor });
+    console.log('output pipe', body);
 
     //return body;
     return { query, select, cursor };
@@ -54,11 +54,32 @@ export class QueryParamsPipe implements PipeTransform {
     const skip = isNaN(body.page) ? 0 : limit * body.page - limit;
     const sort = this.mountSort(body.sort);
 
+    delete body.limit;
+    delete body.page;
+    delete body.sort;
+
     return { limit, skip, sort };
   }
 
-  private mountSort(sort: Record<string, any>) {
-    return {};
+  private mountSort(rawSort: string) {
+    if (rawSort) {
+      const rawSortKeys = rawSort.split(',');
+      return this.turnKeysIntoSort(rawSortKeys);
+    }
+
+    return { createdAt: -1 };
+  }
+
+  private turnKeysIntoSort(sortKeys: string[]) {
+    const sort: Record<string, number> = { createdAt: -1 };
+
+    const fillSortObject = (sortKey: string) => {
+      const key = sortKey.replace('-', '');
+      sort[key] = sortKey.includes('-') ? -1 : 1;
+    };
+
+    sortKeys.forEach(fillSortObject);
+    return sort;
   }
 
   //-------------------------------------------------------------------

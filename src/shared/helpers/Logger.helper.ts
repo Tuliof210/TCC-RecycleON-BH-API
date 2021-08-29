@@ -22,7 +22,7 @@ export class LoggerHelper implements ILoggerHelper {
     const { ip, method, path } = req;
     const userAgent = req.get('user-agent') || 'unknown';
 
-    this.logger[logKey](`${method} ${statusCode} ${path} - ${userAgent} ${ip} | Response time: ${responseTime}ms`);
+    this.logger[logKey](`${method} ${statusCode} ${path} - ${userAgent} ${ip} | Latency: ${responseTime}ms`);
   }
 
   private getLogType(status: number): string {

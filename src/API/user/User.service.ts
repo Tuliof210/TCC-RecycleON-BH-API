@@ -20,8 +20,6 @@ export class UserService implements IUserService {
   }
 
   retrieve(userQuery: QueryParamsDTO, fullView = false) {
-    console.log('inside service', userQuery);
-
     return this.userRepository.retrieveAll(userQuery, fullView);
   }
 

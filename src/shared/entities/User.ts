@@ -22,7 +22,5 @@ export class User extends Entity {
 
     this.role = UserRole.user;
     this.active = true;
-
-    console.log({ props, this: this });
   }
 }
