@@ -1,6 +1,6 @@
 import { jwtConstants } from 'src/constants';
 
-import { AuthPayloadDTO, UserViewDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { UserModel } from 'src/repositories/users/mongoDB';
 import { UserCollection } from 'src/repositories/users/mongoDB/UserMongoDB.schema';
 
@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  validate(payload: AuthPayloadDTO): Promise<UserViewDTO> {
+  validate(payload: AuthPayloadDTO): Promise<UserDocumentDTO> {
     return this.userModel.findOne({ _id: payload._id }).exec();
   }
 }

@@ -1,4 +1,4 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { masterConstants } from 'src/constants';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, QueryParamsPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
@@ -38,7 +38,7 @@ export class UserController implements IUserController {
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   updateMe(
-    @Request() { user }: { user: UserViewDTO },
+    @Request() { user }: { user: UserDocumentDTO },
     @Body(new UpdateUserValidationPipe()) userChanges: UpdateUserDTO,
   ) {
     return this.userService.update(user._id, userChanges);
@@ -63,7 +63,7 @@ export class UserController implements IUserController {
   @Get('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  getMe(@Request() { user }: { user: UserViewDTO }) {
+  getMe(@Request() { user }: { user: UserDocumentDTO }) {
     return user.view(true);
   }
 
@@ -77,7 +77,7 @@ export class UserController implements IUserController {
   @Delete('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  disableMe(@Request() { user }: { user: UserViewDTO }) {
+  disableMe(@Request() { user }: { user: UserDocumentDTO }) {
     return user.disable();
   }
 

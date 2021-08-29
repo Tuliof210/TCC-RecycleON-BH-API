@@ -1,29 +1,29 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
 export interface IUserController {
-  create(masterKey: string, userData: CreateUserDTO): Promise<UserViewDTO>;
-  updateMe({ user }: { user: UserViewDTO }, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
-  update(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
+  create(masterKey: string, userData: CreateUserDTO): Promise<UserDocumentDTO>;
+  updateMe({ user }: { user: UserDocumentDTO }, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
+  update(userId: string, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
 
-  retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: UserViewDTO[] }>;
-  getMe({ user }: { user: UserViewDTO }): UserViewDTO;
-  get(userId: string): Promise<UserViewDTO>;
+  retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: UserDocumentDTO[] }>;
+  getMe({ user }: { user: UserDocumentDTO }): UserDocumentDTO;
+  get(userId: string): Promise<UserDocumentDTO>;
 
-  disableMe({ user }: { user: UserViewDTO }): Promise<UserViewDTO>;
-  disable(userId: string): Promise<UserViewDTO>;
-  delete(userId: string): Promise<UserViewDTO>;
+  disableMe({ user }: { user: UserDocumentDTO }): Promise<UserDocumentDTO>;
+  disable(userId: string): Promise<UserDocumentDTO>;
+  delete(userId: string): Promise<UserDocumentDTO>;
 }
 
 export interface IUserService {
-  create(userData: CreateUserDTO, fullView?: boolean): Promise<UserViewDTO>;
-  update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserViewDTO>;
+  create(userData: CreateUserDTO, fullView?: boolean): Promise<UserDocumentDTO>;
+  update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDocumentDTO>;
 
-  retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: UserViewDTO[] }>;
-  getById(userId: string, fullView?: boolean): Promise<UserViewDTO>;
-  getByEmail(email: string, fullView?: boolean): Promise<void | UserViewDTO>;
+  retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: UserDocumentDTO[] }>;
+  getById(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
+  getByEmail(email: string, fullView?: boolean): Promise<void | UserDocumentDTO>;
 
-  disable(userId: string, fullView?: boolean): Promise<UserViewDTO>;
-  delete(userId: string, fullView?: boolean): Promise<UserViewDTO>;
+  disable(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
+  delete(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
 }
 export const IUserServiceToken = 'IUserServiceToken';
 

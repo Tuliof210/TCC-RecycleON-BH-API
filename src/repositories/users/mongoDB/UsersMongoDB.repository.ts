@@ -1,7 +1,7 @@
 import { IUserRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { QueryParamsDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
 import { CustomError } from 'src/shared/classes';
 
@@ -14,7 +14,7 @@ import { Document } from 'mongoose';
 export class UserMongoDBRepository implements IUserRepository {
   constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
-  private findOne(userQuery: Record<string, unknown>): Promise<void | UserViewDTO> {
+  private findOne(userQuery: Record<string, unknown>): Promise<void | UserDocumentDTO> {
     return this.userModel.findOne(userQuery).exec();
   }
 
@@ -50,7 +50,7 @@ export class UserMongoDBRepository implements IUserRepository {
 
     const countUsers = await this.userModel.countDocuments(query).exec();
     const retrievedUsers = await this.userModel.find(query, select, cursor).exec();
-    const mountUserList = (user: UserViewDTO & Document<any, any, UserViewDTO>) => user.view(fullView);
+    const mountUserList = (user: UserDocumentDTO & Document<any, any, UserDocumentDTO>) => user.view(fullView);
     return {
       count: countUsers,
       list: retrievedUsers.map(mountUserList),
