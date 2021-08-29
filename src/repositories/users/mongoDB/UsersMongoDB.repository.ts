@@ -46,15 +46,13 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
-    console.log('inside repository', { query, select, cursor });
+    console.log(query);
+    console.log(select);
+    console.log(cursor);
 
     const countUsers = await this.userModel.countDocuments(query).exec();
     const retrievedUsers = await this.userModel.find(query, select, cursor).exec();
-    /**
-     * query => query data;
-     * select => inclusion OR exclusion [mixing types of selection will throw errors]
-     * cursor => skip, limit, sort [any kind of filtering]
-     */
+
     const mountUserList = (user: UserDocumentDTO & Document<any, any, UserDocumentDTO>) => {
       return user.view(fullView);
     };

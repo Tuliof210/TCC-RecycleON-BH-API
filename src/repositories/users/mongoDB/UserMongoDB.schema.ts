@@ -27,7 +27,7 @@ export class UserSchemaDTO extends Document implements UserDocumentDTO {
   active: boolean;
 
   @Prop()
-  keyWords: string[];
+  keywords: string[];
 }
 
 export const UserCollection = 'User';
@@ -63,19 +63,17 @@ UserSchema.methods.view = function (fullView = false): UserDocumentDTO {
 //---------------------------------------------------
 
 UserSchema.pre('save', function (next) {
-  console.log(this);
-  this.keyWords = updateKeyWords(this.name.split(' '), [this.email.split('@')[0]]);
+  this.keywords = updateKeywords(this.name.split(' '), [this.email.split('@')[0]]);
 
   if (this.isModified('password')) {
     const saltOrRounds = 10;
     this.password = bcrypt.hashSync(this.password, saltOrRounds);
   }
+  console.log(this);
   next();
 });
 
-function updateKeyWords(name: string[], email: string[]) {
-  console.log(name, email);
-
-  const keyWordsList = [...name, ...email];
-  return Array.from(new Set(keyWordsList));
+function updateKeywords(name: string[], email: string[]) {
+  const keywordsList = [...name, ...email];
+  return Array.from(new Set(keywordsList));
 }

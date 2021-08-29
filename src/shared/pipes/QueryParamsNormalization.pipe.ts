@@ -4,18 +4,25 @@ import { QueryParamsDTO } from 'src/shared/DTO';
 
 import { Injectable, PipeTransform } from '@nestjs/common';
 
+/**
+ * Versao autoral do Querymen
+ *
+ * Esse pipe molda os request params para melhor entendimento do mongodb
+ * q => buscar pelas keywords informadas: { keywords: [RegExp like "/exp/i"] }
+ * select => selecionar campos para excluir ou para incluir: { [field: string]: 0 || 1 }
+ * limit => cursor para tamanho maximo da resposta: { limit: 10 }
+ * page => cursor para quantos resultados ignorar, simulando paginação: { skip: (page * limit - limit) }
+ * sort => filtros para a query, como ordenação: { [field: string]: -1 || 1 } respectivamente, decrescente ou crescente
+ * resto => parametros da query em si: { field1: value1, field2: value2 }
+ */
+
 @Injectable()
 export class QueryParamsNormalizationPipe implements PipeTransform {
   transform(body: Record<string, any>): QueryParamsDTO {
-    console.log('inside pipe', body);
-
     const select = this.mountSelect(body);
     const cursor = this.mountCursor(body);
     const query = this.mountQuery(body);
 
-    console.log('output pipe', body);
-
-    //return body;
     return { query, select, cursor };
   }
 
@@ -85,8 +92,13 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
   //-------------------------------------------------------------------
 
   private mountQuery(body: Record<string, any>) {
-    const query: Record<string, any> = {};
+    return body.q ? { keywords: this.mountKeywords(body.q.split(',')) } : { ...body };
+  }
 
-    return query;
+  private mountKeywords(keywordsList: string[]) {
+    const turnStringIntoRegex = (key: string) => new RegExp(key, 'i');
+    return {
+      $in: keywordsList.map(turnStringIntoRegex),
+    };
   }
 }
