@@ -18,13 +18,11 @@ export class User extends Entity {
 
   constructor(props: CreateUserDTO) {
     super();
+    Object.assign(this, props);
+
+    this.role = UserRole.user;
     this.active = true;
 
-    if (props.role === UserRole.admin) this.role = UserRole.admin;
-    else this.role = UserRole.user;
-    delete props.role;
-
-    Object.assign(this, props);
     console.log({ props, this: this });
   }
 }
