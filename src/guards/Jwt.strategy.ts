@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: AuthPayloadDTO): Promise<UserViewDTO> {
     const user = await this.userModel.findOne({ _id: payload._id }).exec();
-    console.log({ payload, user });
+    console.log({ payload });
 
     return user?.view(true);
   }
