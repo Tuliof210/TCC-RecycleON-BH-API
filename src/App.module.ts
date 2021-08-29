@@ -13,7 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     SharedModule,
     AuthModule,
     UserModule,
-    MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true, useFindAndModify: false }),
+    MongooseModule.forRoot('mongodb://localhost/recycleon-bh', { useCreateIndex: true, useFindAndModify: false }),
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
 })

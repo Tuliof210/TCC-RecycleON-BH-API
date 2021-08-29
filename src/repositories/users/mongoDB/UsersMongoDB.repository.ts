@@ -1,11 +1,13 @@
 import { IUserRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { UpdateUserDTO } from 'src/shared/DTO';
+import { UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+
+import { Document } from 'mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
@@ -48,9 +50,10 @@ export class UserMongoDBRepository implements IUserRepository {
   async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {
     const countUsers = await this.userModel.countDocuments(userQuery).exec();
     const retrievedUsers = await this.userModel.find(userQuery).exec();
+    const mountUserList = (user: UserViewDTO & Document<any, any, UserViewDTO>) => user.view(fullView);
     return {
       count: countUsers,
-      list: retrievedUsers.map((user) => user.view(fullView)),
+      list: retrievedUsers.map(mountUserList),
     };
   }
 
