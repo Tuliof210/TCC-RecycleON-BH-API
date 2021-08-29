@@ -42,16 +42,19 @@ UserSchema.methods.disable = function () {
   return this.set({ active: false }).save();
 };
 
-UserSchema.methods.view = function (responseView = false): UserViewDTO {
-  const publicView = {};
+UserSchema.methods.view = function (fullView = false): UserViewDTO {
+  const userView = {};
   const publicKeys = ['_id', 'name', 'email', 'role'];
+  const privateKeys = [...publicKeys, 'active', 'createdAt', 'updatedAt'];
 
-  const mountPublicView = (key: string) => {
-    publicView[key] = this[key];
+  const mountUserView = (key: string) => {
+    userView[key] = this[key];
   };
 
-  publicKeys.forEach(mountPublicView);
-  return responseView ? this : publicView;
+  if (fullView) privateKeys.forEach(mountUserView);
+  else publicKeys.forEach(mountUserView);
+
+  return userView;
 };
 
 //---------------------------------------------------

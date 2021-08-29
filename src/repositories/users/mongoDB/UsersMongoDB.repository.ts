@@ -1,7 +1,7 @@
 import { IUserRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { QueryParamsDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
 import { CustomError } from 'src/shared/classes';
 
@@ -47,9 +47,11 @@ export class UserMongoDBRepository implements IUserRepository {
     return foundUser?.view(fullView);
   }
 
-  async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {
-    const countUsers = await this.userModel.countDocuments(userQuery).exec();
-    const retrievedUsers = await this.userModel.find(userQuery).exec();
+  async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
+    console.log('inside repository', { query, select, cursor });
+
+    const countUsers = await this.userModel.countDocuments(query).exec();
+    const retrievedUsers = await this.userModel.find(query, select, cursor).exec();
     const mountUserList = (user: UserViewDTO & Document<any, any, UserViewDTO>) => user.view(fullView);
     return {
       count: countUsers,

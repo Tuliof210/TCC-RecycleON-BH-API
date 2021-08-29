@@ -6,7 +6,6 @@ import { Request } from 'express';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-//TODO fix complexity
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   constructor(@Inject(ILoggerHelperToken) private readonly loggerHelper: ILoggerHelper) {}

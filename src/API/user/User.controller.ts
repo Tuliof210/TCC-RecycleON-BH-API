@@ -1,7 +1,7 @@
-import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 import { masterConstants } from 'src/constants';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
-import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
+import { CreateUserValidationPipe, QueryParamsPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';
 
 import { UserRole } from 'src/shared/entities';
@@ -54,8 +54,9 @@ export class UserController implements IUserController {
   @Get()
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  retrieve(@Query() userQuery: any) {
-    //TODO remove this 'any' type
+  retrieve(@Query(new QueryParamsPipe()) userQuery: QueryParamsDTO) {
+    console.log('inside controller', userQuery);
+
     return this.userService.retrieve(userQuery);
   }
 
