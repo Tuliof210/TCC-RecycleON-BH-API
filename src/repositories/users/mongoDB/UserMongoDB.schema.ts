@@ -1,11 +1,10 @@
+import { UserRole, EmailRegex, PasswordRegex } from 'src/shared/entities';
 import { UserViewDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
 import { Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-
-const roles = ['admin', 'user'];
 
 @Schema({ versionKey: false, timestamps: true })
 export class UserSchemaDTO extends Document implements UserViewDTO {
@@ -15,19 +14,20 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, match: EmailRegex })
   email: string;
 
-  @Prop({ required: true, minlength: 10 })
+  @Prop({ required: true, match: PasswordRegex })
   password: string;
 
-  @Prop({ required: true, default: 'user', enum: roles })
+  @Prop({ required: true, default: UserRole.user, enum: UserRole })
   role: string;
 
   @Prop({ required: true })
   active: boolean;
 }
 
+export const UserCollection = 'User';
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
 export type UserModel = Model<UserViewDTO, Document>;
 

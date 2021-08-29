@@ -13,6 +13,4 @@ export interface IUserRepository {
   deactivate(userId: string, fullView?: boolean): Promise<UserViewDTO>;
   delete(userId: string, fullView?: boolean): Promise<UserViewDTO>;
 }
-
-// javascript não possui interfaces
-// necessario fazer gambiarra
+export const IUserRepositoryToken = 'IUserRepositoryToken';

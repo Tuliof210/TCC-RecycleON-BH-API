@@ -1,2 +1,3 @@
-// replace with .env
-export const jwtContants = { secret: '5fA6d4bg6874FaD07496' };
+//TODO replace with .env
+export const jwtConstants = { secret: '7AbEe8C254564a198EA3395edD6AA6Af' };
+export const masterConstants = { masterKey: '9444bfCc7C2e455F' };

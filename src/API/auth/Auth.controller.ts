@@ -1,18 +1,17 @@
-import { LocalAuthDTO } from 'src/shared/DTO';
-import { LocalAuthGuard } from 'src/guards';
-import { IAuthController, IAuthService } from '.';
+import { AuthPayloadDTO } from 'src/shared/DTO';
+import { BasicAuthGuard } from 'src/guards';
+import { IAuthServiceToken, IAuthController, IAuthService } from '.';
 
 import { Controller, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController implements IAuthController {
-  constructor(@Inject('AuthService') private readonly authService: IAuthService) {}
+  constructor(@Inject(IAuthServiceToken) private readonly authService: IAuthService) {}
 
-  @UseGuards(LocalAuthGuard)
   @Post()
   @HttpCode(200)
-  login(@Request() { user }: { user: LocalAuthDTO }) {
-    console.log({ user });
+  @UseGuards(BasicAuthGuard)
+  login(@Request() { user }: { user: AuthPayloadDTO }) {
     return this.authService.login(user);
   }
 }

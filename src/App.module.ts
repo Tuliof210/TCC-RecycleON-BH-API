@@ -1,3 +1,4 @@
+import { SharedModule } from './shared';
 import { ResponseInterceptor } from './interceptors';
 
 import { AuthModule } from './API/auth';
@@ -9,6 +10,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    SharedModule,
     AuthModule,
     UserModule,
     MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true, useFindAndModify: false }),
