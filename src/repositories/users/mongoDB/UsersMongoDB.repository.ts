@@ -3,6 +3,7 @@ import { User } from 'src/shared/entities';
 import { UserModel } from '.';
 import { UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
+import { CustomError } from 'src/shared/classes';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -26,8 +27,7 @@ export class UserMongoDBRepository implements IUserRepository {
       .exec();
     if (updatedUser) return updatedUser.view(fullView);
 
-    //TODO fix sonar
-    throw { name: 'Not Found', message: `User ${userId} not found` };
+    throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 
   async findOne(userQuery: Record<string, unknown>) {
@@ -39,7 +39,7 @@ export class UserMongoDBRepository implements IUserRepository {
     const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser.view(fullView);
 
-    throw { name: 'Not Found', message: `User ${_id} not found` };
+    throw new CustomError({ name: 'Not Found', message: `User ${_id} not found` });
   }
 
   async getByEmail(email: string, fullView = false) {
@@ -67,6 +67,6 @@ export class UserMongoDBRepository implements IUserRepository {
     const deletedUser = await this.userModel.findOneAndDelete({ _id: userId }).exec();
     if (deletedUser) return deletedUser.view(fullView);
 
-    throw { name: 'Not Found', message: `User ${userId} not found` };
+    throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 }

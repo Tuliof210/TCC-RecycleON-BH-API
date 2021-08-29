@@ -6,7 +6,7 @@ export enum UserRole {
   user = 'user',
 }
 
-export const EmailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+export const EmailRegex = /^\S{2}@\S{2}\.\S{2}$/;
 export const PasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; //Minimum 6 characters, at least one letter and one number
 
 export class User extends Entity {

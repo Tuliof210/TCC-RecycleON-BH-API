@@ -38,6 +38,9 @@ export class ResponseInterceptor implements NestInterceptor {
   private handleError(now: number, req: Request) {
     return (e: Error) => {
       const error = new HttpException({ name: e.name, message: e.message }, this.getErrorStatusCode(e));
+
+      console.log({ before: e, after: error });
+
       this.loggerHelper.log(req, error.getStatus() ?? 500, now);
       return throwError(() => error);
     };
