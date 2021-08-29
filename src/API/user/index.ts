@@ -6,7 +6,7 @@ export interface IUserController {
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserViewDTO>;
 
   retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: UserViewDTO[] }>;
-  getMe({ user }: { user: UserViewDTO }): Promise<UserViewDTO>;
+  getMe({ user }: { user: UserViewDTO }): UserViewDTO;
   get(userId: string): Promise<UserViewDTO>;
 
   disableMe({ user }: { user: UserViewDTO }): Promise<UserViewDTO>;

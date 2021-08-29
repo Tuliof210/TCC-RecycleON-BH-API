@@ -15,7 +15,7 @@ export class AuthService implements IAuthService {
   async validateUser(email: string, password: string) {
     const user = await this.userService.getByEmail(email, true);
     const authUser = await (user ? user.authenticate(password) : undefined);
-    return authUser ? authUser.view() : undefined;
+    return authUser ? authUser : undefined;
   }
 
   async login(payload: AuthPayloadDTO) {

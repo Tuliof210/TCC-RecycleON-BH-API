@@ -64,7 +64,7 @@ export class UserController implements IUserController {
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   getMe(@Request() { user }: { user: UserViewDTO }) {
-    return this.userService.getById(user._id);
+    return user.view(true);
   }
 
   @Get(':id')
