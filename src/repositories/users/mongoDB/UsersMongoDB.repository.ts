@@ -14,6 +14,10 @@ import { Document } from 'mongoose';
 export class UserMongoDBRepository implements IUserRepository {
   constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
+  private findOne(userQuery: Record<string, unknown>): Promise<void | UserViewDTO> {
+    return this.userModel.findOne(userQuery).exec();
+  }
+
   async save(user: User, fullView = false) {
     const createdUser = await this.userModel.create(user);
     return createdUser.view(fullView);
@@ -30,11 +34,6 @@ export class UserMongoDBRepository implements IUserRepository {
     throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 
-  async findOne(userQuery: Record<string, unknown>) {
-    const foundUser = await this.userModel.findOne(userQuery).exec();
-    return foundUser?.view(true);
-  }
-
   async getById(_id: string, fullView = false) {
     const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser.view(fullView);
@@ -42,9 +41,8 @@ export class UserMongoDBRepository implements IUserRepository {
     throw new CustomError({ name: 'Not Found', message: `User ${_id} not found` });
   }
 
-  async getByEmail(email: string, fullView = false) {
-    const foundUser = await this.findOne({ email });
-    return foundUser?.view(fullView);
+  getByEmail(email: string) {
+    return this.findOne({ email });
   }
 
   async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
@@ -59,10 +57,14 @@ export class UserMongoDBRepository implements IUserRepository {
     };
   }
 
-  async deactivate(userId: string, fullView = false) {
-    const foundUser = await this.getById(userId, true);
-    const disabledUser = await foundUser.disable();
-    return disabledUser.view(fullView);
+  async deactivate(_id: string, fullView = false) {
+    const foundUser = await this.findOne({ _id, active: true });
+    if (foundUser) {
+      const disabledUser = await foundUser.disable();
+      return disabledUser.view(fullView);
+    }
+
+    throw new CustomError({ name: 'Not Found', message: `User ${_id} not found` });
   }
 
   async delete(userId: string, fullView = false) {

@@ -13,7 +13,7 @@ export class AuthService implements IAuthService {
   ) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.userService.getByEmail(email, true);
+    const user = await this.userService.getByEmail(email);
     const authUser = await (user ? user.authenticate(password) : undefined);
     return authUser ? authUser : undefined;
   }

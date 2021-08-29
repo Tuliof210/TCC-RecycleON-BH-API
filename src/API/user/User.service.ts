@@ -29,8 +29,8 @@ export class UserService implements IUserService {
     return this.userRepository.getById(userId, fullView);
   }
 
-  getByEmail(email: string, fullView = false) {
-    return this.userRepository.getByEmail(email, fullView);
+  getByEmail(email: string) {
+    return this.userRepository.getByEmail(email);
   }
 
   disable(userId: string, fullView = false) {
