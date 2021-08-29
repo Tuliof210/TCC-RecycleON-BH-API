@@ -5,7 +5,7 @@ import { QueryParamsDTO } from 'src/shared/DTO';
 import { Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
-export class QueryParamsPipe implements PipeTransform {
+export class QueryParamsNormalizationPipe implements PipeTransform {
   transform(body: Record<string, any>): QueryParamsDTO {
     console.log('inside pipe', body);
 

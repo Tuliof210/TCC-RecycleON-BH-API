@@ -1,7 +1,7 @@
 import { User } from 'src/shared/entities';
 
-export type CreateUserDTO = Omit<User, '_id' | 'active' | 'role'>;
-export type UpdateUserDTO = Partial<Omit<User, '_id' | 'active' | 'password'>>;
+export type CreateUserDTO = Pick<User, 'name' | 'email'>;
+export type UpdateUserDTO = Partial<Pick<User, 'name' | 'email' | 'role'>>;
 export interface UserDocumentDTO extends Partial<User> {
   _id?: any;
   authenticate?: (password: string) => Promise<void | UserDocumentDTO>;

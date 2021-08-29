@@ -25,6 +25,9 @@ export class UserSchemaDTO extends Document implements UserDocumentDTO {
 
   @Prop({ required: true })
   active: boolean;
+
+  @Prop()
+  keyWords: string[];
 }
 
 export const UserCollection = 'User';

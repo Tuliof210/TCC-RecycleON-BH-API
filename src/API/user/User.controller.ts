@@ -1,7 +1,7 @@
 import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { masterConstants } from 'src/constants';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
-import { CreateUserValidationPipe, QueryParamsPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
+import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';
 
 import { UserRole } from 'src/shared/entities';
@@ -64,7 +64,7 @@ export class UserController implements IUserController {
   @Get()
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  retrieve(@Query(new QueryParamsPipe()) userQuery: QueryParamsDTO) {
+  retrieve(@Query(new QueryParamsNormalizationPipe()) userQuery: QueryParamsDTO) {
     return this.userService.retrieve(userQuery, true);
   }
 

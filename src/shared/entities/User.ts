@@ -12,9 +12,11 @@ export const PasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; //Minimum
 export class User extends Entity {
   public name: string;
   public email: string;
-  public password: string;
   public role: string;
   public active: boolean;
+
+  private password: string;
+  private keyWords: string[];
 
   constructor(props: CreateUserDTO) {
     super();
@@ -22,5 +24,12 @@ export class User extends Entity {
 
     this.role = UserRole.user;
     this.active = true;
+
+    this.mapKeyWords();
+  }
+
+  private mapKeyWords() {
+    const keyWordsList = [...this.name.split(' '), this.email.split('@')[0]];
+    this.keyWords = Array.from(new Set(keyWordsList));
   }
 }

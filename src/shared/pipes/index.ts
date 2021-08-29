@@ -1,3 +1,3 @@
 export { CreateUserValidationPipe } from './CreateUserValidation.pipe';
-export { QueryParamsPipe } from './QueryParams.pipe';
+export { QueryParamsNormalizationPipe } from './QueryParamsNormalization.pipe';
 export { UpdateUserValidationPipe } from './UpdateUserValidation.pipe';
