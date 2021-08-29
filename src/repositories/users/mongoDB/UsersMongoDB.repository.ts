@@ -50,8 +50,13 @@ export class UserMongoDBRepository implements IUserRepository {
 
     const countUsers = await this.userModel.countDocuments(query).exec();
     const retrievedUsers = await this.userModel.find(query, select, cursor).exec();
+    /**
+     * query => query data;
+     * select => inclusion OR exclusion [mixing types of selection will throw errors]
+     * cursor => skip, limit, sort [any kind of filtering]
+     */
     const mountUserList = (user: UserDocumentDTO & Document<any, any, UserDocumentDTO>) => {
-      console.log({ user });
+      //console.log({ user });
       return user.view(fullView);
     };
     return {
