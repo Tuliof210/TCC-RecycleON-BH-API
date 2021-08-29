@@ -71,7 +71,7 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
   }
 
   private turnKeysIntoSort(sortKeys: string[]) {
-    const sort: Record<string, number> = { createdAt: -1 };
+    const sort: Record<string, number> = {};
 
     const fillSortObject = (sortKey: string) => {
       const key = sortKey.replace('-', '');

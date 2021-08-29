@@ -63,13 +63,19 @@ UserSchema.methods.view = function (fullView = false): UserDocumentDTO {
 //---------------------------------------------------
 
 UserSchema.pre('save', function (next) {
+  console.log(this);
+  this.keyWords = updateKeyWords(this.name.split(' '), [this.email.split('@')[0]]);
+
   if (this.isModified('password')) {
     const saltOrRounds = 10;
-    const setEncryptPassword = (hash: string) => {
-      this.password = hash;
-      next();
-    };
-
-    bcrypt.hash(this.password, saltOrRounds).then(setEncryptPassword).catch(next);
-  } else next();
+    this.password = bcrypt.hashSync(this.password, saltOrRounds);
+  }
+  next();
 });
+
+function updateKeyWords(name: string[], email: string[]) {
+  console.log(name, email);
+
+  const keyWordsList = [...name, ...email];
+  return Array.from(new Set(keyWordsList));
+}
