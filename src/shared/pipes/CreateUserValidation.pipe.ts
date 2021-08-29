@@ -1,5 +1,5 @@
 import { CreateUserDTO } from 'src/shared/DTO';
-import { EmailRegex, PasswordRegex, UserRole } from 'src/shared/entities';
+import { EmailRegex, PasswordRegex } from 'src/shared/entities';
 
 import { PipeTransform, Injectable } from '@nestjs/common';
 

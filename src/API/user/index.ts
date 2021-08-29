@@ -11,6 +11,8 @@ export interface IUserController {
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
 
   retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: UserDocumentDTO[] }>;
+  turnIntoAdmin(userId: string): Promise<UserDocumentDTO>;
+
   getMe({ user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> }): UserDocumentDTO;
   get(userId: string): Promise<UserDocumentDTO>;
 

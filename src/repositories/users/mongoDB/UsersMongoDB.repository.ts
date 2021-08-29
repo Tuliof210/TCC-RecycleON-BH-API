@@ -56,7 +56,6 @@ export class UserMongoDBRepository implements IUserRepository {
      * cursor => skip, limit, sort [any kind of filtering]
      */
     const mountUserList = (user: UserDocumentDTO & Document<any, any, UserDocumentDTO>) => {
-      //console.log({ user });
       return user.view(fullView);
     };
     return {

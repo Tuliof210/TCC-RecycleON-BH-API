@@ -54,6 +54,13 @@ export class UserController implements IUserController {
     return this.userService.update(userId, userChanges);
   }
 
+  @Get(':id/turn-into-admin')
+  @Role(UserRole.admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  turnIntoAdmin(@Param('id') userId: string) {
+    return this.userService.update(userId, { role: UserRole.admin });
+  }
+
   @Get()
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
