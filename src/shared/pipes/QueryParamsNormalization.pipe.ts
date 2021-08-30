@@ -18,7 +18,7 @@ import { Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class QueryParamsNormalizationPipe implements PipeTransform {
-  transform(body: Record<string, any>): QueryParamsDTO {
+  transform(body: Record<string, string>): QueryParamsDTO {
     const select = this.mountSelect(body);
     const cursor = this.mountCursor(body);
     const query = this.mountQuery(body);
@@ -28,9 +28,9 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
 
   //-------------------------------------------------------------------
 
-  private mountSelect(body: Record<string, any>) {
+  private mountSelect(body: Record<string, string>) {
     if (body.select) {
-      const rawSelect = body.select as string;
+      const rawSelect = body.select;
       const exclusionSelection = rawSelect.includes('-');
       const rawSelectKeys = rawSelect.split(',');
 
@@ -56,9 +56,9 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
 
   //-------------------------------------------------------------------
 
-  private mountCursor(body: Record<string, any>) {
-    const limit = isNaN(body.limit) ? limitPerQuery : 1 * body.limit;
-    const skip = isNaN(body.page) ? 0 : limit * body.page - limit;
+  private mountCursor(body: Record<string, string>) {
+    const limit = Number(body.limit) ? Number(body.limit) : limitPerQuery;
+    const skip = Number(body.page) ? limit * Number(body.page) - limit : 0;
     const sort = this.mountSort(body.sort);
 
     delete body.limit;
@@ -91,7 +91,7 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
 
   //-------------------------------------------------------------------
 
-  private mountQuery(body: Record<string, any>) {
+  private mountQuery(body: Record<string, string>) {
     return body.q ? { keywords: this.mountKeywords(body.q.split(',')) } : { ...body };
   }
 
