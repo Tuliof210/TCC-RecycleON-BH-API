@@ -14,6 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     SharedModule,
     AuthModule,
     UserModule,
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot('mongodb://localhost/recycleon-bh', { useCreateIndex: true, useFindAndModify: false }),
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],

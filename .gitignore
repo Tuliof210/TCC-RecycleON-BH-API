@@ -5,3 +5,6 @@ node_modules
 # files
 package-lock.json
 *.mongodb
+
+# security
+.env
