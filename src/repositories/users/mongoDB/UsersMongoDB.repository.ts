@@ -14,10 +14,6 @@ import { Document } from 'mongoose';
 export class UserMongoDBRepository implements IUserRepository {
   constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
-  private findOne(userQuery: Record<string, unknown>): Promise<void | UserDocumentDTO> {
-    return this.userModel.findOne(userQuery).exec();
-  }
-
   async save(user: User, fullView = false) {
     const createdUser = await this.userModel.create(user);
     return createdUser.view(fullView);
@@ -34,15 +30,19 @@ export class UserMongoDBRepository implements IUserRepository {
     throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 
+  findOne(userQuery: Record<string, unknown>): Promise<void | (UserDocumentDTO & Document<any, any, UserDocumentDTO>)> {
+    return this.userModel.findOne(userQuery).exec();
+  }
+
+  getByEmail(email: string) {
+    return this.findOne({ email });
+  }
+
   async getById(_id: string, fullView = false) {
     const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser.view(fullView);
 
     throw new CustomError({ name: 'Not Found', message: `User ${_id} not found` });
-  }
-
-  getByEmail(email: string) {
-    return this.findOne({ email });
   }
 
   async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
