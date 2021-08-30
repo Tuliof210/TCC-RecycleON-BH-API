@@ -1,47 +1,40 @@
-import { CreateUserDTO, UpdateUserDTO, UserViewDTO } from 'src/shared/DTO';
-import { masterConstants } from 'src/constants';
-import { JwtAuthGuard, RoleGuard } from 'src/guards';
-import { CreateUserValidationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { JwtAuthGuard, MasterKeyAuthGuard, RoleGuard } from 'src/guards';
+import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';
-
+import { IAuthServiceToken, IAuthService } from 'src/API/auth';
 import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
 
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Headers,
-  Inject,
-  Param,
-  Patch,
-  Post,
-  Query,
-  Request,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
+
+import { Document } from 'mongoose';
 
 @Controller('users')
 export class UserController implements IUserController {
-  constructor(@Inject(IUserServiceToken) private readonly userService: IUserService) {}
+  constructor(
+    @Inject(IUserServiceToken) private readonly userService: IUserService,
+    @Inject(IAuthServiceToken) private readonly authService: IAuthService,
+  ) {}
 
   @Post()
-  create(@Headers('masterKey') masterKey: string, @Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
-    //TODO if you have some time, create a 'masterStrategy'
-    if (masterKey !== masterConstants.masterKey) throw new UnauthorizedException();
-    return this.userService.create(userData);
+  @UseGuards(MasterKeyAuthGuard)
+  async create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
+    const user = await this.userService.create(userData, true);
+    const { token } = await this.authService.login({ _id: user._id, email: user.email, role: user.role });
+
+    return { token, user };
   }
 
   @Patch('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  updateMe(
-    @Request() { user }: { user: UserViewDTO },
+  async updateMe(
+    @Request() { user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> },
     @Body(new UpdateUserValidationPipe()) userChanges: UpdateUserDTO,
   ) {
-    return this.userService.update(user._id, userChanges);
+    const updatedMe = await user.set(userChanges).save();
+    return updatedMe.view(true);
   }
 
   @Patch(':id')
@@ -51,19 +44,25 @@ export class UserController implements IUserController {
     return this.userService.update(userId, userChanges);
   }
 
+  @Get(':id/turn-into-admin')
+  @Role(UserRole.admin)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  turnIntoAdmin(@Param('id') userId: string) {
+    return this.userService.update(userId, { role: UserRole.admin });
+  }
+
   @Get()
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  retrieve(@Query() userQuery: any) {
-    //TODO remove this 'any' type
-    return this.userService.retrieve(userQuery);
+  retrieve(@Query(new QueryParamsNormalizationPipe()) userQuery: QueryParamsDTO) {
+    return this.userService.retrieve(userQuery, true);
   }
 
   @Get('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  getMe(@Request() { user }: { user: UserViewDTO }) {
-    return this.userService.getById(user._id);
+  getMe(@Request() { user }: { user: UserDocumentDTO }) {
+    return user.view(true);
   }
 
   @Get(':id')
@@ -76,7 +75,7 @@ export class UserController implements IUserController {
   @Delete('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  disableMe(@Request() { user }: { user: UserViewDTO }) {
+  disableMe(@Request() { user }: { user: UserDocumentDTO }) {
     return user.disable();
   }
 

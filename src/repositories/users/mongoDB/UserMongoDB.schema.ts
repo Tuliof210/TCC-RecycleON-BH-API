@@ -1,5 +1,5 @@
-import { UserRole, EmailRegex, PasswordRegex } from 'src/shared/entities';
-import { UserViewDTO } from 'src/shared/DTO';
+import { UserRole, EmailRegex } from 'src/shared/entities';
+import { UserDocumentDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
@@ -7,7 +7,7 @@ import { Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 @Schema({ versionKey: false, timestamps: true })
-export class UserSchemaDTO extends Document implements UserViewDTO {
+export class UserSchemaDTO extends Document implements UserDocumentDTO {
   @Prop({ required: true })
   _id: string;
 
@@ -17,7 +17,7 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
   @Prop({ required: true, unique: true, match: EmailRegex })
   email: string;
 
-  @Prop({ required: true, match: PasswordRegex })
+  @Prop({ required: true })
   password: string;
 
   @Prop({ required: true, default: UserRole.user, enum: UserRole })
@@ -25,41 +25,55 @@ export class UserSchemaDTO extends Document implements UserViewDTO {
 
   @Prop({ required: true })
   active: boolean;
+
+  @Prop()
+  keywords: string[];
 }
 
 export const UserCollection = 'User';
 export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
-export type UserModel = Model<UserViewDTO, Document>;
+export type UserModel = Model<UserDocumentDTO, Document>;
 
 //---------------------------------------------------
 
-UserSchema.methods.authenticate = function (password: string): Promise<void | UserViewDTO> {
-  return bcrypt.compare(password, this.password).then((valid) => (valid ? this : undefined));
+UserSchema.methods.authenticate = async function (password: string): Promise<void | UserDocumentDTO> {
+  const valid = await bcrypt.compare(password, this.password);
+  return valid ? this : undefined;
 };
 
 UserSchema.methods.disable = function () {
   return this.set({ active: false }).save();
 };
 
-UserSchema.methods.view = function (responseView = false): UserViewDTO {
-  const publicView = {};
+UserSchema.methods.view = function (fullView = false): UserDocumentDTO {
+  const userView = {};
   const publicKeys = ['_id', 'name', 'email', 'role'];
+  const privateKeys = [...publicKeys, 'active', 'createdAt', 'updatedAt'];
 
-  publicKeys.forEach((key) => (publicView[key] = this[key]));
-  return responseView ? this : publicView;
+  const mountUserView = (key: string) => {
+    userView[key] = this[key];
+  };
+
+  if (fullView) privateKeys.forEach(mountUserView);
+  else publicKeys.forEach(mountUserView);
+
+  return userView;
 };
 
 //---------------------------------------------------
 
 UserSchema.pre('save', function (next) {
+  this.keywords = updateKeywords(this.name.split(' '), [this.email.split('@')[0]]);
+
   if (this.isModified('password')) {
     const saltOrRounds = 10;
-    bcrypt
-      .hash(this.password, saltOrRounds)
-      .then((hash: string) => {
-        this.password = hash;
-        next();
-      })
-      .catch(next);
-  } else next();
+    this.password = bcrypt.hashSync(this.password, saltOrRounds);
+  }
+  console.log(this);
+  next();
 });
+
+function updateKeywords(name: string[], email: string[]) {
+  const keywordsList = [...name, ...email];
+  return Array.from(new Set(keywordsList));
+}

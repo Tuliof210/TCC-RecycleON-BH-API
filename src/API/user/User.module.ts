@@ -6,8 +6,10 @@ import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
 
 import { Module } from '@nestjs/common';
 
+import { AuthModule } from '../auth';
+
 @Module({
-  imports: [UserMongoDBRepositoryModule],
+  imports: [UserMongoDBRepositoryModule, AuthModule],
   controllers: [UserController],
   providers: [{ provide: IUserServiceToken, useClass: UserService }],
   exports: [{ provide: IUserServiceToken, useClass: UserService }],

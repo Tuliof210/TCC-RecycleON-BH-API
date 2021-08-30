@@ -2,7 +2,7 @@ import { User } from 'src/shared/entities';
 
 import { IUserService } from '.';
 import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
-import { CreateUserDTO, UpdateUserDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -19,7 +19,7 @@ export class UserService implements IUserService {
     return this.userRepository.update(userId, userChanges, fullView);
   }
 
-  retrieve(userQuery: Record<string, unknown>, fullView = false) {
+  retrieve(userQuery: QueryParamsDTO, fullView = false) {
     return this.userRepository.retrieveAll(userQuery, fullView);
   }
 
@@ -27,8 +27,8 @@ export class UserService implements IUserService {
     return this.userRepository.getById(userId, fullView);
   }
 
-  getByEmail(email: string, fullView = false) {
-    return this.userRepository.getByEmail(email, fullView);
+  getByEmail(email: string) {
+    return this.userRepository.getByEmail(email);
   }
 
   disable(userId: string, fullView = false) {

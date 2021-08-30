@@ -1,11 +1,14 @@
 import { IUserRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { UpdateUserDTO } from 'src/shared/DTO';
+import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
+import { CustomError } from 'src/shared/classes';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+
+import { Document } from 'mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
@@ -24,46 +27,52 @@ export class UserMongoDBRepository implements IUserRepository {
       .exec();
     if (updatedUser) return updatedUser.view(fullView);
 
-    //TODO fix sonar
-    throw { name: 'Not Found', message: `User ${userId} not found` };
+    throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 
-  async findOne(userQuery: Record<string, unknown>) {
-    const foundUser = await this.userModel.findOne(userQuery).exec();
-    return foundUser?.view(true);
+  findOne(userQuery: Record<string, unknown>): Promise<void | (UserDocumentDTO & Document<any, any, UserDocumentDTO>)> {
+    return this.userModel.findOne(userQuery).exec();
+  }
+
+  getByEmail(email: string) {
+    return this.findOne({ email });
   }
 
   async getById(_id: string, fullView = false) {
     const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser.view(fullView);
 
-    throw { name: 'Not Found', message: `User ${_id} not found` };
+    throw new CustomError({ name: 'Not Found', message: `User ${_id} not found` });
   }
 
-  async getByEmail(email: string, fullView = false) {
-    const foundUser = await this.findOne({ email });
-    return foundUser?.view(fullView);
-  }
+  async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
+    console.log(query);
+    console.log(select);
+    console.log(cursor);
 
-  async retrieveAll(userQuery: Record<string, unknown>, fullView = false) {
-    const countUsers = await this.userModel.countDocuments(userQuery).exec();
-    const retrievedUsers = await this.userModel.find(userQuery).exec();
+    const countUsers = await this.userModel.countDocuments(query).exec();
+    const retrievedUsers = await this.userModel.find(query, select, cursor).exec();
+
     return {
       count: countUsers,
       list: retrievedUsers.map((user) => user.view(fullView)),
     };
   }
 
-  async deactivate(userId: string, fullView = false) {
-    const foundUser = await this.getById(userId, true);
-    const disabledUser = await foundUser.disable();
-    return disabledUser.view(fullView);
+  async deactivate(_id: string, fullView = false) {
+    const foundUser = await this.findOne({ _id, active: true });
+    if (foundUser) {
+      const disabledUser = await foundUser.disable();
+      return disabledUser.view(fullView);
+    }
+
+    throw new CustomError({ name: 'Not Found', message: `User ${_id} not found` });
   }
 
   async delete(userId: string, fullView = false) {
     const deletedUser = await this.userModel.findOneAndDelete({ _id: userId }).exec();
     if (deletedUser) return deletedUser.view(fullView);
 
-    throw { name: 'Not Found', message: `User ${userId} not found` };
+    throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 }

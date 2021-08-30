@@ -1,29 +1,25 @@
-import { jwtConstants } from 'src/constants';
+import { jwtsecret } from 'src/constants';
 
-import { AuthPayloadDTO, UserViewDTO } from 'src/shared/DTO';
-import { UserModel } from 'src/repositories/users/mongoDB';
-import { UserCollection } from 'src/repositories/users/mongoDB/UserMongoDB.schema';
+import { AuthPayloadDTO } from 'src/shared/DTO';
 
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
+
+import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(@InjectModel(UserCollection) private userModel: UserModel) {
+  constructor(@Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret,
+      secretOrKey: jwtsecret,
     });
   }
 
-  async validate(payload: AuthPayloadDTO): Promise<UserViewDTO> {
-    const user = await this.userModel.findOne({ _id: payload._id }).exec();
-    console.log({ payload, user });
-
-    return user?.view(true);
+  validate(payload: AuthPayloadDTO) {
+    return this.userRepository.findOne({ _id: payload._id });
   }
 }

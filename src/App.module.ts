@@ -6,6 +6,7 @@ import { UserModule } from './API/user';
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -13,7 +14,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     SharedModule,
     AuthModule,
     UserModule,
-    MongooseModule.forRoot('mongodb://localhost/nest', { useCreateIndex: true, useFindAndModify: false }),
+    MongooseModule.forRoot('mongodb://localhost/recycleon-bh', { useCreateIndex: true, useFindAndModify: false }),
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
 })
