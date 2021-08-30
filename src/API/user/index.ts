@@ -3,7 +3,7 @@ import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 's
 import { Document } from 'mongoose';
 
 export interface IUserController {
-  create(masterKey: string, userData: CreateUserDTO): Promise<UserDocumentDTO>;
+  create(masterKey: string, userData: CreateUserDTO): Promise<{ token: string; user: UserDocumentDTO }>;
   updateMe(
     { user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> },
     userChanges: UpdateUserDTO,

@@ -3,6 +3,7 @@ import { masterConstants } from 'src/constants';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';
+import { IAuthServiceToken, IAuthService } from 'src/API/auth';
 
 import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
@@ -27,13 +28,20 @@ import { Document } from 'mongoose';
 
 @Controller('users')
 export class UserController implements IUserController {
-  constructor(@Inject(IUserServiceToken) private readonly userService: IUserService) {}
+  constructor(
+    @Inject(IUserServiceToken) private readonly userService: IUserService,
+    @Inject(IAuthServiceToken) private readonly authService: IAuthService,
+  ) {}
 
   @Post()
-  create(@Headers('masterKey') masterKey: string, @Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
+  async create(@Headers('masterKey') masterKey: string, @Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     //TODO if you have some time, create a 'masterStrategy'
     if (masterKey !== masterConstants.masterKey) throw new UnauthorizedException();
-    return this.userService.create(userData);
+
+    const user = await this.userService.create(userData, true);
+    const { token } = await this.authService.login({ _id: user._id, email: user.email, role: user.role });
+
+    return { token, user };
   }
 
   @Patch('me')
