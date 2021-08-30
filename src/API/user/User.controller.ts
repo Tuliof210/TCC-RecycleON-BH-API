@@ -1,28 +1,12 @@
 import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
-import { masterConstants } from 'src/constants';
-import { JwtAuthGuard, RoleGuard } from 'src/guards';
+import { JwtAuthGuard, MasterKeyAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';
 import { IAuthServiceToken, IAuthService } from 'src/API/auth';
-
 import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
 
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Headers,
-  Inject,
-  Param,
-  Patch,
-  Post,
-  Query,
-  Request,
-  UnauthorizedException,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
 
 import { Document } from 'mongoose';
 
@@ -34,10 +18,8 @@ export class UserController implements IUserController {
   ) {}
 
   @Post()
-  async create(@Headers('masterKey') masterKey: string, @Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
-    //TODO if you have some time, create a 'masterStrategy'
-    if (masterKey !== masterConstants.masterKey) throw new UnauthorizedException();
-
+  @UseGuards(MasterKeyAuthGuard)
+  async create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     const user = await this.userService.create(userData, true);
     const { token } = await this.authService.login({ _id: user._id, email: user.email, role: user.role });
 
