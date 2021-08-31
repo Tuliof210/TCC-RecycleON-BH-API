@@ -1,8 +1,13 @@
 import { CanActivate, ExecutionContext, UnauthorizedException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class MasterKeyAuthGuard implements CanActivate {
-  private masterkey = process.env.MASTER_KEY;
+  private masterkey: string;
+
+  constructor(private readonly config: ConfigService) {
+    this.masterkey = this.config.get<string>('secretkeys')['master'];
+  }
   canActivate(context: ExecutionContext): boolean {
     const { headers } = context.switchToHttp().getRequest();
 
