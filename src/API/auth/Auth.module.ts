@@ -9,14 +9,19 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
+import { ConfigService } from '@nestjs/config';
+
 @Module({
   imports: [
     UserMongoDBRepositoryModule,
     PassportModule.register({
       session: false,
     }),
-    JwtModule.register({
-      secret: '55', //TODO fix jwt secret on env
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('secretkeys')['jwt'],
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],

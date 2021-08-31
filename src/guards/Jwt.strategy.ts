@@ -7,18 +7,22 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
+import { ConfigService } from '@nestjs/config';
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(@Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository) {
+  constructor(
+    @Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository,
+    private readonly config: ConfigService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: '55', //TODO fix jwt secret on env
+      secretOrKey: config.get<string>('secretkeys')['jwt'],
     });
   }
 
   validate(payload: AuthPayloadDTO) {
-    console.log(payload);
     return this.userRepository.findOne({ _id: payload._id });
   }
 }
