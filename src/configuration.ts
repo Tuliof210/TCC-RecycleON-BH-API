@@ -1,4 +1,5 @@
 export default () => ({
+  environment: process.env.ENVIRONMENT || 'development',
   port: parseInt(process.env.HOST_PORT, 10) || 3070,
   database: process.env.DATABASE_HOST,
   secretkeys: {
