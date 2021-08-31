@@ -1,5 +1,3 @@
-import { jwtsecret } from 'src/constants';
-
 import { AuthPayloadDTO } from 'src/shared/DTO';
 
 import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
@@ -15,7 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtsecret,
+      secretOrKey: process.env.JWT_SECRET,
     });
   }
 

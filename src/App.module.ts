@@ -1,3 +1,5 @@
+import configuration from './configuration';
+
 import { SharedModule } from './shared';
 import { ResponseInterceptor } from './interceptors';
 
@@ -14,8 +16,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     SharedModule,
     AuthModule,
     UserModule,
-    ConfigModule.forRoot({ isGlobal: true }),
-    MongooseModule.forRoot('mongodb://localhost/recycleon-bh', { useCreateIndex: true, useFindAndModify: false }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: './env/.env', load: [configuration] }),
+    MongooseModule.forRoot(process.env.DATABASE_HOST, { useCreateIndex: true, useFindAndModify: false }),
   ],
   providers: [{ provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
 })

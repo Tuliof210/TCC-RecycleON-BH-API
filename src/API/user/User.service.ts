@@ -11,6 +11,8 @@ export class UserService implements IUserService {
   constructor(@Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository) {}
 
   create(userData: CreateUserDTO, fullView = false) {
+    console.log({ env: process.env });
+
     const user = new User(userData);
     return this.userRepository.save(user, fullView);
   }

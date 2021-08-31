@@ -1,5 +1,3 @@
-import { limitPerQuery } from 'src/constants';
-
 import { QueryParamsDTO } from 'src/shared/DTO';
 
 import { Injectable, PipeTransform } from '@nestjs/common';
@@ -18,6 +16,8 @@ import { Injectable, PipeTransform } from '@nestjs/common';
 
 @Injectable()
 export class QueryParamsNormalizationPipe implements PipeTransform {
+  private limitPerQuery = Number(process.env.QUERY_RESPONSE_LIMIT) || 10;
+
   transform(body: Record<string, string>): QueryParamsDTO {
     const select = this.mountSelect(body);
     const cursor = this.mountCursor(body);
@@ -57,7 +57,7 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
   //-------------------------------------------------------------------
 
   private mountCursor(body: Record<string, string>) {
-    const limit = Number(body.limit) ? Number(body.limit) : limitPerQuery;
+    const limit = Number(body.limit) ? Number(body.limit) : this.limitPerQuery;
     const skip = Number(body.page) ? limit * Number(body.page) - limit : 0;
     const sort = this.mountSort(body.sort);
 
