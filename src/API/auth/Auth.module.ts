@@ -2,7 +2,6 @@ import { IAuthServiceToken } from '.';
 import { AuthService } from './Auth.service';
 import { AuthController } from './Auth.controller';
 
-import { jwtsecret } from 'src/constants';
 import { BasicStrategy, JwtStrategy } from 'src/guards';
 import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
 
@@ -10,15 +9,19 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
+import { ConfigService } from '@nestjs/config';
+
 @Module({
   imports: [
     UserMongoDBRepositoryModule,
     PassportModule.register({
       session: false,
     }),
-    JwtModule.register({
-      secret: jwtsecret,
-      signOptions: { expiresIn: '86400s' },
+    JwtModule.registerAsync({
+      useFactory: async (config: ConfigService) => ({
+        secret: config.get<string>('secretkeys')['jwt'],
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],

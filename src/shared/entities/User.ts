@@ -14,7 +14,7 @@ export class User extends Entity {
   public email: string;
   public role: string;
   public active: boolean;
-  private password: string;
+  public password: string;
 
   constructor(props: CreateUserDTO) {
     super();
