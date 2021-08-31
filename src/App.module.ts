@@ -18,8 +18,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './env/.env', load: [configuration] }),
     MongooseModule.forRootAsync({
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('database'),
+      useFactory: async (config: ConfigService) => ({
+        uri: config.get<string>('database'),
         useCreateIndex: true,
         useFindAndModify: false,
       }),
