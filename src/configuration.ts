@@ -5,5 +5,4 @@ export default () => ({
     jwt: process.env.JWT_SECRET,
     master: process.env.MASTER_KEY,
   },
-  responseLimit: parseInt(process.env.RESPONSE_LIMIT, 10) || 10,
 });
