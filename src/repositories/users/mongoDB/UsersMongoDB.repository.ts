@@ -46,10 +46,6 @@ export class UserMongoDBRepository implements IUserRepository {
   }
 
   async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
-    console.log(query);
-    console.log(select);
-    console.log(cursor);
-
     const countUsers = await this.userModel.countDocuments(query).exec();
     const retrievedUsers = await this.userModel.find(query, select, cursor).exec();
 

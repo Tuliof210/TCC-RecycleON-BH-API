@@ -69,7 +69,6 @@ UserSchema.pre('save', function (next) {
     const saltOrRounds = 10;
     this.password = bcrypt.hashSync(this.password, saltOrRounds);
   }
-  console.log(this);
   next();
 });
 

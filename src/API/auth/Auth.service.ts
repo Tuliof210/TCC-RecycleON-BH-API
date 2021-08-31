@@ -19,7 +19,6 @@ export class AuthService implements IAuthService {
   }
 
   async login(payload: AuthPayloadDTO) {
-    console.log(this.jwtService);
     return { token: this.jwtService.sign(payload) };
   }
 }
