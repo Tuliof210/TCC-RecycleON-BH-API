@@ -75,8 +75,9 @@ export class UserController implements IUserController {
   @Delete('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  disableMe(@Request() { user }: { user: UserDocumentDTO }) {
-    return user.disable();
+  async disableMe(@Request() { user }: { user: UserDocumentDTO }) {
+    const me = await user.disable();
+    return me.view();
   }
 
   @Delete(':id')
