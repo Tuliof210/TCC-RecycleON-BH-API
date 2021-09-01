@@ -2,7 +2,7 @@ import { AuthPayloadDTO } from 'src/shared/DTO';
 import { BasicAuthGuard } from 'src/guards';
 import { IAuthServiceToken, IAuthController, IAuthService } from '.';
 
-import { Controller, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController implements IAuthController {
@@ -13,5 +13,12 @@ export class AuthController implements IAuthController {
   @UseGuards(BasicAuthGuard)
   login(@Request() { user }: { user: AuthPayloadDTO }) {
     return this.authService.login(user);
+  }
+
+  @Get()
+  test() {
+    return {
+      message: 'Hello i am yout free test',
+    };
   }
 }
