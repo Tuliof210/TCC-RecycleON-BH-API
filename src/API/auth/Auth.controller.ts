@@ -15,7 +15,7 @@ export class AuthController implements IAuthController {
     return this.authService.login(user);
   }
 
-  @Get()
+  @Get('test')
   test() {
     return {
       message: 'Hello i am yout free test',
