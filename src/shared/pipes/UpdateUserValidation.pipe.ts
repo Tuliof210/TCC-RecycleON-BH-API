@@ -17,6 +17,6 @@ export class UpdateUserValidationPipe implements PipeTransform {
     const validBody = await this.schema.validate(body);
     const castObject = this.schema.cast(validBody, { stripUnknown: true });
 
-    return { name: castObject.name, email: castObject.email };
+    return { name: castObject.name };
   }
 }
