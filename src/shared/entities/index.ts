@@ -7,4 +7,5 @@ export class Entity {
   }
 }
 
+export { Location } from './Location';
 export { UserRole, User, EmailRegex, PasswordRegex } from './User';
