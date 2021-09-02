@@ -10,7 +10,7 @@ export interface IUserController {
   ): Promise<UserDocumentDTO>;
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
 
-  retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: UserDocumentDTO[] }>;
+  retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: Array<UserDocumentDTO> }>;
   turnIntoAdmin(userId: string): Promise<UserDocumentDTO>;
 
   getMe({ user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> }): UserDocumentDTO;
@@ -25,7 +25,7 @@ export interface IUserService {
   create(userData: CreateUserDTO, fullView?: boolean): Promise<UserDocumentDTO>;
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDocumentDTO>;
 
-  retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: UserDocumentDTO[] }>;
+  retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<UserDocumentDTO> }>;
   getById(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
   getByEmail(email: string, fullView?: boolean): Promise<void | UserDocumentDTO>;
 

@@ -10,7 +10,7 @@ export interface IUserRepository {
   findOne(userQuery: Record<string, unknown>): Promise<void | (UserDocumentDTO & Document<any, any, UserDocumentDTO>)>;
   getById(_id: string, fullView?: boolean): Promise<UserDocumentDTO>;
   getByEmail(email: string, fullView?: boolean): Promise<void | UserDocumentDTO>;
-  retrieveAll(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: UserDocumentDTO[] }>;
+  retrieveAll(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<UserDocumentDTO> }>;
 
   deactivate(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
   delete(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
