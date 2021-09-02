@@ -1,7 +1,7 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
 import { IAuthService } from '.';
 
-import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
+import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';

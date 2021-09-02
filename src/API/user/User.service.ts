@@ -1,7 +1,7 @@
 import { User } from 'src/shared/entities';
 
 import { IUserService } from '.';
-import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
+import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
 import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';

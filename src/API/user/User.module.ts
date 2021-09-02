@@ -2,7 +2,7 @@ import { IUserServiceToken } from '.';
 import { UserService } from './User.service';
 import { UserController } from './User.controller';
 
-import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
+import { UserMongoDBRepositoryModule } from 'src/repositories/user/mongoDB';
 
 import { Module } from '@nestjs/common';
 

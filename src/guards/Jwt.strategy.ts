@@ -1,6 +1,6 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
 
-import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
+import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';

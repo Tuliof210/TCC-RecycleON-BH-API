@@ -3,7 +3,7 @@ import { AuthService } from './Auth.service';
 import { AuthController } from './Auth.controller';
 
 import { BasicStrategy, JwtStrategy } from 'src/guards';
-import { UserMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
+import { UserMongoDBRepositoryModule } from 'src/repositories/user/mongoDB';
 
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
