@@ -1,8 +1,6 @@
 import { User } from 'src/shared/entities';
 import { UserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
-import { Document } from 'mongoose';
-
 export interface IUserRepository {
   save(user: User, fullView?: boolean): Promise<UserDTO>;
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;

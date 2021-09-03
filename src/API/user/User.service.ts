@@ -2,11 +2,9 @@ import { User } from 'src/shared/entities';
 
 import { IUserService } from '.';
 import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, UserDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
-
-import { Document } from 'mongoose';
 
 @Injectable()
 export class UserService implements IUserService {

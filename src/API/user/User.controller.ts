@@ -8,8 +8,6 @@ import { Role } from 'src/shared/decorators';
 
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
 
-import { Document } from 'mongoose';
-
 @Controller('users')
 export class UserController implements IUserController {
   constructor(
