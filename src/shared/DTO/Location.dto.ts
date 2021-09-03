@@ -8,3 +8,5 @@ export interface LocationDTO extends Partial<Location> {
   view?: (fullView?: boolean) => LocationDTO;
 }
 export type LocationDocumentDTO = LocationDTO & Document<any, any, LocationDTO>;
+
+export type LocationMapDTO = { type: string; features: Array<LocationDTO> };

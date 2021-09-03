@@ -1,4 +1,4 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, UserDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { JwtAuthGuard, MasterKeyAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';

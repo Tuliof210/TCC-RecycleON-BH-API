@@ -1,7 +1,7 @@
 import { IUserRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, UserDTO } from 'src/shared/DTO';
+import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
 import { CustomError } from 'src/shared/classes';
 
