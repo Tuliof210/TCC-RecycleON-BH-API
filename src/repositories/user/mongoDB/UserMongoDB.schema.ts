@@ -1,5 +1,5 @@
 import { UserRole, EmailRegex } from 'src/shared/entities';
-import { UserDocumentDTO } from 'src/shared/DTO';
+import { UserDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
@@ -7,7 +7,7 @@ import { Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 @Schema({ versionKey: false, timestamps: true })
-class UserProps extends Document implements UserDocumentDTO {
+class UserProps extends Document implements UserDTO {
   @Prop({ required: true })
   _id: string;
 
@@ -32,11 +32,11 @@ class UserProps extends Document implements UserDocumentDTO {
 export const UserSchema = SchemaFactory.createForClass(UserProps);
 
 export const UserCollection = 'User';
-export type UserModel = Model<UserDocumentDTO, Document>;
+export type UserModel = Model<UserDTO, Document>;
 
 //=================================================================================
 
-UserSchema.methods.authenticate = async function (password: string): Promise<void | UserDocumentDTO> {
+UserSchema.methods.authenticate = async function (password: string): Promise<void | UserDTO> {
   const valid = await bcrypt.compare(password, this.password);
   return valid ? this : undefined;
 };
@@ -45,7 +45,7 @@ UserSchema.methods.disable = function () {
   return this.set({ active: false }).save();
 };
 
-UserSchema.methods.view = function (fullView = false): UserDocumentDTO {
+UserSchema.methods.view = function (fullView = false): UserDTO {
   const userView = {};
   const publicKeys = ['_id', 'name', 'email', 'role'];
   const privateKeys = [...publicKeys, 'active', 'createdAt', 'updatedAt'];

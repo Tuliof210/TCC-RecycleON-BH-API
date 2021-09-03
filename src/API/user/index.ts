@@ -1,36 +1,32 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
-
-import { Document } from 'mongoose';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
 export interface IUserController {
-  create(userData: CreateUserDTO): Promise<{ token: string; user: UserDocumentDTO }>;
-  updateMe(
-    { user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> },
-    userChanges: UpdateUserDTO,
-  ): Promise<UserDocumentDTO>;
-  update(userId: string, userChanges: UpdateUserDTO): Promise<UserDocumentDTO>;
+  create(userData: CreateUserDTO): Promise<{ token: string; user: UserDTO }>;
+  updateMe({ user }: { user: UserDocumentDTO }, userChanges: UpdateUserDTO): Promise<UserDTO>;
+  update(userId: string, userChanges: UpdateUserDTO): Promise<UserDTO>;
 
-  retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: Array<UserDocumentDTO> }>;
-  turnIntoAdmin(userId: string): Promise<UserDocumentDTO>;
+  retrieve(userQuery: QueryParamsDTO): Promise<{ count: number; list: Array<UserDTO> }>;
+  turnIntoAdmin(userId: string): Promise<UserDTO>;
 
-  getMe({ user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> }): UserDocumentDTO;
-  get(userId: string): Promise<UserDocumentDTO>;
+  getMe({ user }: { user: UserDocumentDTO }): UserDTO;
+  get(userId: string): Promise<UserDTO>;
 
-  disableMe({ user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> }): Promise<UserDocumentDTO>;
-  disable(userId: string): Promise<UserDocumentDTO>;
-  delete(userId: string): Promise<UserDocumentDTO>;
+  disableMe({ user }: { user: UserDocumentDTO }): Promise<UserDTO>;
+  disable(userId: string): Promise<UserDTO>;
+  delete(userId: string): Promise<UserDTO>;
 }
 
 export interface IUserService {
-  create(userData: CreateUserDTO, fullView?: boolean): Promise<UserDocumentDTO>;
-  update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDocumentDTO>;
+  create(userData: CreateUserDTO, fullView?: boolean): Promise<UserDTO>;
+  updateMe(user: UserDocumentDTO, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;
+  update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;
 
-  retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<UserDocumentDTO> }>;
-  getById(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
-  getByEmail(email: string, fullView?: boolean): Promise<void | UserDocumentDTO>;
+  retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<UserDTO> }>;
+  getById(userId: string, fullView?: boolean): Promise<UserDTO>;
+  getByEmail(email: string, fullView?: boolean): Promise<void | UserDTO>;
 
-  disable(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
-  delete(userId: string, fullView?: boolean): Promise<UserDocumentDTO>;
+  disable(userId: string, fullView?: boolean): Promise<UserDTO>;
+  delete(userId: string, fullView?: boolean): Promise<UserDTO>;
 }
 export const IUserServiceToken = 'IUserServiceToken';
 

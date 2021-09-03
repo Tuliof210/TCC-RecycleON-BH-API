@@ -1,14 +1,12 @@
 import { IUserRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
-import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, UserDTO } from 'src/shared/DTO';
 import { UserCollection } from './UserMongoDB.schema';
 import { CustomError } from 'src/shared/classes';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-
-import { Document } from 'mongoose';
 
 @Injectable()
 export class UserMongoDBRepository implements IUserRepository {
@@ -30,7 +28,7 @@ export class UserMongoDBRepository implements IUserRepository {
     throw new CustomError({ name: 'Not Found', message: `User ${userId} not found` });
   }
 
-  findOne(userQuery: Record<string, unknown>): Promise<void | (UserDocumentDTO & Document<any, any, UserDocumentDTO>)> {
+  findOne(userQuery: Record<string, unknown>): Promise<void | UserDocumentDTO> {
     return this.userModel.findOne(userQuery).exec();
   }
 

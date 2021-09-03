@@ -1,4 +1,4 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, UserDTO } from 'src/shared/DTO';
 import { JwtAuthGuard, MasterKeyAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
 import { IUserController, IUserService, IUserServiceToken } from '.';
@@ -29,12 +29,11 @@ export class UserController implements IUserController {
   @Patch('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  async updateMe(
-    @Request() { user }: { user: UserDocumentDTO & Document<any, any, UserDocumentDTO> },
+  updateMe(
+    @Request() { user }: { user: UserDocumentDTO },
     @Body(new UpdateUserValidationPipe()) userChanges: UpdateUserDTO,
   ) {
-    const updatedMe = await user.set(userChanges).save();
-    return updatedMe.view(true);
+    return this.userService.updateMe(user, userChanges, true);
   }
 
   @Patch(':id')
@@ -61,7 +60,7 @@ export class UserController implements IUserController {
   @Get('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  getMe(@Request() { user }: { user: UserDocumentDTO }) {
+  getMe(@Request() { user }: { user: UserDTO }) {
     return user.view(true);
   }
 
@@ -75,7 +74,7 @@ export class UserController implements IUserController {
   @Delete('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  async disableMe(@Request() { user }: { user: UserDocumentDTO }) {
+  async disableMe(@Request() { user }: { user: UserDTO }) {
     const me = await user.disable();
     return me.view();
   }

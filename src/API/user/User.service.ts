@@ -2,9 +2,11 @@ import { User } from 'src/shared/entities';
 
 import { IUserService } from '.';
 import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, UserDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
+
+import { Document } from 'mongoose';
 
 @Injectable()
 export class UserService implements IUserService {
@@ -13,6 +15,11 @@ export class UserService implements IUserService {
   create(userData: CreateUserDTO, fullView = false) {
     const user = new User(userData);
     return this.userRepository.save(user, fullView);
+  }
+
+  async updateMe(user: UserDocumentDTO, userChanges: UpdateUserDTO, fullView = false) {
+    const updatedMe = await user.set(userChanges).save();
+    return updatedMe.view(fullView);
   }
 
   update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
