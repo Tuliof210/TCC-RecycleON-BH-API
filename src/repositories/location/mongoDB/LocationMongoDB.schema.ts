@@ -1,4 +1,4 @@
-import { LocationDocumentDTO } from 'src/shared/DTO';
+import { LocationDTO } from 'src/shared/DTO';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
@@ -38,7 +38,7 @@ const PropertiesSchema = SchemaFactory.createForClass(PropertiesProps);
 //=================================================================================
 
 @Schema({ versionKey: true, timestamps: true })
-class LocationProps extends Document implements LocationDocumentDTO {
+class LocationProps extends Document implements LocationDTO {
   @Prop({ required: true })
   _id: string;
 
@@ -51,10 +51,10 @@ class LocationProps extends Document implements LocationDocumentDTO {
 
 export const LocationSchema = SchemaFactory.createForClass(LocationProps);
 export const LocationCollection = 'Location';
-export type LocationModel = Model<LocationDocumentDTO, Document>;
+export type LocationModel = Model<LocationDTO, Document>;
 
 //=================================================================================
 
-LocationSchema.methods.view = function (): LocationDocumentDTO {
+LocationSchema.methods.view = function (): LocationDTO {
   return this;
 };

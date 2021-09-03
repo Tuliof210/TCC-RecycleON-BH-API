@@ -20,7 +20,6 @@ export class UserController implements IUserController {
   async create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     const user = await this.userService.create(userData, true);
     const { token } = await this.authService.login({ _id: user._id, email: user.email, role: user.role });
-
     return { token, user };
   }
 
@@ -58,8 +57,8 @@ export class UserController implements IUserController {
   @Get('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  getMe(@Request() { user }: { user: UserDTO }) {
-    return user.view(true);
+  getMe(@Request() { user }: { user: UserDocumentDTO }) {
+    return this.userService.getMe(user, true);
   }
 
   @Get(':id')
@@ -72,9 +71,8 @@ export class UserController implements IUserController {
   @Delete('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  async disableMe(@Request() { user }: { user: UserDTO }) {
-    const me = await user.disable();
-    return me.view();
+  disableMe(@Request() { user }: { user: UserDocumentDTO }) {
+    return this.userService.disableMe(user);
   }
 
   @Delete(':id')

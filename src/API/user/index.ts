@@ -22,9 +22,11 @@ export interface IUserService {
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;
 
   retrieve(userQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<UserDTO> }>;
+  getMe(user: UserDocumentDTO, fullView?: boolean): UserDTO;
   getById(userId: string, fullView?: boolean): Promise<UserDTO>;
   getByEmail(email: string, fullView?: boolean): Promise<void | UserDTO>;
 
+  disableMe(user: UserDocumentDTO, fullView?: boolean): Promise<UserDTO>;
   disable(userId: string, fullView?: boolean): Promise<UserDTO>;
   delete(userId: string, fullView?: boolean): Promise<UserDTO>;
 }

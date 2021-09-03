@@ -28,12 +28,21 @@ export class UserService implements IUserService {
     return this.userRepository.retrieveAll(userQuery, fullView);
   }
 
+  getMe(user: UserDocumentDTO, fullView = false) {
+    return user.view(fullView);
+  }
+
   getById(userId: string, fullView = false) {
     return this.userRepository.getById(userId, fullView);
   }
 
   getByEmail(email: string) {
     return this.userRepository.getByEmail(email);
+  }
+
+  async disableMe(user: UserDocumentDTO, fullView = false) {
+    const me = await user.disable();
+    return me.view(fullView);
   }
 
   disable(userId: string, fullView = false) {
