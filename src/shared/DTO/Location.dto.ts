@@ -4,6 +4,5 @@ export type CreateLocationDTO = Pick<Location, 'properties'> & { coordinates: [n
 
 export interface LocationDocumentDTO extends Partial<Location> {
   _id?: any;
-  disable?: () => Promise<LocationDocumentDTO>;
   view?: (fullView?: boolean) => LocationDocumentDTO;
 }

@@ -7,7 +7,7 @@ import { Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 @Schema({ versionKey: false, timestamps: true })
-export class UserSchemaDTO extends Document implements UserDocumentDTO {
+class UserProps extends Document implements UserDocumentDTO {
   @Prop({ required: true })
   _id: string;
 
@@ -29,12 +29,12 @@ export class UserSchemaDTO extends Document implements UserDocumentDTO {
   @Prop()
   keywords: string[];
 }
+export const UserSchema = SchemaFactory.createForClass(UserProps);
 
 export const UserCollection = 'User';
-export const UserSchema = SchemaFactory.createForClass(UserSchemaDTO);
 export type UserModel = Model<UserDocumentDTO, Document>;
 
-//---------------------------------------------------
+//=================================================================================
 
 UserSchema.methods.authenticate = async function (password: string): Promise<void | UserDocumentDTO> {
   const valid = await bcrypt.compare(password, this.password);
@@ -60,7 +60,7 @@ UserSchema.methods.view = function (fullView = false): UserDocumentDTO {
   return userView;
 };
 
-//---------------------------------------------------
+//=================================================================================
 
 UserSchema.pre('save', function (next) {
   this.keywords = updateKeywords(this.name.split(' '), [this.email.split('@')[0]]);
