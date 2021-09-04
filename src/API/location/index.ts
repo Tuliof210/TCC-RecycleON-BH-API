@@ -16,4 +16,4 @@ export interface ILocationService {
 }
 export const ILocationServiceToken = 'ILocationServiceToken';
 
-export {} from './Location.module';
+export { LocationModule } from './Location.module';

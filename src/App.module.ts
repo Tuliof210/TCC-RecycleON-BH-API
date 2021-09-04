@@ -3,7 +3,7 @@ import { ResponseInterceptor } from './interceptors';
 
 import { AuthModule } from './API/auth';
 import { UserModule } from './API/user';
-import { LocationModule } from './API/location/Location.module';
+import { LocationModule } from './API/location';
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
