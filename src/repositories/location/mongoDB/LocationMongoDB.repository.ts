@@ -4,11 +4,12 @@ import { Location } from 'src/shared/entities';
 import { LocationCollection, LocationModel } from './LocationMongoDB.schema';
 import { CustomError } from 'src/shared/classes';
 
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class LocationMongoDBRepository implements ILocationRepository {
-  constructor(@Inject(LocationCollection) private readonly locationModel: LocationModel) {}
+  constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
   async save(location: Location, fullView = false) {
     const createdLocation = await this.locationModel.create(location);

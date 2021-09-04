@@ -18,5 +18,7 @@ export class Location extends Entity {
     super();
 
     this.type = 'Feature';
+
+    //TODO implement the rules to create locations
   }
 }
