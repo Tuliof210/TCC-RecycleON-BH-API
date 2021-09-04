@@ -2,7 +2,6 @@ import { AuthPayloadDTO, UserDTO } from 'src/shared/DTO';
 
 export interface IAuthController {
   login({ user }: { user: AuthPayloadDTO }): Promise<{ token: string }>;
-  test(): Record<string, unknown>;
 }
 
 export interface IAuthService {
