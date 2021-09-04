@@ -1,6 +1,7 @@
-import { SharedModule } from './shared';
 import { ResponseInterceptor } from './interceptors';
 
+import { CronModule } from './services/cron';
+import { SharedModule } from './shared';
 import { AuthModule } from './API/auth';
 import { UserModule } from './API/user';
 import { LocationModule } from './API/location';
@@ -14,6 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    CronModule,
     SharedModule,
     AuthModule,
     UserModule,

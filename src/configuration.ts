@@ -9,4 +9,5 @@ export default () => ({
     number: Number(process.env.CITY_ZONE_NUMBER),
     letter: process.env.CITY_ZONE_LETTER,
   },
+  cronUpdateLocations: process.env.CRON_UPDATE_LOCATIONS || '*/10 * * * * *',
 });
