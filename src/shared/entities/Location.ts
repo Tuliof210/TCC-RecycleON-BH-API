@@ -8,7 +8,7 @@ export class Location extends Entity {
   public properties: {
     idExternal: string;
     name: string;
-    typeOfMaterial: Array<string>; //TODO update this when create 'material' collection
+    materials: Array<string>; //TODO update this when create 'material' collection
     businessHours: string; //TODO convert the string into a object with date
     address: { street: string; number: string; neighborhood: string; region: string; reference: string };
     info: string;
@@ -18,7 +18,7 @@ export class Location extends Entity {
     super();
 
     this.type = 'Feature';
-
-    //TODO implement the rules to create locations
+    this.geometry = { type: 'Point', coordinates: props.coordinates };
+    this.properties = props.properties;
   }
 }

@@ -25,9 +25,9 @@ const GeometrySchema = SchemaFactory.createForClass(GeometryProps);
 
 @Schema({ _id: false, versionKey: false, timestamps: false }) // subdocument
 class PropertiesProps extends Document {
-  @Prop({ required: true }) idExternal: string;
+  @Prop({ required: true, unique: true }) idExternal: string;
   @Prop({ required: true }) name: string;
-  @Prop({ required: true, type: [String] }) typeOfMaterial: Array<string>; //TODO update this when create 'material' collection
+  @Prop({ required: true, type: [String] }) materials: Array<string>; //TODO update this when create 'material' collection
   @Prop({ required: true }) businessHours: string; //TODO convert the string into a object with date
   @Prop({ required: true, type: AddressSchema }) address: AddressProps;
   @Prop({ required: true }) info: string;
