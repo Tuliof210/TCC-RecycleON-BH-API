@@ -1,7 +1,7 @@
 import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 import { JwtAuthGuard, MasterKeyAuthGuard, RoleGuard } from 'src/guards';
 import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
-import { IUserController, IUserService, IUserServiceToken } from '.';
+import { IUsersController, IUsersService, IUsersServiceToken } from '.';
 import { IAuthServiceToken, IAuthService } from 'src/API/auth';
 import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
@@ -9,9 +9,9 @@ import { Role } from 'src/shared/decorators';
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
 
 @Controller('users')
-export class UserController implements IUserController {
+export class UsersController implements IUsersController {
   constructor(
-    @Inject(IUserServiceToken) private readonly userService: IUserService,
+    @Inject(IUsersServiceToken) private readonly userService: IUsersService,
     @Inject(IAuthServiceToken) private readonly authService: IAuthService,
   ) {}
 
