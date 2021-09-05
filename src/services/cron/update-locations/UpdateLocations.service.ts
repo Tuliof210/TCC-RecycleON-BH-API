@@ -8,7 +8,6 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { map, firstValueFrom } from 'rxjs';
 import * as utm from 'utm';
-import * as util from 'util';
 import { LocationDTO } from 'src/shared/DTO';
 
 type RawLocationProperties = Record<string, string | number | null>;
@@ -35,24 +34,21 @@ export class UpdateLocationsService {
       indexIdSuffix: 'ID_LEV',
       indexName: 'NOME_LEV',
     });
-    // const LEV = this.handleLocations({
-    //   resource: this.requestResource('LOCAL_ENTREGA_VOLUNTARIA'),
-    //   idPrefix: 'local-de-entrega-voluntaria-',
-    //   indexIdSuffix: 'ID_LEV',
-    //   indexName: 'NOME_LEV',
-    // });
-    // const URPV = this.handleLocations({
-    //   resource: this.requestResource('URPV'),
-    //   idPrefix: 'URPV-',
-    //   indexIdSuffix: 'ID_URPV',
-    //   indexName: 'NOME_URPV',
-    // });
+    const LEV = this.handleLocations({
+      resource: this.requestResource('LOCAL_ENTREGA_VOLUNTARIA'),
+      idPrefix: 'local-de-entrega-voluntaria-',
+      indexIdSuffix: 'ID_LEV',
+      indexName: 'NOME_LEV',
+    });
+    const URPV = this.handleLocations({
+      resource: this.requestResource('URPV'),
+      idPrefix: 'URPV-',
+      indexIdSuffix: 'ID_URPV',
+      indexName: 'NOME_URPV',
+    });
 
     try {
-      const resolvedLocations = await Promise.all([PV]);
-      resolvedLocations.forEach((resolvedLocation) => {
-        console.log(util.inspect(resolvedLocation, { depth: 4 }));
-      });
+      await Promise.all([PV, LEV, URPV]);
       return this.materialsList;
     } catch (error) {
       throw new CustomError({ name: 'Api Error', message: error.message });
