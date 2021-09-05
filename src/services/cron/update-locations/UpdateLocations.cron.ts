@@ -1,4 +1,3 @@
-import { CustomError } from 'src/shared/classes';
 import { UpdateLocationsService } from './UpdateLocations.service';
 
 import { Injectable } from '@nestjs/common';
@@ -25,14 +24,6 @@ export class UpdateLocationsCron {
 
   handleUpdateLocations() {
     console.log(`this function is called every ${this.cronUpdateLocations}`);
-    this.updateLocationsService.findAll().subscribe({
-      next: (features) => {
-        console.log(features);
-      },
-      error: (error: Error) => {
-        throw new CustomError({ name: 'API Error', message: error.message });
-      },
-      complete: () => console.info('request done'),
-    });
+    this.updateLocationsService.start();
   }
 }
