@@ -4,7 +4,7 @@ import { LocationMapDTO } from 'src/shared/DTO/Location.dto';
 
 import { Document } from 'mongoose';
 
-export interface ILocationRepository {
+export interface ILocationsRepository {
   save(location: Location, fullView?: boolean): Promise<LocationDTO>;
 
   findOne(locationQuery: Record<string, unknown>): Promise<void | (LocationDTO & Document<any, any, LocationDTO>)>;
@@ -12,4 +12,4 @@ export interface ILocationRepository {
   retrieveAll(locationQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<LocationDTO> }>;
   getById(_id: string, fullView?: boolean): Promise<LocationDTO>;
 }
-export const ILocationRepositoryToken = 'ILocationRepositoryToken';
+export const ILocationsRepositoryToken = 'ILocationsRepositoryToken';

@@ -1,5 +1,5 @@
 import { LocationDocumentDTO, QueryParamsDTO } from 'src/shared/DTO';
-import { ILocationRepository } from '..';
+import { ILocationsRepository } from '..';
 import { Location } from 'src/shared/entities';
 import { LocationCollection, LocationModel } from './LocationMongoDB.schema';
 import { CustomError } from 'src/shared/classes';
@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
-export class LocationMongoDBRepository implements ILocationRepository {
+export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
   async save(location: Location, fullView = false) {

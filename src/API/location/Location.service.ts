@@ -1,14 +1,14 @@
 import { ILocationService } from '.';
 
 import { CreateLocationDTO, QueryParamsDTO } from 'src/shared/DTO';
-import { ILocationRepository, ILocationRepositoryToken } from 'src/repositories/location';
+import { ILocationsRepository, ILocationsRepositoryToken } from 'src/repositories/locations';
 import { Location } from 'src/shared/entities';
 
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LocationService implements ILocationService {
-  constructor(@Inject(ILocationRepositoryToken) private readonly locationRepository: ILocationRepository) {}
+  constructor(@Inject(ILocationsRepositoryToken) private readonly locationRepository: ILocationsRepository) {}
 
   create(locationData: CreateLocationDTO, fullView = false) {
     const location = new Location(locationData);
