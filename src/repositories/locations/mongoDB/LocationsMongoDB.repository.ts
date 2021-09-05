@@ -11,21 +11,20 @@ import { InjectModel } from '@nestjs/mongoose';
 export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
-  async save(location: Location, fullView = false) {
-    const createdLocation = await this.locationModel.create(location);
-    return createdLocation.view(fullView);
+  async saveOrUpdate(location: Location, fullView = false) {
+    const docLocation = await this.locationModel
+      .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, location, {
+        new: true,
+        upsert: true,
+      })
+      .exec();
+    return docLocation.view(fullView);
   }
+
+  //======================================================================================
 
   findOne(locationQuery: Record<string, unknown>): Promise<void | LocationDocumentDTO> {
     return this.locationModel.findOne(locationQuery).exec();
-  }
-
-  async getLocationsMap({ query, select, cursor }: QueryParamsDTO, fullView = false) {
-    const retrievedLocations = await this.locationModel.find(query, select, cursor).exec();
-    return {
-      type: 'FeatureCollection',
-      features: retrievedLocations.map((location) => location.view(fullView)),
-    };
   }
 
   async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
@@ -35,6 +34,14 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
     return {
       count: countLocations,
       list: retrievedLocations.map((location) => location.view(fullView)),
+    };
+  }
+
+  async getLocationsMap({ query, select, cursor }: QueryParamsDTO, fullView = false) {
+    const retrievedLocations = await this.locationModel.find(query, select, cursor).exec();
+    return {
+      type: 'FeatureCollection',
+      features: retrievedLocations.map((location) => location.view(fullView)),
     };
   }
 

@@ -8,8 +8,6 @@ export interface ILocationsController {
 }
 
 export interface ILocationsService {
-  create(locationData: CreateLocationDTO, fullView?: boolean): Promise<LocationDTO>;
-
   retrieve(locationsQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<LocationDTO> }>;
   getLocationsMap(locationsQuery: QueryParamsDTO, fullView?: boolean): Promise<LocationMapDTO>;
   get(locationId: string, fullView?: boolean): Promise<LocationDTO>;

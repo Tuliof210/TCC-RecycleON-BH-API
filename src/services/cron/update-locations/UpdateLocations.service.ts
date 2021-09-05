@@ -1,13 +1,15 @@
 import { Location } from 'src/shared/entities';
 import { CustomError } from 'src/shared/classes';
+import { ILocationsRepository, ILocationsRepositoryToken } from 'src/repositories/locations';
 
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
 import { map, firstValueFrom } from 'rxjs';
 import * as utm from 'utm';
 import * as util from 'util';
+import { LocationDTO } from 'src/shared/DTO';
 
 type RawLocationProperties = Record<string, string | number | null>;
 
@@ -17,12 +19,16 @@ export class UpdateLocationsService {
   private reponseFormat: string;
   private materialsList = new Set<string>();
 
-  constructor(private readonly httpService: HttpService, private readonly config: ConfigService) {
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly config: ConfigService,
+    @Inject(ILocationsRepositoryToken) private readonly locationsRepository: ILocationsRepository,
+  ) {
     this.apiUrl = this.config.get<string>('locationsExternalApi');
     this.reponseFormat = 'outputFormat=JSON';
   }
 
-  start(): void {
+  async start(): Promise<Set<string>> {
     const PV = this.handleLocations({
       resource: this.requestResource('PONTO_VERDE'),
       idPrefix: 'ponto-verde-',
@@ -42,17 +48,15 @@ export class UpdateLocationsService {
     //   indexName: 'NOME_URPV',
     // });
 
-    Promise.all([PV])
-      .then((locations) => {
-        console.log(this.materialsList);
-
-        locations.forEach((location) => {
-          console.log(util.inspect(location, { depth: 4 }));
-        });
-      })
-      .catch((error: Error) => {
-        throw new CustomError({ name: 'Api Error', message: error.message });
+    try {
+      const resolvedLocations = await Promise.all([PV]);
+      resolvedLocations.forEach((resolvedLocation) => {
+        console.log(util.inspect(resolvedLocation, { depth: 4 }));
       });
+      return this.materialsList;
+    } catch (error) {
+      throw new CustomError({ name: 'Api Error', message: error.message });
+    }
   }
 
   async requestResource(resourceName: string): Promise<Array<Record<string, any>>> {
@@ -70,11 +74,11 @@ export class UpdateLocationsService {
     idPrefix: string;
     indexIdSuffix: string;
     indexName: string;
-  }): Promise<Array<Location>> {
+  }): Promise<Array<LocationDTO>> {
     const rawLocations = await context.resource;
 
-    return rawLocations.map((rawLocation): Location => {
-      return new Location({
+    const locations = rawLocations.map((rawLocation): Promise<LocationDTO> => {
+      const location = new Location({
         coordinates: this.mountCoordinates(rawLocation.geometry.coordinates as [number, number]),
         properties: {
           idExternal: context.idPrefix + rawLocation.properties[context.indexIdSuffix],
@@ -85,7 +89,11 @@ export class UpdateLocationsService {
           info: (rawLocation.properties.info as string) ?? null,
         },
       });
+
+      return this.locationsRepository.saveOrUpdate(location);
     });
+
+    return Promise.all(locations);
   }
 
   //===========================================================================================

@@ -22,8 +22,9 @@ export class UpdateLocationsCron {
     updateLocationsJob.start();
   }
 
-  handleUpdateLocations() {
+  async handleUpdateLocations() {
     console.log(`this function is called every ${this.cronUpdateLocations}`);
-    this.updateLocationsService.start();
+    const materials = await this.updateLocationsService.start();
+    console.log(materials);
   }
 }
