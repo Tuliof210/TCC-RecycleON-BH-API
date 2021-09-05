@@ -101,7 +101,7 @@ export class UpdateLocationsService {
     const northing = rawCoordinates[1];
 
     const coordinates = utm.toLatLon(easting, northing, cityZone.number, cityZone.letter);
-    return [coordinates.latitude, coordinates.longitude];
+    return [coordinates.longitude, coordinates.latitude];
   }
 
   mountBusinessHours(rawProperties: RawLocationProperties) {

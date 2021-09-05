@@ -5,7 +5,7 @@ import { QueryParamsNormalizationPipe } from 'src/shared/pipes';
 import { Role } from 'src/shared/decorators';
 import { UserRole } from 'src/shared/entities';
 
-import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Query, UseGuards } from '@nestjs/common';
 
 import * as utm from 'utm';
 
@@ -43,7 +43,7 @@ export class LocationsController implements ILocationsController {
   @Get(':id')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  async get(locationId: string) {
+  async get(@Param('id') locationId: string) {
     return this.locationsService.get(locationId);
   }
 }
