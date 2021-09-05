@@ -1,12 +1,11 @@
-import { AuthPayloadDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO, UserDTO } from 'src/shared/DTO';
 
 export interface IAuthController {
   login({ user }: { user: AuthPayloadDTO }): Promise<{ token: string }>;
-  test(): Record<string, unknown>;
 }
 
 export interface IAuthService {
-  validateUser(email: string, password: string): Promise<void | UserDocumentDTO>;
+  validateUser(email: string, password: string): Promise<void | UserDTO>;
   login(payload: AuthPayloadDTO): Promise<{ token: string }>;
 }
 export const IAuthServiceToken = 'IAuthServiceToken';

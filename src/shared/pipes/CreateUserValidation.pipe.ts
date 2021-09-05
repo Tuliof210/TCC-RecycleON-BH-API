@@ -17,7 +17,7 @@ export class CreateUserValidationPipe implements PipeTransform {
       .required(),
   });
 
-  async transform(body: Record<string, unknown>) {
+  async transform(body: Record<string, unknown>): Promise<CreateUserDTO> {
     const validBody = await this.schema.validate(body);
     return this.schema.cast(validBody, { stripUnknown: true });
   }
