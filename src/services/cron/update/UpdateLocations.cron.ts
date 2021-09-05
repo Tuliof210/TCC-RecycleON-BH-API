@@ -1,4 +1,5 @@
 import { UpdateLocationsService } from './UpdateLocations.service';
+import { UpdateMaterialsService } from './UpdateMaterials.service';
 
 import { Injectable } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
@@ -11,9 +12,10 @@ export class UpdateLocationsCron {
   private cronUpdateLocations: string;
 
   constructor(
+    private readonly config: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly updateLocationsService: UpdateLocationsService,
-    private readonly config: ConfigService,
+    private readonly updateMaterialsService: UpdateMaterialsService,
   ) {
     this.cronUpdateLocations = this.config.get<string>('cronUpdateLocations');
     const updateLocationsJob = new CronJob(this.cronUpdateLocations, this.handleUpdateLocations.bind(this));
@@ -22,9 +24,9 @@ export class UpdateLocationsCron {
     updateLocationsJob.start();
   }
 
-  async handleUpdateLocations() {
+  handleUpdateLocations() {
     console.log(`this function is called every ${this.cronUpdateLocations}`);
-    const materials = await this.updateLocationsService.start();
-    console.log(materials);
+    const materials = this.updateLocationsService.start();
+    this.updateMaterialsService.start(materials);
   }
 }
