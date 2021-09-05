@@ -12,24 +12,18 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
   async saveOrUpdate(location: Location, fullView = false) {
-    const docLocation = await this.locationModel
-      .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, location, {
-        new: true,
-        upsert: true,
-      })
-      .exec()
-      .catch(() => {
-        return this.locationModel
-          .findOneAndUpdate(
-            { 'properties.idExternal': location.properties.idExternal },
-            { geometry: location.geometry, properties: location.properties },
-            {
-              new: true,
-              upsert: true,
-            },
-          )
-          .exec();
-      });
+    const docLocation = await this.locationModel.create(location).catch(() => {
+      return this.locationModel
+        .findOneAndUpdate(
+          { 'properties.idExternal': location.properties.idExternal },
+          { geometry: location.geometry, properties: location.properties },
+          {
+            new: true,
+            upsert: true,
+          },
+        )
+        .exec();
+    });
     return docLocation.view(fullView);
   }
 

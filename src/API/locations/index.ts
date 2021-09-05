@@ -1,4 +1,4 @@
-import { CreateLocationDTO, LocationDTO, QueryParamsDTO } from 'src/shared/DTO';
+import { LocationDTO, QueryParamsDTO } from 'src/shared/DTO';
 import { LocationMapDTO } from 'src/shared/DTO/Location.dto';
 
 export interface ILocationsController {

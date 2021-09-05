@@ -55,6 +55,17 @@ export type LocationModel = Model<LocationDTO, Document>;
 
 //=================================================================================
 
-LocationSchema.methods.view = function (): LocationDTO {
-  return this;
+LocationSchema.methods.view = function (fullView = false): LocationDTO {
+  const locationView = {};
+  const publicKeys = ['_id', 'geometry', 'properties'];
+  const privateKeys = [...publicKeys, 'createdAt', 'updatedAt'];
+
+  const mountLocationView = (key: string) => {
+    locationView[key] = this[key];
+  };
+
+  if (fullView) privateKeys.forEach(mountLocationView);
+  else publicKeys.forEach(mountLocationView);
+
+  return locationView;
 };
