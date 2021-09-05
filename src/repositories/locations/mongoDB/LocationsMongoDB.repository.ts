@@ -12,8 +12,6 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
   async saveOrUpdate(location: Location, fullView = false) {
-    console.log(location.properties.idExternal);
-
     const docLocation = await this.locationModel
       .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, location, {
         new: true,

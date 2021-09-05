@@ -48,7 +48,8 @@ export class UpdateLocationsService {
     });
 
     try {
-      await Promise.all([PV, LEV, URPV]);
+      const createdLocations = await Promise.all([PV, LEV, URPV]);
+      console.log(createdLocations);
       return this.materialsList;
     } catch (error) {
       throw new CustomError({ name: 'Api Error', message: error.message });

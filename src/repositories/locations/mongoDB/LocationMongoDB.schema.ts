@@ -37,7 +37,7 @@ const PropertiesSchema = SchemaFactory.createForClass(PropertiesProps);
 //=================================================================================
 //=================================================================================
 
-@Schema({ versionKey: true, timestamps: true })
+@Schema({ versionKey: false, timestamps: true })
 class LocationProps extends Document implements LocationDTO {
   @Prop({ required: true })
   _id: string;
