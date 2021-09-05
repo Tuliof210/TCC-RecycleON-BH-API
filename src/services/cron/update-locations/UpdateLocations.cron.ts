@@ -17,13 +17,13 @@ export class UpdateLocationsCron {
     private readonly config: ConfigService,
   ) {
     this.cronUpdateLocations = this.config.get<string>('cronUpdateLocations');
+    const updateLocationsJob = new CronJob(this.cronUpdateLocations, this.handleUpdateLocations.bind(this));
 
-    const updateLocationJob = new CronJob(this.cronUpdateLocations, this.handleUpdateLocation.bind(this));
-    this.schedulerRegistry.addCronJob('updateLocations', updateLocationJob);
-    updateLocationJob.start();
+    this.schedulerRegistry.addCronJob('updateLocations', updateLocationsJob);
+    updateLocationsJob.start();
   }
 
-  handleUpdateLocation() {
+  handleUpdateLocations() {
     console.log(`this function is called every ${this.cronUpdateLocations}`);
     this.updateLocationsService.findAll().subscribe({
       next: (features) => {
