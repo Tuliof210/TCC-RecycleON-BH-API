@@ -3,7 +3,7 @@ import { AuthService } from './Auth.service';
 import { AuthController } from './Auth.controller';
 
 import { BasicStrategy, JwtStrategy } from 'src/guards';
-import { UserMongoDBRepositoryModule } from 'src/repositories/user/mongoDB';
+import { UsersMongoDBRepositoryModule } from 'src/repositories/users/mongoDB';
 
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -13,7 +13,7 @@ import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    UserMongoDBRepositoryModule,
+    UsersMongoDBRepositoryModule,
     PassportModule.register({
       session: false,
     }),

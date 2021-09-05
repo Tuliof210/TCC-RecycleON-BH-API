@@ -1,7 +1,7 @@
 import { User } from 'src/shared/entities';
 import { UserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
-export interface IUserRepository {
+export interface IUsersRepository {
   save(user: User, fullView?: boolean): Promise<UserDTO>;
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;
 
@@ -13,4 +13,4 @@ export interface IUserRepository {
   deactivate(userId: string, fullView?: boolean): Promise<UserDTO>;
   delete(userId: string, fullView?: boolean): Promise<UserDTO>;
 }
-export const IUserRepositoryToken = 'IUserRepositoryToken';
+export const IUsersRepositoryToken = 'IUsersRepositoryToken';

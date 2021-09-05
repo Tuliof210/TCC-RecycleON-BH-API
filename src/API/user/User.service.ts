@@ -1,14 +1,14 @@
 import { User } from 'src/shared/entities';
 
 import { IUserService } from '.';
-import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
+import { IUsersRepository, IUsersRepositoryToken } from 'src/repositories/users';
 import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService implements IUserService {
-  constructor(@Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository) {}
+  constructor(@Inject(IUsersRepositoryToken) private readonly userRepository: IUsersRepository) {}
 
   create(userData: CreateUserDTO, fullView = false) {
     const user = new User(userData);

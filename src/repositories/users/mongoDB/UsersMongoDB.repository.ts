@@ -1,4 +1,4 @@
-import { IUserRepository } from '..';
+import { IUsersRepository } from '..';
 import { User } from 'src/shared/entities';
 import { UserModel } from '.';
 import { QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
-export class UserMongoDBRepository implements IUserRepository {
+export class UsersMongoDBRepository implements IUsersRepository {
   constructor(@InjectModel(UserCollection) private userModel: UserModel) {}
 
   async save(user: User, fullView = false) {

@@ -1,6 +1,6 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
 
-import { IUserRepository, IUserRepositoryToken } from 'src/repositories/user';
+import { IUsersRepository, IUsersRepositoryToken } from 'src/repositories/users';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -12,7 +12,7 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository,
+    @Inject(IUsersRepositoryToken) private readonly userRepository: IUsersRepository,
     private readonly config: ConfigService,
   ) {
     super({
