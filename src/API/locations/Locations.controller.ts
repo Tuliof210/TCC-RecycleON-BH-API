@@ -1,5 +1,5 @@
 import { QueryParamsDTO } from 'src/shared/DTO';
-import { ILocationController, ILocationService, ILocationServiceToken } from '.';
+import { ILocationsController, ILocationsService, ILocationsServiceToken } from '.';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
 import { Role } from 'src/shared/decorators';
 import { UserRole } from 'src/shared/entities';
@@ -10,8 +10,8 @@ import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 import * as utm from 'utm';
 
 @Controller('locations')
-export class LocationController implements ILocationController {
-  constructor(@Inject(ILocationServiceToken) private readonly locationService: ILocationService) {}
+export class LocationsController implements ILocationsController {
+  constructor(@Inject(ILocationsServiceToken) private readonly locationService: ILocationsService) {}
 
   @Get()
   @Role(UserRole.admin)
