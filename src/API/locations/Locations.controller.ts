@@ -1,9 +1,9 @@
-import { QueryParamsDTO } from 'src/shared/DTO';
 import { ILocationsController, ILocationsService, ILocationsServiceToken } from '.';
 import { JwtAuthGuard, RoleGuard } from 'src/guards';
+import { QueryParamsDTO } from 'src/shared/DTO';
+import { QueryParamsNormalizationPipe } from 'src/shared/pipes';
 import { Role } from 'src/shared/decorators';
 import { UserRole } from 'src/shared/entities';
-import { QueryParamsNormalizationPipe } from 'src/shared/pipes';
 
 import { Controller, Get, Inject, Query, UseGuards } from '@nestjs/common';
 
@@ -11,13 +11,13 @@ import * as utm from 'utm';
 
 @Controller('locations')
 export class LocationsController implements ILocationsController {
-  constructor(@Inject(ILocationsServiceToken) private readonly locationService: ILocationsService) {}
+  constructor(@Inject(ILocationsServiceToken) private readonly locationsService: ILocationsService) {}
 
   @Get()
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
   async retrieve(@Query(new QueryParamsNormalizationPipe()) locationsQuery: QueryParamsDTO) {
-    return this.locationService.retrieve(locationsQuery);
+    return this.locationsService.retrieve(locationsQuery);
   }
 
   @Get('test')
@@ -37,13 +37,13 @@ export class LocationsController implements ILocationsController {
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   async getLocationsMap(@Query(new QueryParamsNormalizationPipe()) locationsQuery: QueryParamsDTO) {
-    return this.locationService.getLocationsMap(locationsQuery);
+    return this.locationsService.getLocationsMap(locationsQuery);
   }
 
   @Get(':id')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   async get(locationId: string) {
-    return this.locationService.get(locationId);
+    return this.locationsService.get(locationId);
   }
 }

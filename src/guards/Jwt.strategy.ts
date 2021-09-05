@@ -10,7 +10,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IUsersRepositoryToken) private readonly userRepository: IUsersRepository,
+    @Inject(IUsersRepositoryToken) private readonly usersRepository: IUsersRepository,
     private readonly config: ConfigService,
   ) {
     super({
@@ -21,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: AuthPayloadDTO) {
-    return this.userRepository.findOne({ _id: payload._id });
+    return this.usersRepository.findOne({ _id: payload._id });
   }
 }

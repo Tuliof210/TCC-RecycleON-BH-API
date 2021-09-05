@@ -8,22 +8,22 @@ import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LocationsService implements ILocationsService {
-  constructor(@Inject(ILocationsRepositoryToken) private readonly locationRepository: ILocationsRepository) {}
+  constructor(@Inject(ILocationsRepositoryToken) private readonly locationsRepository: ILocationsRepository) {}
 
   create(locationData: CreateLocationDTO, fullView = false) {
     const location = new Location(locationData);
-    return this.locationRepository.save(location, fullView);
+    return this.locationsRepository.save(location, fullView);
   }
 
   retrieve(locationsQuery: QueryParamsDTO, fullView = false) {
-    return this.locationRepository.retrieveAll(locationsQuery, fullView);
+    return this.locationsRepository.retrieveAll(locationsQuery, fullView);
   }
 
   getLocationsMap(locationsQuery: QueryParamsDTO, fullView = false) {
-    return this.locationRepository.getLocationsMap(locationsQuery, fullView);
+    return this.locationsRepository.getLocationsMap(locationsQuery, fullView);
   }
 
   get(locationId: string, fullView = false) {
-    return this.locationRepository.getById(locationId, fullView);
+    return this.locationsRepository.getById(locationId, fullView);
   }
 }

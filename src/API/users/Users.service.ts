@@ -8,11 +8,11 @@ import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UsersService implements IUsersService {
-  constructor(@Inject(IUsersRepositoryToken) private readonly userRepository: IUsersRepository) {}
+  constructor(@Inject(IUsersRepositoryToken) private readonly usersRepository: IUsersRepository) {}
 
   create(userData: CreateUserDTO, fullView = false) {
     const user = new User(userData);
-    return this.userRepository.save(user, fullView);
+    return this.usersRepository.save(user, fullView);
   }
 
   async updateMe(user: UserDocumentDTO, userChanges: UpdateUserDTO, fullView = false) {
@@ -21,11 +21,11 @@ export class UsersService implements IUsersService {
   }
 
   update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
-    return this.userRepository.update(userId, userChanges, fullView);
+    return this.usersRepository.update(userId, userChanges, fullView);
   }
 
   retrieve(userQuery: QueryParamsDTO, fullView = false) {
-    return this.userRepository.retrieveAll(userQuery, fullView);
+    return this.usersRepository.retrieveAll(userQuery, fullView);
   }
 
   getMe(user: UserDocumentDTO, fullView = false) {
@@ -33,11 +33,11 @@ export class UsersService implements IUsersService {
   }
 
   getById(userId: string, fullView = false) {
-    return this.userRepository.getById(userId, fullView);
+    return this.usersRepository.getById(userId, fullView);
   }
 
   getByEmail(email: string) {
-    return this.userRepository.getByEmail(email);
+    return this.usersRepository.getByEmail(email);
   }
 
   async disableMe(user: UserDocumentDTO, fullView = false) {
@@ -46,10 +46,10 @@ export class UsersService implements IUsersService {
   }
 
   disable(userId: string, fullView = false) {
-    return this.userRepository.deactivate(userId, fullView);
+    return this.usersRepository.deactivate(userId, fullView);
   }
 
   delete(userId: string, fullView = false) {
-    return this.userRepository.delete(userId, fullView);
+    return this.usersRepository.delete(userId, fullView);
   }
 }

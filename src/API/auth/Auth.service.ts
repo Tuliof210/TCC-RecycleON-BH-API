@@ -9,12 +9,12 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
-    @Inject(IUsersRepositoryToken) private readonly userRepository: IUsersRepository,
+    @Inject(IUsersRepositoryToken) private readonly usersRepository: IUsersRepository,
     private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.userRepository.getByEmail(email);
+    const user = await this.usersRepository.getByEmail(email);
     if (user) return user.authenticate(password);
   }
 
