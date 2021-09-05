@@ -15,6 +15,7 @@ type RawLocationProperties = Record<string, string | number | null>;
 export class UpdateLocationsService {
   private apiUrl: string;
   private reponseFormat: string;
+  private materialsList = new Set<string>();
 
   constructor(private readonly httpService: HttpService, private readonly config: ConfigService) {
     this.apiUrl = this.config.get<string>('locationsExternalApi');
@@ -22,53 +23,69 @@ export class UpdateLocationsService {
   }
 
   start(): void {
-    const PV = this.requestResource('PONTO_VERDE');
-    const URPV = this.requestResource('URPV');
-    const LEV = this.requestResource('LOCAL_ENTREGA_VOLUNTARIA');
-
-    this.handleLocations(PV, { idPrefix: 'ponto-verde-', indexIdSuffix: 'ID_LEV', indexName: 'NOME_LEV' });
-    this.handleLocations(URPV, { idPrefix: 'URPV-', indexIdSuffix: 'ID_URPV', indexName: 'NOME_URPV' });
-    this.handleLocations(LEV, {
-      idPrefix: 'local-de-entrega-voluntaria-',
+    const PV = this.handleLocations({
+      resource: this.requestResource('PONTO_VERDE'),
+      idPrefix: 'ponto-verde-',
       indexIdSuffix: 'ID_LEV',
       indexName: 'NOME_LEV',
     });
+    // const LEV = this.handleLocations({
+    //   resource: this.requestResource('LOCAL_ENTREGA_VOLUNTARIA'),
+    //   idPrefix: 'local-de-entrega-voluntaria-',
+    //   indexIdSuffix: 'ID_LEV',
+    //   indexName: 'NOME_LEV',
+    // });
+    // const URPV = this.handleLocations({
+    //   resource: this.requestResource('URPV'),
+    //   idPrefix: 'URPV-',
+    //   indexIdSuffix: 'ID_URPV',
+    //   indexName: 'NOME_URPV',
+    // });
+
+    Promise.all([PV])
+      .then((locations) => {
+        console.log(this.materialsList);
+
+        locations.forEach((location) => {
+          console.log(util.inspect(location, { depth: 4 }));
+        });
+      })
+      .catch((error: Error) => {
+        throw new CustomError({ name: 'Api Error', message: error.message });
+      });
   }
 
   async requestResource(resourceName: string): Promise<Array<Record<string, any>>> {
-    try {
-      return firstValueFrom(
-        this.httpService
-          .get(`${this.apiUrl}:${resourceName}&${this.reponseFormat}`)
-          .pipe(map(({ data }: { data: { features: Array<Record<string, any>> } }) => data.features)),
-      );
-    } catch (error) {
-      throw new CustomError({ name: 'Api Error', message: error.message });
-    }
+    return firstValueFrom(
+      this.httpService
+        .get(`${this.apiUrl}:${resourceName}&${this.reponseFormat}`)
+        .pipe(map(({ data }: { data: { features: Array<Record<string, any>> } }) => data.features)),
+    );
   }
 
   //===========================================================================================
 
-  async handleLocations(
-    rawLocationsPromise: Promise<Array<Record<string, any>>>,
-    context: { idPrefix: string; indexIdSuffix: string; indexName: string },
-  ) {
-    const mountLocation = (rawLocation: Record<string, any>): Location => {
-      const name = rawLocation.properties[context.indexName];
-      const idExternal = context.idPrefix + rawLocation.properties[context.indexIdSuffix];
-      const coordinates = this.mountCoordinates(rawLocation.geometry.coordinates as [number, number]);
-      const businessHours = this.mountBusinessHours(rawLocation.properties as RawLocationProperties);
-      const materials = this.mountMaterials(rawLocation.properties['TIPO_MATERIAL_COLETADO'] as string);
-      const address = this.mountAddress(rawLocation.properties as RawLocationProperties);
-      const info = (rawLocation.properties.info as string) ?? null;
+  async handleLocations(context: {
+    resource: Promise<Array<Record<string, any>>>;
+    idPrefix: string;
+    indexIdSuffix: string;
+    indexName: string;
+  }): Promise<Array<Location>> {
+    const rawLocations = await context.resource;
 
-      return new Location({ coordinates, properties: { idExternal, name, businessHours, materials, address, info } });
-    };
-
-    const rawLocations = await rawLocationsPromise;
-    const locations = rawLocations.map(mountLocation);
-
-    console.log(`${context.idPrefix}locations`, util.inspect(locations, { depth: 4 }));
+    return rawLocations.map((rawLocation): Location => {
+      return new Location({
+        coordinates: this.mountCoordinates(rawLocation.geometry.coordinates as [number, number]),
+        properties: {
+          idExternal: context.idPrefix + rawLocation.properties[context.indexIdSuffix],
+          name: rawLocation.properties[context.indexName],
+          businessHours: this.mountBusinessHours(rawLocation.properties as RawLocationProperties),
+          materials: this.mountMaterials(rawLocation.properties['TIPO_MATERIAL_COLETADO'] as string),
+          address: this.mountAddress(rawLocation.properties as RawLocationProperties),
+          info: (rawLocation.properties.info as string) ?? null,
+        },
+      });
+    });
   }
 
   //===========================================================================================
@@ -87,7 +104,11 @@ export class UpdateLocationsService {
   }
 
   mountMaterials(rawMaterials: string) {
-    return rawMaterials.split(';').map((material) => material.trim());
+    const materials = rawMaterials.split(';').map((material) => material.trim());
+
+    materials.forEach((material) => this.materialsList.add(material));
+
+    return materials;
   }
 
   mountAddress(rawAddress: RawLocationProperties) {
