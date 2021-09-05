@@ -5,6 +5,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 
 import { map, firstValueFrom } from 'rxjs';
+import * as utm from 'utm';
 
 //type rawLocationData = string;
 
@@ -58,4 +59,9 @@ export class UpdateLocationsService {
   }
 
   //===========================================================================================
+
+  convertUtmCoordinates(easting: number, northing: number) {
+    const cityZone = { number: 23, letter: 'K' };
+    return utm.toLatLon(easting, northing, cityZone.number, cityZone.letter);
+  }
 }
