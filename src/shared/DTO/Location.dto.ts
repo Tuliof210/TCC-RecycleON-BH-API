@@ -9,4 +9,4 @@ export interface LocationDTO extends Partial<Location> {
 }
 export type LocationDocumentDTO = LocationDTO & Document<any, any, LocationDTO>;
 
-export type LocationMapDTO = { type: string; features: Array<LocationDTO> };
+export type LocationMapDTO = { type: string; count: number; features: Array<LocationDTO> };

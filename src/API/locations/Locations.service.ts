@@ -9,15 +9,12 @@ import { Inject, Injectable } from '@nestjs/common';
 export class LocationsService implements ILocationsService {
   constructor(@Inject(ILocationsRepositoryToken) private readonly locationsRepository: ILocationsRepository) {}
 
-  retrieve(locationsQuery: QueryParamsDTO, fullView = false) {
-    return this.locationsRepository.retrieveAll(locationsQuery, fullView);
-  }
-
-  getLocationsMap(locationsQuery: QueryParamsDTO, fullView = false) {
-    return this.locationsRepository.getLocationsMap(locationsQuery, fullView);
-  }
-
-  get(locationId: string, fullView = false) {
+  getOne(locationId: string, fullView = false) {
     return this.locationsRepository.getById(locationId, fullView);
+  }
+
+  getLocations(locationsQuery: QueryParamsDTO, fullView = false) {
+    console.log(locationsQuery);
+    return this.locationsRepository.getLocations(locationsQuery, fullView);
   }
 }

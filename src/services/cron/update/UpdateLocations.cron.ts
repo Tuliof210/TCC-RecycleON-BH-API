@@ -25,7 +25,6 @@ export class UpdateLocationsCron {
   }
 
   handleUpdateLocations() {
-    console.log(`this function is called every ${this.cronUpdateLocations}`);
     const materials = this.updateLocationsService.start();
     this.updateMaterialsService.start(materials);
   }

@@ -12,7 +12,6 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
   async saveOrUpdate(location: Location, fullView = false) {
-    console.log(location);
     const docLocation = await this.locationModel
       .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, location, {
         new: true,
@@ -40,20 +39,12 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
     return this.locationModel.findOne(locationQuery).exec();
   }
 
-  async retrieveAll({ query, select, cursor }: QueryParamsDTO, fullView = false) {
+  async getLocations({ query, select, cursor }: QueryParamsDTO, fullView = false) {
     const countLocations = await this.locationModel.countDocuments(query).exec();
     const retrievedLocations = await this.locationModel.find(query, select, cursor).exec();
-
-    return {
-      count: countLocations,
-      list: retrievedLocations.map((location) => location.view(fullView)),
-    };
-  }
-
-  async getLocationsMap({ query, select, cursor }: QueryParamsDTO, fullView = false) {
-    const retrievedLocations = await this.locationModel.find(query).exec();
     return {
       type: 'FeatureCollection',
+      count: countLocations,
       features: retrievedLocations.map((location) => ({
         type: 'Feature',
         ...location.view(fullView),
