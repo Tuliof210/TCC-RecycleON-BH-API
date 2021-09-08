@@ -91,7 +91,7 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
   //-------------------------------------------------------------------
 
   private mountQuery(body: Record<string, string>) {
-    return body.q ? { keywords: this.mountKeywords(body.q.split(',')) } : this.mountBody(body);
+    return body.q ? { keywords: this.mountKeywords(body.q.split(',')) } : { ...body };
   }
 
   private mountKeywords(keywordsList: string[]) {

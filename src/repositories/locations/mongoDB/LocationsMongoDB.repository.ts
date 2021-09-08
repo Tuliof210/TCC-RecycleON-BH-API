@@ -40,6 +40,8 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
   }
 
   async getLocations({ query, select, cursor }: QueryParamsDTO, fullView = false) {
+    console.log(query, select, cursor);
+
     const countLocations = await this.locationModel.countDocuments(query).exec();
     const retrievedLocations = await this.locationModel.find(query, select, cursor).exec();
     return {

@@ -14,7 +14,31 @@ export class LocationsService implements ILocationsService {
   }
 
   getLocations(locationsQuery: QueryParamsDTO, fullView = false) {
-    console.log(locationsQuery.query);
-    return this.locationsRepository.getLocations(locationsQuery, fullView);
+    const { query, select, cursor } = locationsQuery;
+    delete cursor.limit;
+
+    if (query.idExternal) {
+      query['$or'] = this.mountIdExternalQuery(query.idExternal);
+      delete query.idExternal;
+    }
+
+    if (query.materials) {
+      query['properties.materials'] = this.mountMaterialQuery(query.materials);
+      delete query.materials;
+    }
+
+    return this.locationsRepository.getLocations({ query, select, cursor }, fullView);
+  }
+
+  mountIdExternalQuery(query: string) {
+    const listOfValues = query.split(',');
+    return listOfValues.map((value) => ({
+      'properties.idExternal': value,
+    }));
+  }
+
+  mountMaterialQuery(query: string) {
+    const listOfValues = query.split(',');
+    return listOfValues.length > 1 ? { $all: listOfValues } : listOfValues[0];
   }
 }
