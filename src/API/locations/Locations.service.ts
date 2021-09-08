@@ -32,9 +32,7 @@ export class LocationsService implements ILocationsService {
 
   mountIdExternalQuery(query: string) {
     const listOfValues = query.split(',');
-    return listOfValues.map((value) => ({
-      'properties.idExternal': value,
-    }));
+    return listOfValues.map((value) => ({ locationTag: value }));
   }
 
   mountMaterialQuery(query: string) {

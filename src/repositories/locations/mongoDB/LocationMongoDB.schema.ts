@@ -1,4 +1,5 @@
 import { LocationDTO } from 'src/shared/DTO';
+import { LocationTag } from 'src/shared/entities/Location';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
@@ -41,6 +42,9 @@ const PropertiesSchema = SchemaFactory.createForClass(PropertiesProps);
 class LocationProps extends Document implements LocationDTO {
   @Prop({ required: true })
   _id: string;
+
+  @Prop({ required: true, enum: LocationTag })
+  locationTag: string;
 
   @Prop({ required: true, type: GeometrySchema })
   geometry: GeometryProps;

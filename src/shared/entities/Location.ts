@@ -2,8 +2,16 @@
 import { Entity } from '.';
 import { CreateLocationDTO } from 'src/shared/DTO';
 
+export enum LocationTag {
+  PV = 'PV',
+  LEV = 'LEV',
+  URPV = 'URPV',
+}
+
 export class Location extends Entity {
   public type: string;
+  public locationTag: string;
+
   public geometry: { type: string; coordinates: [number, number] };
   public properties: {
     idExternal: string;
@@ -18,6 +26,8 @@ export class Location extends Entity {
     super();
 
     this.type = 'Feature';
+    this.locationTag = LocationTag[props.locationTag];
+
     this.geometry = { type: 'Point', coordinates: props.coordinates };
     this.properties = props.properties;
   }

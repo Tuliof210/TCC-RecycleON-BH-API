@@ -100,17 +100,4 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
       $in: keywordsList.map(turnStringIntoRegex),
     };
   }
-
-  private mountBody(body: Record<string, string>) {
-    const mountedQuery = {};
-    const listOfFields = Object.keys(body);
-
-    const mountField = (field: string) => {
-      const listOfValues = body[field].split(',');
-      mountedQuery[field] = listOfValues.length > 1 ? { $in: listOfValues } : listOfValues[0];
-    };
-
-    listOfFields.forEach(mountField);
-    return mountedQuery;
-  }
 }

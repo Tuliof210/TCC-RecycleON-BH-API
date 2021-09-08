@@ -1,7 +1,7 @@
 import { Location } from 'src/shared/entities';
 import { Document } from 'mongoose';
 
-export type CreateLocationDTO = Pick<Location, 'properties'> & { coordinates: [number, number] };
+export type CreateLocationDTO = Pick<Location, 'locationTag' | 'properties'> & { coordinates: [number, number] };
 
 export interface LocationDTO extends Partial<Location> {
   _id?: any;
