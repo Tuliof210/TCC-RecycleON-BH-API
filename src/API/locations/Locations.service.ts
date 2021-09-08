@@ -14,7 +14,7 @@ export class LocationsService implements ILocationsService {
   }
 
   getLocations(locationsQuery: QueryParamsDTO, fullView = false) {
-    console.log(locationsQuery);
+    console.log(locationsQuery.query);
     return this.locationsRepository.getLocations(locationsQuery, fullView);
   }
 }

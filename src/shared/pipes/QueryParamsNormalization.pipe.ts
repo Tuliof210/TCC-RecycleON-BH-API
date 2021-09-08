@@ -12,6 +12,7 @@ import { Injectable, PipeTransform } from '@nestjs/common';
  * page => cursor para quantos resultados ignorar, simulando paginação: { skip: (page * limit - limit) }
  * sort => filtros para a query, como ordenação: { [field: string]: -1 || 1 } respectivamente, decrescente ou crescente
  * resto => parametros da query em si: { field1: value1, field2: value2 }
+ *   |=> caso tenha multiplos parametros, buscar por array
  */
 
 @Injectable()
@@ -90,7 +91,7 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
   //-------------------------------------------------------------------
 
   private mountQuery(body: Record<string, string>) {
-    return body.q ? { keywords: this.mountKeywords(body.q.split(',')) } : { ...body };
+    return body.q ? { keywords: this.mountKeywords(body.q.split(',')) } : this.mountBody(body);
   }
 
   private mountKeywords(keywordsList: string[]) {
@@ -98,5 +99,18 @@ export class QueryParamsNormalizationPipe implements PipeTransform {
     return {
       $in: keywordsList.map(turnStringIntoRegex),
     };
+  }
+
+  private mountBody(body: Record<string, string>) {
+    const mountedQuery = {};
+    const listOfFields = Object.keys(body);
+
+    const mountField = (field: string) => {
+      const listOfValues = body[field].split(',');
+      mountedQuery[field] = listOfValues.length > 1 ? { $in: listOfValues } : listOfValues[0];
+    };
+
+    listOfFields.forEach(mountField);
+    return mountedQuery;
   }
 }
