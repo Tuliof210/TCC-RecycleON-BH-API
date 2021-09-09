@@ -117,8 +117,10 @@ export class UpdateLocationsService {
   mountMaterials(rawMaterials: string) {
     const materials = rawMaterials.split(';').map((material) => material.trim());
 
-    materials.forEach((material) => this.materialsList.add(material.toLowerCase()));
-    return materials;
+    return materials.map((material) => {
+      this.materialsList.add(material);
+      return material.toLowerCase();
+    });
   }
 
   mountAddress(rawAddress: RawLocationProperties) {

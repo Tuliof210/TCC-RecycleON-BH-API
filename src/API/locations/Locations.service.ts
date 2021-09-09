@@ -17,9 +17,9 @@ export class LocationsService implements ILocationsService {
     const { query, select, cursor } = locationsQuery;
     delete cursor.limit;
 
-    if (query.idExternal) {
-      query['$or'] = this.mountIdExternalQuery(query.idExternal);
-      delete query.idExternal;
+    if (query.locationTag) {
+      query['$or'] = this.mountLocationQuery(query.locationTag);
+      delete query.locationTag;
     }
 
     if (query.materials) {
@@ -30,7 +30,7 @@ export class LocationsService implements ILocationsService {
     return this.locationsRepository.getLocations({ query, select, cursor }, fullView);
   }
 
-  mountIdExternalQuery(query: string) {
+  mountLocationQuery(query: string) {
     const listOfValues = query.split(',');
     return listOfValues.map((value) => ({ locationTag: value }));
   }
