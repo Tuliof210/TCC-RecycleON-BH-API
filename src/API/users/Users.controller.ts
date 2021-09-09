@@ -7,7 +7,14 @@ import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
 
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiHeader,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Users')
 @Controller('users')
@@ -17,6 +24,9 @@ export class UsersController implements IUsersController {
     @Inject(IAuthServiceToken) private readonly authService: IAuthService,
   ) {}
 
+  @ApiOkResponse({ description: 'The user has been succesfully created' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Post()
   @UseGuards(MasterKeyAuthGuard)
   async create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
@@ -25,6 +35,10 @@ export class UsersController implements IUsersController {
     return { token, user };
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully returned' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Patch('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -35,6 +49,10 @@ export class UsersController implements IUsersController {
     return this.usersService.updateMe(user, userChanges, true);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully updated' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Patch(':id')
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -42,6 +60,10 @@ export class UsersController implements IUsersController {
     return this.usersService.update(userId, userChanges);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully updated' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get(':id/turn-into-admin')
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -49,6 +71,10 @@ export class UsersController implements IUsersController {
     return this.usersService.update(userId, { role: UserRole.admin });
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The users has been succesfully returned' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get()
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -56,6 +82,10 @@ export class UsersController implements IUsersController {
     return this.usersService.retrieve(userQuery, true);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully returned' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -63,6 +93,9 @@ export class UsersController implements IUsersController {
     return this.usersService.getMe(user, true);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully returned' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get(':id')
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -70,6 +103,10 @@ export class UsersController implements IUsersController {
     return this.usersService.getById(userId);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully deactivated' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Delete('me')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -77,6 +114,10 @@ export class UsersController implements IUsersController {
     return this.usersService.disableMe(user);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully deactivated' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Delete(':id')
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -84,6 +125,10 @@ export class UsersController implements IUsersController {
     return this.usersService.disable(userId);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The user has been succesfully returned' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Delete(':id/delete')
   @Role(UserRole.admin)
   @UseGuards(JwtAuthGuard, RoleGuard)

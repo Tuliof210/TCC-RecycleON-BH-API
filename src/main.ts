@@ -18,6 +18,8 @@ async function bootstrap() {
     .setTitle('API RecycleON BH')
     .setDescription('Descrição da API RecycleON BH')
     .setVersion('1.0')
+    .addBasicAuth()
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

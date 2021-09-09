@@ -6,13 +6,16 @@ import { Role } from 'src/shared/decorators';
 import { UserRole } from 'src/shared/entities';
 
 import { Controller, Get, Inject, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @ApiTags('Locations')
 @Controller('locations')
 export class LocationsController implements ILocationsController {
   constructor(@Inject(ILocationsServiceToken) private readonly locationsService: ILocationsService) {}
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The map has been succesfully returned' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get()
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
@@ -20,6 +23,9 @@ export class LocationsController implements ILocationsController {
     return this.locationsService.getLocations(locationsQuery);
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'The location has been succesfully returned' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get(':id')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
