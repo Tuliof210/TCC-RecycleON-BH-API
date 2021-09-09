@@ -6,7 +6,9 @@ import { Role } from 'src/shared/decorators';
 import { UserRole } from 'src/shared/entities';
 
 import { Controller, Get, Inject, Param, Query, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Locations')
 @Controller('locations')
 export class LocationsController implements ILocationsController {
   constructor(@Inject(ILocationsServiceToken) private readonly locationsService: ILocationsService) {}

@@ -7,7 +7,9 @@ import { UserRole } from 'src/shared/entities';
 import { Role } from 'src/shared/decorators';
 
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, Query, Request, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController implements IUsersController {
   constructor(
