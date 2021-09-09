@@ -8,8 +8,7 @@ export interface ILocationsRepository {
   saveOrUpdate(location: Location, fullView?: boolean): Promise<LocationDTO>;
 
   findOne(locationQuery: Record<string, unknown>): Promise<void | (LocationDTO & Document<any, any, LocationDTO>)>;
-  retrieveAll(locationQuery: QueryParamsDTO, fullView?: boolean): Promise<{ count: number; list: Array<LocationDTO> }>;
-  getLocationsMap(locationQuery: QueryParamsDTO, fullView?: boolean): Promise<LocationMapDTO>;
+  getLocations(locationQuery: QueryParamsDTO, fullView?: boolean): Promise<LocationMapDTO>;
   getById(_id: string, fullView?: boolean): Promise<LocationDTO>;
 }
 export const ILocationsRepositoryToken = 'ILocationsRepositoryToken';

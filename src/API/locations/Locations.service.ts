@@ -9,15 +9,34 @@ import { Inject, Injectable } from '@nestjs/common';
 export class LocationsService implements ILocationsService {
   constructor(@Inject(ILocationsRepositoryToken) private readonly locationsRepository: ILocationsRepository) {}
 
-  retrieve(locationsQuery: QueryParamsDTO, fullView = false) {
-    return this.locationsRepository.retrieveAll(locationsQuery, fullView);
-  }
-
-  getLocationsMap(locationsQuery: QueryParamsDTO, fullView = false) {
-    return this.locationsRepository.getLocationsMap(locationsQuery, fullView);
-  }
-
-  get(locationId: string, fullView = false) {
+  getOne(locationId: string, fullView = false) {
     return this.locationsRepository.getById(locationId, fullView);
+  }
+
+  getLocations(locationsQuery: QueryParamsDTO, fullView = false) {
+    const { query, select, cursor } = locationsQuery;
+    delete cursor.limit;
+
+    if (query.locationTag) {
+      query['$or'] = this.mountLocationQuery(query.locationTag);
+      delete query.locationTag;
+    }
+
+    if (query.materials) {
+      query['properties.materials'] = this.mountMaterialQuery(query.materials);
+      delete query.materials;
+    }
+
+    return this.locationsRepository.getLocations({ query, select, cursor }, fullView);
+  }
+
+  mountLocationQuery(query: string) {
+    const listOfValues = query.split(',');
+    return listOfValues.map((value) => ({ locationTag: value }));
+  }
+
+  mountMaterialQuery(query: string) {
+    const listOfValues = query.split(',');
+    return listOfValues.length > 1 ? { $all: listOfValues } : listOfValues[0];
   }
 }

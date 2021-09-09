@@ -12,6 +12,7 @@ import { Injectable, PipeTransform } from '@nestjs/common';
  * page => cursor para quantos resultados ignorar, simulando paginação: { skip: (page * limit - limit) }
  * sort => filtros para a query, como ordenação: { [field: string]: -1 || 1 } respectivamente, decrescente ou crescente
  * resto => parametros da query em si: { field1: value1, field2: value2 }
+ *   |=> caso tenha multiplos parametros, buscar por array
  */
 
 @Injectable()

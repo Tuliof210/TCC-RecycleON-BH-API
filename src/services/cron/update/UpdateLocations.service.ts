@@ -1,6 +1,8 @@
 import { Location } from 'src/shared/entities';
 import { CustomError } from 'src/shared/classes';
 import { ILocationsRepository, ILocationsRepositoryToken } from 'src/repositories/locations';
+import { LocationDTO } from 'src/shared/DTO';
+import { LocationTag } from 'src/shared/entities/Location';
 
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
@@ -8,7 +10,6 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import { map, firstValueFrom } from 'rxjs';
 import * as utm from 'utm';
-import { LocationDTO } from 'src/shared/DTO';
 
 type RawLocationProperties = Record<string, string | number | null>;
 
@@ -30,18 +31,21 @@ export class UpdateLocationsService {
   async start(): Promise<Set<string>> {
     const PV = this.handleLocations({
       resource: this.requestResource('PONTO_VERDE'),
+      tag: LocationTag.PV,
       idPrefix: 'ponto-verde-',
       indexIdSuffix: 'ID_LEV',
       indexName: 'NOME_LEV',
     });
     const LEV = this.handleLocations({
       resource: this.requestResource('LOCAL_ENTREGA_VOLUNTARIA'),
+      tag: LocationTag.LEV,
       idPrefix: 'local-de-entrega-voluntaria-',
       indexIdSuffix: 'ID_LEV',
       indexName: 'NOME_LEV',
     });
     const URPV = this.handleLocations({
       resource: this.requestResource('URPV'),
+      tag: LocationTag.URPV,
       idPrefix: 'URPV-',
       indexIdSuffix: 'ID_URPV',
       indexName: 'NOME_URPV',
@@ -49,7 +53,7 @@ export class UpdateLocationsService {
 
     try {
       const createdLocations = await Promise.all([PV, LEV, URPV]);
-      console.log(createdLocations);
+      console.log(createdLocations.length);
       return this.materialsList;
     } catch (error) {
       throw new CustomError({ name: 'Api Error', message: error.message });
@@ -68,6 +72,7 @@ export class UpdateLocationsService {
 
   async handleLocations(context: {
     resource: Promise<Array<Record<string, any>>>;
+    tag: string;
     idPrefix: string;
     indexIdSuffix: string;
     indexName: string;
@@ -76,6 +81,7 @@ export class UpdateLocationsService {
 
     const locations = rawLocations.map((rawLocation): Promise<LocationDTO> => {
       const location = new Location({
+        locationTag: context.tag,
         coordinates: this.mountCoordinates(rawLocation.geometry.coordinates as [number, number]),
         properties: {
           idExternal: context.idPrefix + rawLocation.properties[context.indexIdSuffix],
@@ -111,9 +117,10 @@ export class UpdateLocationsService {
   mountMaterials(rawMaterials: string) {
     const materials = rawMaterials.split(';').map((material) => material.trim());
 
-    materials.forEach((material) => this.materialsList.add(material));
-
-    return materials;
+    return materials.map((material) => {
+      this.materialsList.add(material);
+      return material.toLowerCase();
+    });
   }
 
   mountAddress(rawAddress: RawLocationProperties) {
