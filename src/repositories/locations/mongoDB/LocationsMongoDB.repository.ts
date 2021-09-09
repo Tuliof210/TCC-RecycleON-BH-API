@@ -19,15 +19,14 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
       })
       .exec()
       .catch(() => {
+        const newLocation = { ...location };
+        delete newLocation._id;
+
         return this.locationModel
-          .findOneAndUpdate(
-            { 'properties.idExternal': location.properties.idExternal },
-            { geometry: location.geometry, properties: location.properties },
-            {
-              new: true,
-              upsert: true,
-            },
-          )
+          .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, newLocation, {
+            new: true,
+            upsert: true,
+          })
           .exec();
       });
     return docLocation.view(fullView);
