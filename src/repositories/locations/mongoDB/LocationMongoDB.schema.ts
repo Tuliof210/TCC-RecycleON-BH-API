@@ -43,6 +43,9 @@ class LocationProps extends Document implements LocationDTO {
   @Prop({ required: true })
   _id: string;
 
+  @Prop({ required: true })
+  type: string;
+
   @Prop({ required: true, enum: LocationTag })
   locationTag: string;
 
