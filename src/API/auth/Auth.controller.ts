@@ -2,7 +2,7 @@ import { AuthPayloadDTO } from 'src/shared/DTO';
 import { BasicAuthGuard } from 'src/guards';
 import { IAuthServiceToken, IAuthController, IAuthService } from '.';
 
-import { Controller, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, Inject, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOkResponse, ApiUnauthorizedResponse, ApiBasicAuth } from '@nestjs/swagger';
 
 @ApiTags('Auth')
@@ -13,7 +13,7 @@ export class AuthController implements IAuthController {
   @ApiBasicAuth()
   @ApiOkResponse({ description: 'The user has been succesfully authenticated' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @Post()
+  @Get()
   @HttpCode(200)
   @UseGuards(BasicAuthGuard)
   login(@Request() { user }: { user: AuthPayloadDTO }) {
