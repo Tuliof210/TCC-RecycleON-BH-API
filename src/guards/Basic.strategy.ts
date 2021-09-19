@@ -1,4 +1,4 @@
-import { AuthPayloadDTO } from 'src/shared/DTO';
+import { UserDTO } from 'src/shared/DTO';
 import { IAuthServiceToken, IAuthService } from 'src/API/auth';
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -12,10 +12,10 @@ export class BasicStrategy extends PassportStrategy(Strategy, 'http') {
     super();
   }
 
-  async validate(email: string, password: string): Promise<AuthPayloadDTO> {
+  async validate(email: string, password: string): Promise<UserDTO> {
     const user = await this.authService.validateUser(email, password);
     if (!user) throw new UnauthorizedException();
 
-    return { _id: user._id, email: user.email, role: user.role };
+    return user;
   }
 }

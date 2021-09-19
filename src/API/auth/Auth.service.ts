@@ -1,4 +1,4 @@
-import { AuthPayloadDTO } from 'src/shared/DTO';
+import { AuthPayloadDTO, UserDTO } from 'src/shared/DTO';
 import { IAuthService } from '.';
 
 import { IUsersRepository, IUsersRepositoryToken } from 'src/repositories/users';
@@ -18,7 +18,8 @@ export class AuthService implements IAuthService {
     if (user) return user.authenticate(password);
   }
 
-  async login(payload: AuthPayloadDTO) {
-    return { token: this.jwtService.sign(payload) };
+  async login(user: UserDTO) {
+    const payload: AuthPayloadDTO = { _id: user._id, email: user.email, role: user.role };
+    return { token: this.jwtService.sign(payload), user: user.view(true) };
   }
 }
