@@ -16,6 +16,6 @@ export class BasicStrategy extends PassportStrategy(Strategy, 'http') {
     const user = await this.authService.validateUser(email, password);
     if (!user) throw new UnauthorizedException();
 
-    return user;
+    return user.view(true);
   }
 }

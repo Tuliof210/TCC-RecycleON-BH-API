@@ -20,6 +20,6 @@ export class AuthService implements IAuthService {
 
   async login(user: UserDTO) {
     const payload: AuthPayloadDTO = { _id: user._id, email: user.email, role: user.role };
-    return { token: this.jwtService.sign(payload), user: user.view(true) };
+    return { token: this.jwtService.sign(payload), user };
   }
 }
