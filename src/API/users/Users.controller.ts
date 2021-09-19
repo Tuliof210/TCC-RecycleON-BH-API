@@ -24,7 +24,7 @@ export class UsersController implements IUsersController {
   @UseGuards(MasterKeyAuthGuard)
   async create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     const user = await this.usersService.create(userData, true);
-    const { token } = await this.authService.login({ _id: user._id, email: user.email, role: user.role });
+    const { token } = await this.authService.login(user);
     return { token, user };
   }
 
