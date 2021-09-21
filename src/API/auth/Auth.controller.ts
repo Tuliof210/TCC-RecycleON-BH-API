@@ -16,7 +16,7 @@ export class AuthController implements IAuthController {
   @Get()
   @HttpCode(200)
   @UseGuards(BasicAuthGuard)
-  login(@Request() { user }: { user: UserDTO }) {
-    return this.authService.login(user);
+  signIn(@Request() { user }: { user: UserDTO }) {
+    return this.authService.signIn(user);
   }
 }
