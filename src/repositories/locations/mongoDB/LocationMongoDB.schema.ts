@@ -64,7 +64,7 @@ export type LocationModel = Model<LocationDTO, Document>;
 
 LocationSchema.methods.view = function (fullView = false): LocationDTO {
   const locationView = {};
-  const publicKeys = ['_id', 'geometry', 'properties'];
+  const publicKeys = ['_id', 'locationTag', 'geometry', 'properties'];
   const privateKeys = [...publicKeys, 'createdAt', 'updatedAt'];
 
   const mountLocationView = (key: string) => {
