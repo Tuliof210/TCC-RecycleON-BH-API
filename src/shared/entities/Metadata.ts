@@ -1,7 +1,7 @@
 import { Entity } from '.';
 import { CreateMetadataDTO } from 'src/shared/DTO';
 
-export enum MetadataTag {
+export enum MetadataType {
   location = 'location',
   material = 'material',
 }

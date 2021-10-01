@@ -8,5 +8,5 @@ export class Entity {
 }
 
 export { Location, LocationTag } from './Location';
-export { Metadata, MetadataTag } from './Metadata';
+export { Metadata, MetadataType } from './Metadata';
 export { UserRole, User, EmailRegex, PasswordRegex } from './User';
