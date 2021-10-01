@@ -1,8 +1,7 @@
-import { Location } from 'src/shared/entities';
+import { Location, LocationTag } from 'src/shared/entities';
 import { CustomError } from 'src/shared/classes';
 import { ILocationsRepository, ILocationsRepositoryToken } from 'src/repositories/locations';
 import { LocationDTO } from 'src/shared/DTO';
-import { LocationTag } from 'src/shared/entities/Location';
 
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';

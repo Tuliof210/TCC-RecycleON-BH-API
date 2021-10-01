@@ -3,8 +3,8 @@ import { Entity } from '.';
 import { CreateLocationDTO } from 'src/shared/DTO';
 
 export enum LocationTag {
-  PV = 'PV',
-  LEV = 'LEV',
+  PV = 'Ponto Verde',
+  LEV = 'Local de Entrega Voluntária',
   URPV = 'URPV',
 }
 
