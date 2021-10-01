@@ -1,6 +1,5 @@
 import { Location } from 'src/shared/entities';
-import { LocationDTO, QueryParamsDTO } from 'src/shared/DTO';
-import { LocationMapDTO } from 'src/shared/DTO/Location.dto';
+import { LocationDTO, LocationMapDTO, QueryParamsDTO } from 'src/shared/DTO';
 
 import { Document } from 'mongoose';
 

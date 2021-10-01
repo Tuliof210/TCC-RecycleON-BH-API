@@ -26,7 +26,7 @@ export class Location extends Entity {
     super();
 
     this.type = 'Feature';
-    this.locationTag = LocationTag[props.locationTag];
+    this.locationTag = props.locationTag;
 
     this.geometry = { type: 'Point', coordinates: props.coordinates };
     this.properties = props.properties;

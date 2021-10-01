@@ -1,7 +1,7 @@
 import { Metadata } from 'src/shared/entities';
 import { Document } from 'mongoose';
 
-export type CreateMetadataDTO = Pick<Metadata, 'tag'>;
+export type CreateMetadataDTO = Pick<Metadata, 'type' | 'tag'>;
 
 export interface MetadataDTO extends Partial<Metadata> {
   _id?: any;
