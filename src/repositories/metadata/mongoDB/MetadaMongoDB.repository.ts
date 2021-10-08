@@ -19,4 +19,21 @@ export class MetadataMongoDBRepository implements IMetadataRepository {
       throw new CustomError({ name: 'Error on create metadata', message: error.message });
     }
   }
+
+  async getById(_id: string, fullView = false) {
+    const foundMetadata = await this.metadataModel.findById(_id).exec();
+    if (foundMetadata) return foundMetadata.view(fullView);
+
+    throw new CustomError({ name: 'Not Found', message: `Metadata ${_id} not found` });
+  }
+
+  async retrieveAll(fullView = false) {
+    const countMetadata = await this.metadataModel.countDocuments({}).exec();
+    const retrievedMetadata = await this.metadataModel.find({}).exec();
+
+    return {
+      count: countMetadata,
+      list: retrievedMetadata.map((metadata) => metadata.view(fullView)),
+    };
+  }
 }
