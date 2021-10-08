@@ -12,11 +12,11 @@ export class MetadataMongoDBRepository implements IMetadataRepository {
   constructor(@InjectModel(MetadataCollection) private metadataModel: MetadataModel) {}
 
   async save(metadata: Metadata, fullView = false) {
-    try {
+    const foundMetadata = await this.metadataModel.findOne({ tag: metadata.tag, type: metadata.type }).exec();
+
+    if (!foundMetadata) {
       const docMetadata = await this.metadataModel.create(metadata);
       return docMetadata.view(fullView);
-    } catch (error) {
-      throw new CustomError({ name: 'Error on create metadata', message: error.message });
     }
   }
 

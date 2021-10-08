@@ -7,7 +7,7 @@ import { Controller, Get, Inject, Param, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @ApiTags('Metadata')
-@Controller('Metadata')
+@Controller('metadata')
 export class MetadataController implements IMetadataController {
   constructor(@Inject(IMetadataServiceToken) private readonly metadataService: IMetadataService) {}
 
@@ -28,6 +28,6 @@ export class MetadataController implements IMetadataController {
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
   async getOne(@Param('id') metadataId: string) {
-    return this.metadataService.getOne(metadataId);
+    return this.metadataService.getOne(metadataId, true);
   }
 }

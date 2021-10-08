@@ -33,6 +33,16 @@ export type MetadataModel = Model<MetadataDTO, Document>;
 //=================================================================================
 
 MetadataSchema.methods.view = function (fullView = false): MetadataDTO {
-  console.log({ fullView });
-  return this;
+  const metadataView = {};
+  const publicKeys = ['_id', 'tag', 'type', 'keyWords'];
+  const privateKeys = [...publicKeys, 'about', 'relatedItens'];
+
+  const mountMetadataView = (key: string) => {
+    metadataView[key] = this[key];
+  };
+
+  if (fullView) privateKeys.forEach(mountMetadataView);
+  else publicKeys.forEach(mountMetadataView);
+
+  return metadataView;
 };
