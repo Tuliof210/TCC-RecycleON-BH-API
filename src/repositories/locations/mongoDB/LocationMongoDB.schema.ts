@@ -1,5 +1,5 @@
 import { LocationDTO } from 'src/shared/DTO';
-import { LocationTag } from 'src/shared/entities/Location';
+import { LocationTag } from 'src/shared/entities';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 

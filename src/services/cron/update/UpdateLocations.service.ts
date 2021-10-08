@@ -1,8 +1,7 @@
-import { Location } from 'src/shared/entities';
+import { Location, LocationTag } from 'src/shared/entities';
 import { CustomError } from 'src/shared/classes';
 import { ILocationsRepository, ILocationsRepositoryToken } from 'src/repositories/locations';
 import { LocationDTO } from 'src/shared/DTO';
-import { LocationTag } from 'src/shared/entities/Location';
 
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
@@ -17,6 +16,8 @@ type RawLocationProperties = Record<string, string | number | null>;
 export class UpdateLocationsService {
   private apiUrl: string;
   private reponseFormat: string;
+
+  private locationTagsList = new Set<string>();
   private materialsList = new Set<string>();
 
   constructor(
@@ -28,7 +29,7 @@ export class UpdateLocationsService {
     this.reponseFormat = 'outputFormat=JSON';
   }
 
-  async start(): Promise<Set<string>> {
+  async start(): Promise<{ locationTags: Array<string>; materials: Array<string> }> {
     const PV = this.handleLocations({
       resource: this.requestResource('PONTO_VERDE'),
       tag: LocationTag.PV,
@@ -52,9 +53,8 @@ export class UpdateLocationsService {
     });
 
     try {
-      const createdLocations = await Promise.all([PV, LEV, URPV]);
-      console.log(createdLocations.length);
-      return this.materialsList;
+      await Promise.all([PV, LEV, URPV]);
+      return { locationTags: Array.from(this.locationTagsList), materials: Array.from(this.materialsList) };
     } catch (error) {
       throw new CustomError({ name: 'Api Error', message: error.message });
     }
@@ -93,6 +93,7 @@ export class UpdateLocationsService {
         },
       });
 
+      this.locationTagsList.add(context.tag);
       return this.locationsRepository.saveOrUpdate(location);
     });
 

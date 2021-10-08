@@ -3,8 +3,8 @@ import { Entity } from '.';
 import { CreateLocationDTO } from 'src/shared/DTO';
 
 export enum LocationTag {
-  PV = 'PV',
-  LEV = 'LEV',
+  PV = 'Ponto Verde',
+  LEV = 'Local de Entrega Voluntária',
   URPV = 'URPV',
 }
 
@@ -26,7 +26,7 @@ export class Location extends Entity {
     super();
 
     this.type = 'Feature';
-    this.locationTag = LocationTag[props.locationTag];
+    this.locationTag = props.locationTag;
 
     this.geometry = { type: 'Point', coordinates: props.coordinates };
     this.properties = props.properties;
