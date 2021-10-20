@@ -3,5 +3,11 @@
   "trailingComma": "all",
   "tabWidth": 2,
   "printWidth": 120,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "prettier/prettier": [
+    "error",
+    {
+      "endOfLine": "auto"
+    }
+  ]
 }
