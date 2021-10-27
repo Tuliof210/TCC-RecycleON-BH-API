@@ -9,11 +9,12 @@ import { Inject, Injectable } from '@nestjs/common';
 export class LocationsService implements ILocationsService {
   constructor(@Inject(ILocationsRepositoryToken) private readonly locationsRepository: ILocationsRepository) {}
 
-  getOne(locationId: string, fullView = false) {
-    return this.locationsRepository.getById(locationId, fullView);
+  async getOne(locationId: string, fullView = false) {
+    const foundLocation = await this.locationsRepository.getById(locationId);
+    return foundLocation.view(fullView);
   }
 
-  getLocations(locationsQuery: QueryParamsDTO, fullView = false) {
+  getLocations(locationsQuery: QueryParamsDTO) {
     const { query, select, cursor } = locationsQuery;
     delete cursor.limit;
 
@@ -27,7 +28,7 @@ export class LocationsService implements ILocationsService {
       delete query.materials;
     }
 
-    return this.locationsRepository.getLocations({ query, select, cursor }, fullView);
+    return this.locationsRepository.getLocations({ query, select, cursor });
   }
 
   mountLocationQuery(query: string) {

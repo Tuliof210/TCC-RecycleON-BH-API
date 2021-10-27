@@ -1,4 +1,4 @@
-import { LocationDocumentDTO, QueryParamsDTO } from 'src/shared/DTO';
+import { LocationDTO, LocationDocumentDTO, QueryParamsDTO } from 'src/shared/DTO';
 import { ILocationsRepository } from '..';
 import { Location } from 'src/shared/entities';
 import { LocationCollection, LocationModel } from './LocationMongoDB.schema';
@@ -11,7 +11,7 @@ import { InjectModel } from '@nestjs/mongoose';
 export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
-  async saveOrUpdate(location: Location) {
+  async saveOrUpdate(location: Location): Promise<void | LocationDTO> {
     return this.locationModel
       .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, location, {
         new: true,
@@ -30,13 +30,7 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
 
   //======================================================================================
 
-  findOne(locationQuery: Record<string, unknown>): Promise<void | LocationDocumentDTO> {
-    return this.locationModel.findOne(locationQuery).exec();
-  }
-
-  async getLocations({ query, select, cursor }: QueryParamsDTO, fullView = false) {
-    console.log(query, select, cursor);
-
+  async getLocations({ query, select, cursor }: QueryParamsDTO) {
     const countLocations = await this.locationModel.countDocuments(query).exec();
     const retrievedLocations = await this.locationModel.find(query, select, cursor).exec();
     return {
@@ -44,15 +38,19 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
       count: countLocations,
       features: retrievedLocations.map((location) => ({
         type: 'Feature',
-        ...location.view(fullView),
+        ...location.view(),
       })),
     };
   }
 
-  async getById(_id: string, fullView = false) {
+  async getById(_id: string) {
     const foundLocation = await this.findOne({ _id });
-    if (foundLocation) return foundLocation.view(fullView);
+    if (foundLocation) return foundLocation;
 
     throw new CustomError({ name: 'Not Found', message: `Location ${_id} not found` });
+  }
+
+  private findOne(locationQuery: Record<string, unknown>): Promise<void | LocationDocumentDTO> {
+    return this.locationModel.findOne(locationQuery).exec();
   }
 }

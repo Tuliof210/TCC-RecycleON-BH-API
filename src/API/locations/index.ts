@@ -7,7 +7,7 @@ export interface ILocationsController {
 
 export interface ILocationsService {
   getOne(locationId: string, fullView?: boolean): Promise<LocationDTO>;
-  getLocations(locationsQuery: QueryParamsDTO, fullView?: boolean): Promise<LocationMapDTO>;
+  getLocations(locationsQuery: QueryParamsDTO): Promise<LocationMapDTO>;
 }
 export const ILocationsServiceToken = 'ILocationsServiceToken';
 
