@@ -5,8 +5,6 @@ import { IMetadataRepository, IMetadataRepositoryToken } from 'src/repositories/
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { read as XLSXreadFile } from 'xlsx';
-
 @Injectable()
 export class UpdateMetadataService {
   metadataSpreadsheetLink: string;
@@ -22,17 +20,11 @@ export class UpdateMetadataService {
     const { locationTags, materials } = await data;
 
     try {
-      this.readMetadataSpreadsheet();
       await this.createMetadata(locationTags, MetadataType.location);
       await this.createMetadata(materials, MetadataType.material);
     } catch (error) {
       throw new CustomError({ name: 'Error on create metadata', message: error.message });
     }
-  }
-
-  async readMetadataSpreadsheet() {
-    const data = XLSXreadFile(this.metadataSpreadsheetLink);
-    console.log(data);
   }
 
   async createMetadata(tags: Array<string>, type: string): Promise<void> {

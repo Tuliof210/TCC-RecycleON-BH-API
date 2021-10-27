@@ -94,10 +94,7 @@ export class UpdateLocationsService {
       });
 
       this.locationTagsList.add(context.tag);
-      return this.locationsRepository.saveOrUpdate(location).then((document) => {
-        console.log(document);
-        return document;
-      });
+      return this.locationsRepository.saveOrUpdate(location);
     });
 
     return Promise.all(locations);
