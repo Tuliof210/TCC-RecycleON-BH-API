@@ -4,6 +4,7 @@ export default () => ({
   secretkeys: {
     jwt: process.env.JWT_SECRET,
     master: process.env.MASTER_KEY,
+    google: process.env.GOOGLE_APIKEY,
   },
   locationsExternalApi: process.env.LOCATIONS_EXTERNAL_API,
   cronUpdateLocations: process.env.CRON_UPDATE_LOCATIONS || '*/10 * * * * *',
