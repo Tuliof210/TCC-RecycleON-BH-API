@@ -10,9 +10,10 @@ import { Inject, Injectable } from '@nestjs/common';
 export class UsersService implements IUsersService {
   constructor(@Inject(IUsersRepositoryToken) private readonly usersRepository: IUsersRepository) {}
 
-  create(userData: CreateUserDTO, fullView = false) {
+  async create(userData: CreateUserDTO, fullView = false) {
     const user = new User(userData);
-    return this.usersRepository.save(user, fullView);
+    const createdUser = await this.usersRepository.save(user);
+    return createdUser.view(fullView);
   }
 
   async updateMe(user: UserDocumentDTO, userChanges: UpdateUserDTO, fullView = false) {
@@ -20,20 +21,24 @@ export class UsersService implements IUsersService {
     return updatedMe.view(fullView);
   }
 
-  update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
-    return this.usersRepository.update(userId, userChanges, fullView);
+  async update(userId: string, userChanges: UpdateUserDTO, fullView = false) {
+    const updatedUser = await this.usersRepository.update(userId, userChanges);
+    return updatedUser.view(fullView);
   }
 
-  retrieve(userQuery: QueryParamsDTO, fullView = false) {
-    return this.usersRepository.retrieveAll(userQuery, fullView);
+  async retrieve(userQuery: QueryParamsDTO, fullView = false) {
+    const listOfUsers = await this.usersRepository.retrieveAll(userQuery);
+    listOfUsers.list.map((user) => user.view(fullView));
+    return listOfUsers;
   }
 
   getMe(user: UserDocumentDTO, fullView = false) {
     return user.view(fullView);
   }
 
-  getById(userId: string, fullView = false) {
-    return this.usersRepository.getById(userId, fullView);
+  async getById(userId: string, fullView = false) {
+    const foundUser = await this.usersRepository.getById(userId);
+    return foundUser.view(fullView);
   }
 
   getByEmail(email: string) {
@@ -45,11 +50,13 @@ export class UsersService implements IUsersService {
     return me.view(fullView);
   }
 
-  disable(userId: string, fullView = false) {
-    return this.usersRepository.deactivate(userId, fullView);
+  async disable(userId: string, fullView = false) {
+    const disabledUser = await this.usersRepository.deactivate(userId);
+    return disabledUser.view(fullView);
   }
 
-  delete(userId: string, fullView = false) {
-    return this.usersRepository.delete(userId, fullView);
+  async delete(userId: string, fullView = false) {
+    const deletedUser = await this.usersRepository.delete(userId);
+    return deletedUser.view(fullView);
   }
 }

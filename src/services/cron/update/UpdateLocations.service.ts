@@ -76,10 +76,10 @@ export class UpdateLocationsService {
     idPrefix: string;
     indexIdSuffix: string;
     indexName: string;
-  }): Promise<Array<LocationDTO>> {
+  }): Promise<Array<void | LocationDTO>> {
     const rawLocations = await context.resource;
 
-    const locations = rawLocations.map((rawLocation): Promise<LocationDTO> => {
+    const locations = rawLocations.map((rawLocation): Promise<void | LocationDTO> => {
       const location = new Location({
         locationTag: context.tag,
         coordinates: this.mountCoordinates(rawLocation.geometry.coordinates as [number, number]),

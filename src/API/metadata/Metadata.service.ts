@@ -8,11 +8,14 @@ import { Inject, Injectable } from '@nestjs/common';
 export class MetadataService implements IMetadataService {
   constructor(@Inject(IMetadataRepositoryToken) private readonly metadataRepository: IMetadataRepository) {}
 
-  getOne(metadataId: string, fullView = false) {
-    return this.metadataRepository.getById(metadataId, fullView);
+  async getOne(metadataId: string, fullView = false) {
+    const foundMetadata = await this.metadataRepository.getById(metadataId);
+    return foundMetadata.view(fullView);
   }
 
-  getMetadata(fullView = false) {
-    return this.metadataRepository.retrieveAll(fullView);
+  async getMetadata(fullView = false) {
+    const foundMetadata = await this.metadataRepository.retrieveAll();
+    foundMetadata.list.map((metadata) => metadata.view(fullView));
+    return foundMetadata;
   }
 }

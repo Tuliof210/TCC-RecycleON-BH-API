@@ -1,5 +1,5 @@
 import { IMetadataRepository } from '..';
-import { Metadata } from 'src/shared/entities';
+import { MetadataDTO } from 'src/shared/DTO';
 import { CustomError } from 'src/shared/classes';
 
 import { MetadataCollection, MetadataModel } from './MetadaMongoDB.schema';
@@ -11,29 +11,33 @@ import { InjectModel } from '@nestjs/mongoose';
 export class MetadataMongoDBRepository implements IMetadataRepository {
   constructor(@InjectModel(MetadataCollection) private metadataModel: MetadataModel) {}
 
-  async save(metadata: Metadata, fullView = false) {
-    const foundMetadata = await this.metadataModel.findOne({ tag: metadata.tag, type: metadata.type }).exec();
-
-    if (!foundMetadata) {
-      const docMetadata = await this.metadataModel.create(metadata);
-      return docMetadata.view(fullView);
-    }
+  async saveOrUpdate(metadata: MetadataDTO): Promise<MetadataDTO> {
+    return this.metadataModel
+      .findOneAndUpdate({ tag: metadata.tag, type: metadata.type }, metadata, { new: true, upsert: true })
+      .exec()
+      .catch((error: Error) => {
+        if (error.message === "Performing an update on the path '_id' would modify the immutable field '_id'") {
+          const newMetadata = { ...metadata };
+          delete newMetadata._id;
+          return this.saveOrUpdate(newMetadata);
+        }
+        throw error;
+      });
   }
 
-  async getById(_id: string, fullView = false) {
+  async getById(_id: string) {
     const foundMetadata = await this.metadataModel.findById(_id).exec();
-    if (foundMetadata) return foundMetadata.view(fullView);
+    if (foundMetadata) return foundMetadata;
 
     throw new CustomError({ name: 'Not Found', message: `Metadata ${_id} not found` });
   }
 
-  async retrieveAll(fullView = false) {
+  async retrieveAll() {
     const countMetadata = await this.metadataModel.countDocuments({}).exec();
     const retrievedMetadata = await this.metadataModel.find({}).exec();
-
     return {
       count: countMetadata,
-      list: retrievedMetadata.map((metadata) => metadata.view(fullView)),
+      list: retrievedMetadata,
     };
   }
 }
