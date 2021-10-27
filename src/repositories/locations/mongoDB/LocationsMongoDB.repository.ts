@@ -36,10 +36,7 @@ export class LocationsMongoDBRepository implements ILocationsRepository {
     return {
       type: 'FeatureCollection',
       count: countLocations,
-      features: retrievedLocations.map((location) => ({
-        type: 'Feature',
-        ...location.view(),
-      })),
+      features: retrievedLocations,
     };
   }
 

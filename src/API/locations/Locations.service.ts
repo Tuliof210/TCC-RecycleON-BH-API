@@ -14,7 +14,7 @@ export class LocationsService implements ILocationsService {
     return foundLocation.view(fullView);
   }
 
-  getLocations(locationsQuery: QueryParamsDTO) {
+  async getLocations(locationsQuery: QueryParamsDTO, fullView = false) {
     const { query, select, cursor } = locationsQuery;
     delete cursor.limit;
 
@@ -28,7 +28,10 @@ export class LocationsService implements ILocationsService {
       delete query.materials;
     }
 
-    return this.locationsRepository.getLocations({ query, select, cursor });
+    const foundLocatins = await this.locationsRepository.getLocations({ query, select, cursor });
+    foundLocatins.features.map((feature) => feature.view(fullView));
+
+    return foundLocatins;
   }
 
   mountLocationQuery(query: string) {
