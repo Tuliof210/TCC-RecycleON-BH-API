@@ -1,5 +1,5 @@
 import { IMetadataRepository } from '..';
-import { Metadata } from 'src/shared/entities';
+import { MetadataDTO } from 'src/shared/DTO';
 import { CustomError } from 'src/shared/classes';
 
 import { MetadataCollection, MetadataModel } from './MetadaMongoDB.schema';
@@ -11,13 +11,18 @@ import { InjectModel } from '@nestjs/mongoose';
 export class MetadataMongoDBRepository implements IMetadataRepository {
   constructor(@InjectModel(MetadataCollection) private metadataModel: MetadataModel) {}
 
-  async save(metadata: Metadata, fullView = false) {
-    const foundMetadata = await this.metadataModel.findOne({ tag: metadata.tag, type: metadata.type }).exec();
-
-    if (!foundMetadata) {
-      const docMetadata = await this.metadataModel.create(metadata);
-      return docMetadata.view(fullView);
-    }
+  async saveOrUpdate(metadata: MetadataDTO) {
+    return this.metadataModel
+      .findOneAndUpdate({ tag: metadata.tag, type: metadata.type }, metadata, { new: true, upsert: true })
+      .exec()
+      .catch((error: Error) => {
+        if (error.message === "Performing an update on the path '_id' would modify the immutable field '_id'") {
+          const newMetadata = { ...metadata };
+          delete newMetadata._id;
+          return this.saveOrUpdate(newMetadata);
+        }
+        throw error;
+      });
   }
 
   async getById(_id: string, fullView = false) {

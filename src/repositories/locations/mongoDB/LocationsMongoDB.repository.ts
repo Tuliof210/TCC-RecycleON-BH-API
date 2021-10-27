@@ -11,25 +11,21 @@ import { InjectModel } from '@nestjs/mongoose';
 export class LocationsMongoDBRepository implements ILocationsRepository {
   constructor(@InjectModel(LocationCollection) private readonly locationModel: LocationModel) {}
 
-  async saveOrUpdate(location: Location, fullView = false) {
-    const docLocation = await this.locationModel
+  async saveOrUpdate(location: Location) {
+    return this.locationModel
       .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, location, {
         new: true,
         upsert: true,
       })
       .exec()
-      .catch(() => {
-        const newLocation = { ...location };
-        delete newLocation._id;
-
-        return this.locationModel
-          .findOneAndUpdate({ 'properties.idExternal': location.properties.idExternal }, newLocation, {
-            new: true,
-            upsert: true,
-          })
-          .exec();
+      .catch((error: Error) => {
+        if (error.message === "Performing an update on the path '_id' would modify the immutable field '_id'") {
+          const newLocation = { ...location };
+          delete newLocation._id;
+          return this.saveOrUpdate(newLocation);
+        }
+        throw error;
       });
-    return docLocation.view(fullView);
   }
 
   //======================================================================================
