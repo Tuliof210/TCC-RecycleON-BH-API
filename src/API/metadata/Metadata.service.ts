@@ -15,7 +15,10 @@ export class MetadataService implements IMetadataService {
 
   async getMetadata(fullView = false) {
     const foundMetadata = await this.metadataRepository.retrieveAll();
-    foundMetadata.list.map((metadata) => metadata.view(fullView));
+
+    const metadataList = foundMetadata.list;
+    foundMetadata.list = metadataList.map((metadata) => metadata.view(fullView));
+
     return foundMetadata;
   }
 }
