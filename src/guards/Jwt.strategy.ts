@@ -1,18 +1,16 @@
 import { AuthPayloadDTO } from 'src/shared/DTO';
+import { IUsersRepository, IUsersRepositoryToken } from 'src/repositories/users';
 
-import { IUserRepository, IUserRepositoryToken } from 'src/repositories/users';
-
+import { ConfigService } from '@nestjs/config';
 import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import { ConfigService } from '@nestjs/config';
-
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject(IUserRepositoryToken) private readonly userRepository: IUserRepository,
+    @Inject(IUsersRepositoryToken) private readonly usersRepository: IUsersRepository,
     private readonly config: ConfigService,
   ) {
     super({
@@ -23,6 +21,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: AuthPayloadDTO) {
-    return this.userRepository.findOne({ _id: payload._id });
+    return this.usersRepository.findOne({ _id: payload._id });
   }
 }

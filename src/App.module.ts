@@ -1,8 +1,11 @@
-import { SharedModule } from './shared';
 import { ResponseInterceptor } from './interceptors';
 
+import { CronModule } from './services/cron';
+import { SharedModule } from './shared';
 import { AuthModule } from './API/auth';
-import { UserModule } from './API/user';
+import { UsersModule } from './API/users';
+import { LocationsModule } from './API/locations';
+import { WikiModule } from './API/wiki';
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
@@ -13,9 +16,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    CronModule,
     SharedModule,
     AuthModule,
-    UserModule,
+    UsersModule,
+    LocationsModule,
+    WikiModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './env/.env', load: [configuration] }),
     MongooseModule.forRootAsync({
       useFactory: async (config: ConfigService) => ({

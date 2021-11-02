@@ -1,5 +1,5 @@
 import { UpdateUserDTO } from 'src/shared/DTO';
-import { EmailRegex } from 'src/shared/entities';
+import { EmailRegex, PasswordRegex } from 'src/shared/entities';
 
 import { PipeTransform, Injectable } from '@nestjs/common';
 
@@ -10,6 +10,7 @@ export class UpdateUserValidationPipe implements PipeTransform {
   private readonly schema: yup.SchemaOf<UpdateUserDTO> = yup.object({
     name: yup.string().strict().notRequired(),
     email: yup.string().strict().matches(EmailRegex, 'Invalid e-mail').notRequired(),
+    password: yup.string().strict().matches(PasswordRegex, 'Invalid password').notRequired(),
     role: yup.string().strict().notRequired(),
   });
 

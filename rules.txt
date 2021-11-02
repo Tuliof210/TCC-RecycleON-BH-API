@@ -1,4 +1,4 @@
-- arquivos deverão ser camelCase [exceto index.* e main.*]
+- arquivos deverão ser startCase [exceto index.* e main.*]
 - pastas deverão ser minusculas
 
 - imports
@@ -23,3 +23,8 @@
 - debugger
   * gerar um build antes de tentar
   * assim o source map ira funcionar
+
+- nomeclaturas
+  * pastas das entidades no pluram
+  * manipulador e usuarios de entidades no plural
+  * entidades no singular
