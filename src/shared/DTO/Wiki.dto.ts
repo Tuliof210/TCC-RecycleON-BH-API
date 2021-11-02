@@ -1,10 +1,10 @@
-import { Wiki } from 'src/shared/entities';
+import { WikiItem } from 'src/shared/entities';
 import { Document } from 'mongoose';
 
-export type CreateWikiDTO = Pick<Wiki, 'type' | 'tag'>;
+export type CreateWikiItemDTO = Pick<WikiItem, 'type' | 'tag'>;
 
-export interface WikiDTO extends Partial<Wiki> {
+export interface WikiItemDTO extends Partial<WikiItem> {
   _id?: any;
-  view?: (fullView?: boolean) => Wiki;
+  view?: (fullView?: boolean) => WikiItem;
 }
-export type WikiDocumentDTO = WikiDTO & Document<any, any, WikiDTO>;
+export type WikiItemDocumentDTO = WikiItemDTO & Document<any, any, WikiItemDTO>;

@@ -1,5 +1,5 @@
-import { WikiDTO } from 'src/shared/DTO';
-import { Wiki, WikiType } from 'src/shared/entities';
+import { WikiItemDTO } from 'src/shared/DTO';
+import { WikiItem, WikiItemType } from 'src/shared/entities';
 import { CustomError } from 'src/shared/classes';
 import { IWikiRepository, IWikiRepositoryToken } from 'src/repositories/wiki';
 
@@ -27,12 +27,12 @@ export class UpdateWikiService {
     const { locationTags, materials } = await data;
 
     try {
-      const wikiAdditionalInformation = await this.readWikiSpreadsheet();
+      const wikiItemsData = await this.readWikiSpreadsheet();
 
-      await this.createWiki(locationTags, WikiType.location, wikiAdditionalInformation);
-      await this.createWiki(materials, WikiType.material, wikiAdditionalInformation);
+      await this.createWikiItem(locationTags, WikiItemType.location, wikiItemsData);
+      await this.createWikiItem(materials, WikiItemType.material, wikiItemsData);
     } catch (error) {
-      throw new CustomError({ name: 'Error on create wiki', message: error.message });
+      throw new CustomError({ name: 'Error on update wiki', message: error.message });
     }
   }
 
@@ -60,7 +60,7 @@ export class UpdateWikiService {
       objectData['relatedItens'] = this.convertStringToArray(objectData['relatedItens']);
       objectData['keyWords'] = this.convertStringToArray(objectData['keyWords']);
 
-      return objectData as WikiDTO;
+      return objectData as WikiItemDTO;
     });
   }
 
@@ -68,18 +68,19 @@ export class UpdateWikiService {
     return stringValue.split(';');
   }
 
-  async createWiki(tags: Array<string>, type: string, additionalInformation: Array<WikiDTO>): Promise<void> {
+  async createWikiItem(tags: Array<string>, type: string, additionalInformation: Array<WikiItemDTO>): Promise<void> {
     tags.forEach((tag) => {
-      const findAdditionalInformation = (information: WikiDTO) => information.type === type && information.tag === tag;
+      const findAdditionalInformation = (information: WikiItemDTO) =>
+        information.type === type && information.tag === tag;
 
-      const wiki = new Wiki({ type, tag });
+      const wikiItem = new WikiItem({ type, tag });
       const { about, relatedItens, keyWords } = additionalInformation.find(findAdditionalInformation);
 
-      wiki.about = about;
-      wiki.relatedItens = relatedItens;
-      wiki.keyWords = keyWords;
+      wikiItem.about = about;
+      wikiItem.relatedItens = relatedItens;
+      wikiItem.keyWords = keyWords;
 
-      this.wikiRepository.saveOrUpdate(wiki);
+      this.wikiRepository.saveOrUpdate(wikiItem);
     });
   }
 }

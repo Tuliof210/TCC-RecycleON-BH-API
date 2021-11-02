@@ -27,7 +27,7 @@ export class WikiController implements IWikiController {
   @Get(':id')
   @Role(UserRole.user)
   @UseGuards(JwtAuthGuard, RoleGuard)
-  async getOne(@Param('id') wikiId: string) {
-    return this.wikiService.getOne(wikiId, true);
+  async getItem(@Param('id') wikiItemId: string) {
+    return this.wikiService.getItem(wikiItemId, true);
   }
 }

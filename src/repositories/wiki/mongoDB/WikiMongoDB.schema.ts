@@ -1,16 +1,16 @@
-import { WikiDTO } from 'src/shared/DTO';
-import { WikiType } from 'src/shared/entities';
+import { WikiItemDTO } from 'src/shared/DTO';
+import { WikiItemType } from 'src/shared/entities';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 
 import { Document, Model } from 'mongoose';
 
 @Schema({ versionKey: false, timestamps: true, collection: 'wiki' })
-class WikiProps extends Document implements WikiDTO {
+class WikiItemProps extends Document implements WikiItemDTO {
   @Prop({ required: true })
   _id: string;
 
-  @Prop({ required: true, enum: WikiType })
+  @Prop({ required: true, enum: WikiItemType })
   type: string;
 
   @Prop({ required: true })
@@ -26,23 +26,23 @@ class WikiProps extends Document implements WikiDTO {
   keyWords: Array<string>;
 }
 
-export const WikiSchema = SchemaFactory.createForClass(WikiProps);
+export const WikiItemSchema = SchemaFactory.createForClass(WikiItemProps);
 export const WikiCollection = 'Wiki';
-export type WikiModel = Model<WikiDTO, Document>;
+export type WikiItemModel = Model<WikiItemDTO, Document>;
 
 //=================================================================================
 
-WikiSchema.methods.view = function (fullView = false): WikiDTO {
-  const wikiView = {};
+WikiItemSchema.methods.view = function (fullView = false): WikiItemDTO {
+  const wikiItemView = {};
   const publicKeys = ['_id', 'tag', 'type', 'keyWords'];
   const privateKeys = [...publicKeys, 'about', 'relatedItens'];
 
-  const mountWikiView = (key: string) => {
-    wikiView[key] = this[key];
+  const mountWikiItemView = (key: string) => {
+    wikiItemView[key] = this[key];
   };
 
-  if (fullView) privateKeys.forEach(mountWikiView);
-  else publicKeys.forEach(mountWikiView);
+  if (fullView) privateKeys.forEach(mountWikiItemView);
+  else publicKeys.forEach(mountWikiItemView);
 
-  return wikiView;
+  return wikiItemView;
 };

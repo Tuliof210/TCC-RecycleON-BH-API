@@ -8,16 +8,16 @@ import { Inject, Injectable } from '@nestjs/common';
 export class WikiService implements IWikiService {
   constructor(@Inject(IWikiRepositoryToken) private readonly wikiRepository: IWikiRepository) {}
 
-  async getOne(wikiId: string, fullView = false) {
-    const foundWiki = await this.wikiRepository.getById(wikiId);
-    return foundWiki.view(fullView);
+  async getItem(wikiItemId: string, fullView = false) {
+    const foundWikiItem = await this.wikiRepository.getById(wikiItemId);
+    return foundWikiItem.view(fullView);
   }
 
   async getWiki(fullView = false) {
     const foundWiki = await this.wikiRepository.retrieveAll();
 
     const wikiList = foundWiki.list;
-    foundWiki.list = wikiList.map((wiki) => wiki.view(fullView));
+    foundWiki.list = wikiList.map((wikiItem) => wikiItem.view(fullView));
 
     return foundWiki;
   }

@@ -1,13 +1,13 @@
-import { WikiDTO } from 'src/shared/DTO';
+import { WikiItemDTO } from 'src/shared/DTO';
 
 export interface IWikiController {
-  getOne(wikiId: string): Promise<WikiDTO>;
-  getWiki(): Promise<{ count: number; list: Array<WikiDTO> }>;
+  getItem(wikiItemId: string): Promise<WikiItemDTO>;
+  getWiki(): Promise<{ count: number; list: Array<WikiItemDTO> }>;
 }
 
 export interface IWikiService {
-  getOne(wikiId: string, fullView?: boolean): Promise<WikiDTO>;
-  getWiki(fullView?: boolean): Promise<{ count: number; list: Array<WikiDTO> }>;
+  getItem(wikiItemId: string, fullView?: boolean): Promise<WikiItemDTO>;
+  getWiki(fullView?: boolean): Promise<{ count: number; list: Array<WikiItemDTO> }>;
 }
 
 export const IWikiServiceToken = 'IWikiServiceToken';
