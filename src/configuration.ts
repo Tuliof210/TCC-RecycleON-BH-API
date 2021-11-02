@@ -8,5 +8,5 @@ export default () => ({
   },
   locationsExternalApi: process.env.LOCATIONS_EXTERNAL_API,
   cronUpdateLocations: process.env.CRON_UPDATE_LOCATIONS || '*/10 * * * * *',
-  metadataSpreadsheet: process.env.METADATA_SPREADSHEET,
+  wikiSpreadsheet: process.env.WIKI_SPREADSHEET,
 });

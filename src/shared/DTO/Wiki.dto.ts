@@ -1,10 +1,10 @@
-import { Metadata } from 'src/shared/entities';
+import { Wiki } from 'src/shared/entities';
 import { Document } from 'mongoose';
 
-export type CreateMetadataDTO = Pick<Metadata, 'type' | 'tag'>;
+export type CreateWikiDTO = Pick<Wiki, 'type' | 'tag'>;
 
-export interface MetadataDTO extends Partial<Metadata> {
+export interface WikiDTO extends Partial<Wiki> {
   _id?: any;
-  view?: (fullView?: boolean) => Metadata;
+  view?: (fullView?: boolean) => Wiki;
 }
-export type MetadataDocumentDTO = MetadataDTO & Document<any, any, MetadataDTO>;
+export type WikiDocumentDTO = WikiDTO & Document<any, any, WikiDTO>;
