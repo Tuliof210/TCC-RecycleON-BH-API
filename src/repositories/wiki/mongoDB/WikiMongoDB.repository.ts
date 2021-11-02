@@ -2,7 +2,7 @@ import { IWikiRepository } from '..';
 import { WikiItemDTO } from 'src/shared/DTO';
 import { CustomError } from 'src/shared/classes';
 
-import { WikiCollection, WikiItemModel } from './WikiMongoDB.schema';
+import { WikiCollection, WikiItemModel } from './WikiItemMongoDB.schema';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

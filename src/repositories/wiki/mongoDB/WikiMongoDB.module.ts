@@ -1,6 +1,6 @@
 import { IWikiRepositoryToken } from '..';
 import { WikiMongoDBRepository } from './WikiMongoDB.repository';
-import { WikiCollection, WikiItemSchema } from './WikiMongoDB.schema';
+import { WikiCollection, WikiItemSchema } from './WikiItemMongoDB.schema';
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
