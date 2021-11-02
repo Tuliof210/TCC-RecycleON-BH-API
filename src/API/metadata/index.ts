@@ -12,4 +12,4 @@ export interface IMetadataService {
 
 export const IMetadataServiceToken = 'IMetadataServiceToken';
 
-export { MetadataModule } from './Metadata.module';
+export { MetadataModule } from './Wiki.module';

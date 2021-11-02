@@ -2,7 +2,7 @@ import { IMetadataRepository } from '..';
 import { MetadataDTO } from 'src/shared/DTO';
 import { CustomError } from 'src/shared/classes';
 
-import { MetadataCollection, MetadataModel } from './MetadaMongoDB.schema';
+import { MetadataCollection, MetadataModel } from './WikiMongoDB.schema';
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

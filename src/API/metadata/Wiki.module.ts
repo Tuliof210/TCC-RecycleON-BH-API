@@ -1,7 +1,7 @@
 import { IMetadataServiceToken } from '.';
 import { MetadataMongoDBRepositoryModule } from 'src/repositories/metadata/mongoDB';
-import { MetadataController } from './Metadata.controller';
-import { MetadataService } from './Metadata.service';
+import { MetadataController } from './Wiki.controller';
+import { MetadataService } from './Wiki.service';
 
 import { Module } from '@nestjs/common';
 

@@ -1,6 +1,6 @@
 import { IMetadataRepositoryToken } from '..';
-import { MetadataMongoDBRepository } from './MetadaMongoDB.repository';
-import { MetadataCollection, MetadataSchema } from './MetadaMongoDB.schema';
+import { MetadataMongoDBRepository } from './WikiMongoDB.repository';
+import { MetadataCollection, MetadataSchema } from './WikiMongoDB.schema';
 
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';

@@ -1,5 +1,5 @@
 import { UpdateLocationsService } from './UpdateLocations.service';
-import { UpdateMetadataService } from './UpdateMetadata.service';
+import { UpdateMetadataService } from './UpdateWiki.service';
 
 import { Injectable } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';

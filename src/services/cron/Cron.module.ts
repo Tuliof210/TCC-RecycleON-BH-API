@@ -3,7 +3,7 @@ import { MetadataMongoDBRepositoryModule } from 'src/repositories/metadata/mongo
 
 import { UpdateLocationsCron } from './update/UpdateLocations.cron';
 import { UpdateLocationsService } from './update/UpdateLocations.service';
-import { UpdateMetadataService } from './update/UpdateMetadata.service';
+import { UpdateMetadataService } from './update/UpdateWiki.service';
 
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
