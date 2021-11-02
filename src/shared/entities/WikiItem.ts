@@ -11,7 +11,7 @@ export class WikiItem extends Entity {
   public tag: string;
 
   public about: string;
-  public relatedItens: Array<string>;
+  public relatedItems: Array<string>;
 
   public keyWords: Array<string>;
 
@@ -19,7 +19,7 @@ export class WikiItem extends Entity {
     super();
     Object.assign(this, props);
 
-    this.relatedItens = [];
+    this.relatedItems = [];
     this.keyWords = [];
 
     this.about = '';
