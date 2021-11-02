@@ -57,7 +57,7 @@ export class UpdateWikiService {
         objectData[key] = value;
       });
 
-      objectData['relatedItens'] = this.convertStringToArray(objectData['relatedItens']);
+      objectData['relatedItems'] = this.convertStringToArray(objectData['relatedItems']);
       objectData['keyWords'] = this.convertStringToArray(objectData['keyWords']);
 
       return objectData as WikiItemDTO;
@@ -74,10 +74,10 @@ export class UpdateWikiService {
         information.type === type && information.tag === tag;
 
       const wikiItem = new WikiItem({ type, tag });
-      const { about, relatedItens, keyWords } = additionalInformation.find(findAdditionalInformation);
+      const { about, relatedItems, keyWords } = additionalInformation.find(findAdditionalInformation);
 
       wikiItem.about = about;
-      wikiItem.relatedItens = relatedItens;
+      wikiItem.relatedItems = relatedItems;
       wikiItem.keyWords = keyWords;
 
       this.wikiRepository.saveOrUpdate(wikiItem);

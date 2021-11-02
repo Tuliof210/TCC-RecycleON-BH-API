@@ -20,7 +20,7 @@ class WikiItemProps extends Document implements WikiItemDTO {
   about: string;
 
   @Prop({ required: true, default: [] })
-  relatedItens: Array<string>;
+  relatedItems: Array<string>;
 
   @Prop({ required: true, default: [] })
   keyWords: Array<string>;
@@ -35,7 +35,7 @@ export type WikiItemModel = Model<WikiItemDTO, Document>;
 WikiItemSchema.methods.view = function (fullView = false): WikiItemDTO {
   const wikiItemView = {};
   const publicKeys = ['_id', 'tag', 'type', 'keyWords'];
-  const privateKeys = [...publicKeys, 'about', 'relatedItens'];
+  const privateKeys = [...publicKeys, 'about', 'relatedItems'];
 
   const mountWikiItemView = (key: string) => {
     wikiItemView[key] = this[key];
