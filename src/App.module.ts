@@ -5,7 +5,7 @@ import { SharedModule } from './shared';
 import { AuthModule } from './API/auth';
 import { UsersModule } from './API/users';
 import { LocationsModule } from './API/locations';
-import { MetadataModule } from './API/metadata';
+import { WikiModule } from './API/wiki';
 
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
@@ -21,7 +21,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     AuthModule,
     UsersModule,
     LocationsModule,
-    MetadataModule,
+    WikiModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: './env/.env', load: [configuration] }),
     MongooseModule.forRootAsync({
       useFactory: async (config: ConfigService) => ({

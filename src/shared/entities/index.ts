@@ -8,5 +8,5 @@ export class Entity {
 }
 
 export { Location, LocationTag } from './Location';
-export { Metadata, MetadataType } from './Metadata';
+export { WikiItem, WikiItemType } from './WikiItem';
 export { UserRole, User, EmailRegex, PasswordRegex } from './User';

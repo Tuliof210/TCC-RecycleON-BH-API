@@ -1,5 +1,5 @@
 import { UpdateLocationsService } from './UpdateLocations.service';
-import { UpdateMetadataService } from './UpdateMetadata.service';
+import { UpdateWikiService } from './UpdateWiki.service';
 
 import { Injectable } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
@@ -15,7 +15,7 @@ export class UpdateLocationsCron {
     private readonly config: ConfigService,
     private readonly schedulerRegistry: SchedulerRegistry,
     private readonly updateLocationsService: UpdateLocationsService,
-    private readonly updateMetadataService: UpdateMetadataService,
+    private readonly updateWikiService: UpdateWikiService,
   ) {
     this.cronUpdateLocations = this.config.get<string>('cronUpdateLocations');
     const updateLocationsJob = new CronJob(this.cronUpdateLocations, this.handleUpdateLocations.bind(this));
@@ -25,7 +25,7 @@ export class UpdateLocationsCron {
   }
 
   handleUpdateLocations() {
-    const metadata = this.updateLocationsService.start();
-    this.updateMetadataService.start(metadata);
+    const wiki = this.updateLocationsService.start();
+    this.updateWikiService.start(wiki);
   }
 }

@@ -1,16 +1,16 @@
 import { LocationsMongoDBRepositoryModule } from 'src/repositories/locations/mongoDB';
-import { MetadataMongoDBRepositoryModule } from 'src/repositories/metadata/mongoDB';
+import { WikiMongoDBRepositoryModule } from 'src/repositories/wiki/mongoDB';
 
 import { UpdateLocationsCron } from './update/UpdateLocations.cron';
 import { UpdateLocationsService } from './update/UpdateLocations.service';
-import { UpdateMetadataService } from './update/UpdateMetadata.service';
+import { UpdateWikiService } from './update/UpdateWiki.service';
 
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [LocationsMongoDBRepositoryModule, MetadataMongoDBRepositoryModule, ScheduleModule.forRoot(), HttpModule],
-  providers: [UpdateLocationsCron, UpdateLocationsService, UpdateMetadataService],
+  imports: [LocationsMongoDBRepositoryModule, WikiMongoDBRepositoryModule, ScheduleModule.forRoot(), HttpModule],
+  providers: [UpdateLocationsCron, UpdateLocationsService, UpdateWikiService],
 })
 export class CronModule {}

@@ -1,12 +1,12 @@
 import { Entity } from '.';
-import { CreateMetadataDTO } from 'src/shared/DTO';
+import { CreateWikiItemDTO } from 'src/shared/DTO';
 
-export enum MetadataType {
+export enum WikiItemType {
   location = 'location',
   material = 'material',
 }
 
-export class Metadata extends Entity {
+export class WikiItem extends Entity {
   public type: string;
   public tag: string;
 
@@ -15,7 +15,7 @@ export class Metadata extends Entity {
 
   public keyWords: Array<string>;
 
-  constructor(props: CreateMetadataDTO) {
+  constructor(props: CreateWikiItemDTO) {
     super();
     Object.assign(this, props);
 

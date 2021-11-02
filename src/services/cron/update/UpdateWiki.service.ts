@@ -1,7 +1,7 @@
-import { MetadataDTO } from 'src/shared/DTO';
-import { Metadata, MetadataType } from 'src/shared/entities';
+import { WikiItemDTO } from 'src/shared/DTO';
+import { WikiItem, WikiItemType } from 'src/shared/entities';
 import { CustomError } from 'src/shared/classes';
-import { IMetadataRepository, IMetadataRepositoryToken } from 'src/repositories/metadata';
+import { IWikiRepository, IWikiRepositoryToken } from 'src/repositories/wiki';
 
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -9,34 +9,34 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet';
 
 @Injectable()
-export class UpdateMetadataService {
+export class UpdateWikiService {
   googleApiKey: string;
-  metadataSpreadsheetLink: string;
+  wikiSpreadsheetLink: string;
   googleSpreadsheet: GoogleSpreadsheet;
 
   constructor(
-    @Inject(IMetadataRepositoryToken) private readonly metadataRepository: IMetadataRepository,
+    @Inject(IWikiRepositoryToken) private readonly wikiRepository: IWikiRepository,
     private readonly config: ConfigService,
   ) {
     this.googleApiKey = this.config.get<string>('secretkeys')['google'];
-    this.metadataSpreadsheetLink = this.config.get<string>('metadataSpreadsheet');
-    this.googleSpreadsheet = new GoogleSpreadsheet(this.metadataSpreadsheetLink);
+    this.wikiSpreadsheetLink = this.config.get<string>('wikiSpreadsheet');
+    this.googleSpreadsheet = new GoogleSpreadsheet(this.wikiSpreadsheetLink);
   }
 
   async start(data: Promise<{ locationTags: Array<string>; materials: Array<string> }>): Promise<void> {
     const { locationTags, materials } = await data;
 
     try {
-      const metaDataAdditionalInformation = await this.readMetadataSpreadsheet();
+      const wikiItemsData = await this.readWikiSpreadsheet();
 
-      await this.createMetadata(locationTags, MetadataType.location, metaDataAdditionalInformation);
-      await this.createMetadata(materials, MetadataType.material, metaDataAdditionalInformation);
+      await this.createWikiItem(locationTags, WikiItemType.location, wikiItemsData);
+      await this.createWikiItem(materials, WikiItemType.material, wikiItemsData);
     } catch (error) {
-      throw new CustomError({ name: 'Error on create metadata', message: error.message });
+      throw new CustomError({ name: 'Error on update wiki', message: error.message });
     }
   }
 
-  async readMetadataSpreadsheet() {
+  async readWikiSpreadsheet() {
     this.googleSpreadsheet.useApiKey(this.googleApiKey);
     await this.googleSpreadsheet.loadInfo();
 
@@ -60,7 +60,7 @@ export class UpdateMetadataService {
       objectData['relatedItens'] = this.convertStringToArray(objectData['relatedItens']);
       objectData['keyWords'] = this.convertStringToArray(objectData['keyWords']);
 
-      return objectData as MetadataDTO;
+      return objectData as WikiItemDTO;
     });
   }
 
@@ -68,19 +68,19 @@ export class UpdateMetadataService {
     return stringValue.split(';');
   }
 
-  async createMetadata(tags: Array<string>, type: string, additionalInformation: Array<MetadataDTO>): Promise<void> {
+  async createWikiItem(tags: Array<string>, type: string, additionalInformation: Array<WikiItemDTO>): Promise<void> {
     tags.forEach((tag) => {
-      const findAdditionalInformation = (information: MetadataDTO) =>
+      const findAdditionalInformation = (information: WikiItemDTO) =>
         information.type === type && information.tag === tag;
 
-      const metadata = new Metadata({ type, tag });
+      const wikiItem = new WikiItem({ type, tag });
       const { about, relatedItens, keyWords } = additionalInformation.find(findAdditionalInformation);
 
-      metadata.about = about;
-      metadata.relatedItens = relatedItens;
-      metadata.keyWords = keyWords;
+      wikiItem.about = about;
+      wikiItem.relatedItens = relatedItens;
+      wikiItem.keyWords = keyWords;
 
-      this.metadataRepository.saveOrUpdate(metadata);
+      this.wikiRepository.saveOrUpdate(wikiItem);
     });
   }
 }
