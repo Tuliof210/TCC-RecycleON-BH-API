@@ -36,11 +36,13 @@ export class LocationsService implements ILocationsService {
 
   mountLocationQuery(query: string) {
     const listOfValues = query.split(',');
-    return listOfValues.map((value) => ({ locationTag: value }));
+    return listOfValues.map((value) => ({ locationTag: new RegExp(value, 'i') }));
   }
 
   mountMaterialQuery(query: string) {
     const listOfValues = query.split(',');
-    return listOfValues.length > 1 ? { $all: listOfValues } : listOfValues[0];
+    return listOfValues.length > 1
+      ? { $all: listOfValues.map((value) => new RegExp(value, 'i')) }
+      : new RegExp(listOfValues[0], 'i');
   }
 }
