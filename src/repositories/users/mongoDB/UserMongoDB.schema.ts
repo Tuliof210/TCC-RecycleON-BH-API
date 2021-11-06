@@ -26,6 +26,9 @@ class UserProps extends Document implements UserDTO {
   @Prop({ required: true })
   active: boolean;
 
+  @Prop({ required: true })
+  bookmarks: string[];
+
   @Prop()
   keywords: string[];
 }
@@ -48,7 +51,7 @@ UserSchema.methods.disable = function () {
 UserSchema.methods.view = function (fullView = false): UserDTO {
   const userView = {};
   const publicKeys = ['_id', 'name', 'email', 'role'];
-  const privateKeys = [...publicKeys, 'active', 'createdAt', 'updatedAt'];
+  const privateKeys = [...publicKeys, 'active', 'bookmarks', 'createdAt', 'updatedAt'];
 
   const mountUserView = (key: string) => {
     userView[key] = this[key];
