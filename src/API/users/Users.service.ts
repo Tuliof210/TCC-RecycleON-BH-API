@@ -2,9 +2,11 @@ import { User } from 'src/shared/entities';
 
 import { IUsersService } from '.';
 import { IUsersRepository, IUsersRepositoryToken } from 'src/repositories/users';
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, SocialUserDTO } from 'src/shared/DTO';
 
 import { Inject, Injectable } from '@nestjs/common';
+
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UsersService implements IUsersService {
@@ -14,6 +16,24 @@ export class UsersService implements IUsersService {
     const user = new User(userData);
     const createdUser = await this.usersRepository.save(user);
     return createdUser.view(fullView);
+  }
+
+  async createSocial(userSocialData: SocialUserDTO, brand: 'facebook' | 'google', fullView = false) {
+    const { id, name, email } = userSocialData;
+    const foundUser = await this.usersRepository.getBySocialId(id, brand);
+
+    if (!foundUser) {
+      const fakePassword = crypto.randomBytes(20).toString('hex');
+      const userData: CreateUserDTO = { name, email, password: fakePassword };
+
+      const user = new User(userData);
+      user.socialId = { [brand]: userSocialData.id };
+
+      const createdUser = await this.usersRepository.save(user);
+      return createdUser.view(fullView);
+    }
+
+    return foundUser.view(fullView);
   }
 
   async updateMe(user: UserDocumentDTO, userChanges: UpdateUserDTO, fullView = false) {

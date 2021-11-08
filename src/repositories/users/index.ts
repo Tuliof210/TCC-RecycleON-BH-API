@@ -7,6 +7,7 @@ export interface IUsersRepository {
 
   findOne(userQuery: Record<string, unknown>): Promise<void | UserDocumentDTO>;
   getById(_id: string): Promise<UserDTO>;
+  getBySocialId(socialId: string, brand: string): Promise<void | UserDTO>;
   getByEmail(email: string): Promise<void | UserDTO>;
   retrieveAll(userQuery: QueryParamsDTO): Promise<{ count: number; list: Array<UserDTO> }>;
 

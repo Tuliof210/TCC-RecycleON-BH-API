@@ -12,12 +12,13 @@ export class UpdateUserValidationPipe implements PipeTransform {
     email: yup.string().strict().matches(EmailRegex, 'Invalid e-mail').notRequired(),
     password: yup.string().strict().matches(PasswordRegex, 'Invalid password').notRequired(),
     role: yup.string().strict().notRequired(),
+    bookmarks: yup.array().of(yup.string()).strict().notRequired(),
   });
 
   async transform(body: Record<string, unknown>) {
     const validBody = await this.schema.validate(body);
     const castObject = this.schema.cast(validBody, { stripUnknown: true });
 
-    return { name: castObject.name };
+    return castObject;
   }
 }
