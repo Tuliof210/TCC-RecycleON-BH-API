@@ -1,7 +1,7 @@
 import { UserRole, EmailRegex } from 'src/shared/entities';
 import { UserDTO } from 'src/shared/DTO';
 
-import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
+import { Schema, SchemaFactory, Prop, raw } from '@nestjs/mongoose';
 
 import { Document, Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -28,6 +28,14 @@ class UserProps extends Document implements UserDTO {
 
   @Prop({ required: true })
   bookmarks: string[];
+
+  @Prop(
+    raw({
+      facebook: { type: String },
+      google: { type: String },
+    }),
+  )
+  socialId: Record<string, any>;
 
   @Prop()
   keywords: string[];

@@ -36,6 +36,10 @@ export class UsersMongoDBRepository implements IUsersRepository {
     return this.findOne({ email });
   }
 
+  getBySocialId(socialId: string, brand: string) {
+    return this.findOne({ [`socialId.${brand}`]: socialId });
+  }
+
   async getById(_id: string) {
     const foundUser = await this.findOne({ _id, active: true });
     if (foundUser) return foundUser;

@@ -3,6 +3,9 @@ import { Document } from 'mongoose';
 
 export type CreateUserDTO = Pick<User, 'name' | 'email' | 'password'>;
 export type UpdateUserDTO = Partial<Pick<User, 'name' | 'email' | 'role' | 'password' | 'bookmarks'>>;
+
+export type SocialUserDTO = Pick<User, 'name' | 'email'> & { id: string };
+
 export interface UserDTO extends Partial<User> {
   _id?: any;
   authenticate?: (password: string) => Promise<void | UserDTO>;

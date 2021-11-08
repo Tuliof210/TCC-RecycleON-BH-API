@@ -1,7 +1,10 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDTO, UserDocumentDTO, SocialUserDTO } from 'src/shared/DTO';
 
 export interface IUsersController {
   create(userData: CreateUserDTO): Promise<{ token: string; user: UserDTO }>;
+  createFacebook(userSocialData: SocialUserDTO): Promise<{ token: string; user: UserDTO }>;
+  createGoogle(userSocialData: SocialUserDTO): Promise<{ token: string; user: UserDTO }>;
+
   updateMe({ user }: { user: UserDocumentDTO }, userChanges: UpdateUserDTO): Promise<UserDTO>;
   update(userId: string, userChanges: UpdateUserDTO): Promise<UserDTO>;
 
@@ -18,6 +21,8 @@ export interface IUsersController {
 
 export interface IUsersService {
   create(userData: CreateUserDTO, fullView?: boolean): Promise<UserDTO>;
+  createSocial(userSocialData: SocialUserDTO, brand: 'facebook' | 'google', fullView?: boolean): Promise<UserDTO>;
+
   updateMe(user: UserDocumentDTO, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;
   update(userId: string, userChanges: UpdateUserDTO, fullView?: boolean): Promise<UserDTO>;
 

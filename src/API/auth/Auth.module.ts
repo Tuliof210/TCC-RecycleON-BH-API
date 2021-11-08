@@ -29,13 +29,3 @@ import { ConfigService } from '@nestjs/config';
   exports: [{ provide: IAuthServiceToken, useClass: AuthService }],
 })
 export class AuthModule {}
-
-/**
- * token irá durar 24h => 86400s
- * para tester irá durar 5m => 300s
- * configurar isso via .env
- * ------------------------------------------
- * session = true
- * useful for the common scenario of users
- * accessing a web application via a browser.
- */

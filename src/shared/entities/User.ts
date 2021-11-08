@@ -17,6 +17,8 @@ export class User extends Entity {
   public password: string;
   public bookmarks: Array<string>;
 
+  public socialId: { google?: string; facebook?: string };
+
   constructor(props: CreateUserDTO) {
     super();
     Object.assign(this, props);
