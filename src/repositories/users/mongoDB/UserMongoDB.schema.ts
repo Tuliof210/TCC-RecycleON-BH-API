@@ -30,6 +30,9 @@ class UserProps extends Document implements UserDTO {
   bookmarks: string[];
 
   @Prop()
+  socialId: { facebook: string; google: string };
+
+  @Prop()
   keywords: string[];
 }
 export const UserSchema = SchemaFactory.createForClass(UserProps);

@@ -1,6 +1,11 @@
-import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO } from 'src/shared/DTO';
+import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, SocialUserDTO } from 'src/shared/DTO';
 import { JwtAuthGuard, MasterKeyAuthGuard, RoleGuard } from 'src/guards';
-import { CreateUserValidationPipe, QueryParamsNormalizationPipe, UpdateUserValidationPipe } from 'src/shared/pipes';
+import {
+  CreateUserValidationPipe,
+  CreateSocialUserValidationPipe,
+  QueryParamsNormalizationPipe,
+  UpdateUserValidationPipe,
+} from 'src/shared/pipes';
 import { IUsersController, IUsersService, IUsersServiceToken } from '.';
 import { IAuthServiceToken, IAuthService } from 'src/API/auth';
 import { UserRole } from 'src/shared/entities';
@@ -24,6 +29,28 @@ export class UsersController implements IUsersController {
   @UseGuards(MasterKeyAuthGuard)
   async create(@Body(new CreateUserValidationPipe()) userData: CreateUserDTO) {
     const user = await this.usersService.create(userData, true);
+    const { token } = await this.authService.signIn(user);
+    return { token, user };
+  }
+
+  @ApiOkResponse({ description: 'The user has been succesfully created' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @Post()
+  @UseGuards(MasterKeyAuthGuard)
+  async createFacebook(@Body(new CreateSocialUserValidationPipe()) userSocialData: SocialUserDTO) {
+    const user = await this.usersService.createSocial(userSocialData, 'facebook', true);
+    const { token } = await this.authService.signIn(user);
+    return { token, user };
+  }
+
+  @ApiOkResponse({ description: 'The user has been succesfully created' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @Post()
+  @UseGuards(MasterKeyAuthGuard)
+  async createGoogle(@Body(new CreateSocialUserValidationPipe()) userSocialData: SocialUserDTO) {
+    const user = await this.usersService.createSocial(userSocialData, 'google', true);
     const { token } = await this.authService.signIn(user);
     return { token, user };
   }
