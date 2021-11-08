@@ -6,7 +6,7 @@ import { CreateUserDTO, QueryParamsDTO, UpdateUserDTO, UserDocumentDTO, SocialUs
 
 import { Inject, Injectable } from '@nestjs/common';
 
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class UsersService implements IUsersService {
@@ -27,7 +27,7 @@ export class UsersService implements IUsersService {
       const userData: CreateUserDTO = { name, email, password: fakePassword };
 
       const user = new User(userData);
-      user.socialId[brand] = userSocialData.id;
+      user.socialId = { [brand]: userSocialData.id };
 
       const createdUser = await this.usersRepository.save(user);
       return createdUser.view(fullView);

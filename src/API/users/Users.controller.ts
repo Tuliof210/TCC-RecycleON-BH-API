@@ -36,7 +36,7 @@ export class UsersController implements IUsersController {
   @ApiOkResponse({ description: 'The user has been succesfully created' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @Post()
+  @Post('/facebook')
   @UseGuards(MasterKeyAuthGuard)
   async createFacebook(@Body(new CreateSocialUserValidationPipe()) userSocialData: SocialUserDTO) {
     const user = await this.usersService.createSocial(userSocialData, 'facebook', true);
@@ -47,7 +47,7 @@ export class UsersController implements IUsersController {
   @ApiOkResponse({ description: 'The user has been succesfully created' })
   @ApiForbiddenResponse({ description: 'Forbidden' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @Post()
+  @Post('/google')
   @UseGuards(MasterKeyAuthGuard)
   async createGoogle(@Body(new CreateSocialUserValidationPipe()) userSocialData: SocialUserDTO) {
     const user = await this.usersService.createSocial(userSocialData, 'google', true);
